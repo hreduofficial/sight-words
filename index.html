@@ -81,7 +81,13 @@ input[type=checkbox],input[type=range]{accent-color:var(--pink)}
 .opts{display:grid;gap:10px;margin-top:6px}
 .opts .lab{font-size:15.5px;color:var(--muted);min-width:4.5em}
 .mini-card{transform:rotate(2deg)}
-.roadmap{display:flex;gap:14px 12px;flex-wrap:wrap;justify-content:center;margin-top:18px;padding:4px}
+.roadmap{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px 7px;width:100%;box-sizing:border-box;margin-top:18px;padding:4px}
+.roadmap button{padding:7px 2px!important;font-size:16px!important;min-width:0;white-space:nowrap}
+.roadmap button small{font-size:11px!important;letter-spacing:-.02em}
+.roadmap button.soon{background:#b9c0c4;color:#fff;cursor:not-allowed;opacity:.85}
+.roadmap button.soon small{opacity:1}
+.roadmap button.nope{animation:nope .35s}
+@keyframes nope{20%,60%{transform:translateX(-4px)}40%,80%{transform:translateX(4px)}}
 .roadmap button{color:#fff;border:0;border-radius:16px;padding:8px 16px;font-size:17px;line-height:1.2;display:flex;flex-direction:column;align-items:center;transition:transform .1s}
 .roadmap button small{font-size:13px;opacity:.9}
 .roadmap button[aria-pressed="true"]{box-shadow:0 0 0 3px #fff,0 0 0 5px var(--ink);transform:translateY(-2px)}
@@ -694,6 +700,7 @@ const AUDIO = (function () {
   const FX = {
     pop(t) { osc(sfxBus, "sine", 380, t, .09, .35, { to: 950, glide: .06, r: .1 }); noise(sfxBus, t, .03, .06, "highpass", 4000); },
     tab(t) { osc(sfxBus, "square", 660, t, .05, .08, { r: .05, lp: 3000 }); osc(sfxBus, "square", 990, t + .05, .07, .07, { r: .07, lp: 3000 }); },
+    denied(t) { [0, .11].forEach(d => osc(sfxBus, "square", 740, t + d, .07, .13, { r: .04, lp: 2600 })); osc(sfxBus, "square", 370, t, .2, .05, { r: .05, lp: 900 }); },
     toggle(t) { osc(sfxBus, "triangle", 520, t, .06, .2, { to: 780, r: .08 }); },
     start(t) { noise(sfxBus, t, .45, .12, "bandpass", 300, 2, 4000); [523, 659, 784, 1047].forEach((f, i) => osc(sfxBus, "square", f, t + .3 + i * .07, .12, .09, { r: .14, lp: 3500 })); },
     correct(t, combo = 0) {
@@ -1461,7 +1468,9 @@ function renderHome() {
     RG_LV.map(lv => `<optgroup label="${lv.replace("SW", "SW ")}"><option value="${lv}">${lv.replace("SW", "SW ")} 전체</option>${RG_STEPS.filter(x => x.startsWith(lv + "-")).map(x => `<option value="${x}">${x}</option>`).join("")}</optgroup>`).join("");
   sel.value = S.set.key || "";
   const rm = $("#roadmap");
-  if (!rm.dataset.built) { rm.dataset.built = 1; rm.innerHTML = RG_LV.map((lv, i) => { const rows = RG.filter(r => r.lv === lv); return `<button data-lv="${lv}" style="background:${LV_COLORS[i % LV_COLORS.length]}">${lvLabel(lv)}<small>${i ? "" : "No."}${rows[0].n}~${rows[rows.length - 1].n}</small></button>`; }).join(""); }
+  if (!rm.dataset.built) { rm.dataset.built = 1; rm.innerHTML = RG_LV.map((lv, i) => { const rows = RG.filter(r => r.lv === lv); return `<button data-lv="${lv}" style="background:${LV_COLORS[i % LV_COLORS.length]}">${lvLabel(lv)}<small>${i ? "" : "No."}${rows[0].n}~${rows[rows.length - 1].n}</small></button>`; }).join("")
+    + Array.from({ length: Math.max(0, 10 - RG_LV.length) }, (_, k) => { const n = RG_LV.length + k + 1; return `<button class="soon" data-soon="${n}" aria-disabled="true" title="곧 열려요">SW ${n}<small>🔒 준비 중</small></button>`; }).join(""); }
+  $$("#roadmap [data-soon]").forEach(b => b.onclick = () => { sfx("denied"); b.classList.remove("nope"); void b.offsetWidth; b.classList.add("nope"); toast(`🔒 SW ${b.dataset.soon}은 아직 준비 중이에요`); });
   $$("#roadmap [data-lv]").forEach(b => b.setAttribute("aria-pressed", String(S.set.key === b.dataset.lv || (S.set.key || "").startsWith(b.dataset.lv + "-"))));
 }
 function loadRG(key) { if (!key) return; S.set = rgSet(key); save(); rebuildPool(); renderHome(); renderTop(); toast(`📚 ${S.set.name} · ${S.set.words.length}문장`); }
