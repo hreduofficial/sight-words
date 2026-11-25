@@ -1,3 +1,6 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<style>body{margin:0}[hidden]{display:none!important}</style>
 <title>모두의 Sight Words</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -472,7 +475,6 @@ footer.foot small{font-family:var(--f-num)!important;font-weight:500!important;f
               <label class="tog"><input type="checkbox" id="optSound"> 효과음</label>
               <label class="tog"><input type="checkbox" id="optTts"> 정답 후 문장 읽어주기</label>
             </div>
-            <div class="row" hidden><span class="lab">목소리</span><select id="voiceSel" class="field" aria-label="읽어주는 목소리" style="max-width:250px"></select><button class="btn small" id="voiceTest">▶ 들어보기</button></div>
             <div class="row"><span class="lab">소리 크기</span><input type="range" id="optVol" min="0" max="1" step="0.05" style="width:160px"></div>
           </div>
           <div class="row" style="margin-top:16px"><button class="btn primary" id="startBtn">▶ 학습 시작</button></div>
@@ -1337,7 +1339,7 @@ function pickVoice() {
   try {
     VOICES = speechSynthesis.getVoices().filter(v => /^en/i.test(v.lang)).sort((x, y) => voiceScore(y) - voiceScore(x));
     const want = "";
-    VOICE = VOICES.find(v => v.name === want) || VOICES[0] || null;
+    VOICE = VOICES[0] || null;
     const sel = document.getElementById("voiceSel");
     if (sel) {
       sel.innerHTML = VOICES.length ? VOICES.map((v, i) => `<option value="${esc(v.name)}">${i === 0 ? "★ 추천 · " : ""}${esc(v.name.replace(/^Microsoft |^Google /, ""))} (${esc(v.lang)})</option>`).join("") : `<option>이 기기에 영어 목소리가 없어요</option>`;
@@ -1489,8 +1491,6 @@ $("#sizeSeg").onclick = e => { const b = e.target.closest("button"); if (!b) ret
 $("#modeSeg").onclick = e => { const b = e.target.closest("button"); if (!b) return; S.settings.mode = b.dataset.m; save(); renderHome(); };
 $("#optSound").onchange = e => { S.settings.sound = e.target.checked; save(); applyAudio(); };
 $("#optTts").onchange = e => { S.settings.tts = e.target.checked; save(); };
-$("#voiceSel").onchange = e => { S.settings.voice = e.target.value; save(); pickVoice(); speak("Hi! I am Haru. Let's read together!"); };
-$("#voiceTest").onclick = () => speak("Hi! I am Haru. Let's read together!");
 
 /* ---------- academy: login + Google Sheet sync ---------- */
 const pad2 = n => String(n).padStart(2, "0");
@@ -2056,3 +2056,5 @@ if (ACAD.on) { loadRoster(); flush(); setInterval(flush, 60000); addEventListene
 })();
 
 </script>
+
+</html>
