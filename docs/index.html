@@ -1355,7 +1355,16 @@ fetch("tts/index.json").then(r => r.ok ? r.json() : null).then(idx => {
   for (const b in idx) for (const k in idx[b]) loc[k] = [b, idx[b][k][0], idx[b][k][1]];
   CLIPS.loc = loc; clipBin("words");
 }).catch(() => {});
-function clipBin(b) { if (!CLIPS.bins[b]) CLIPS.bins[b] = fetch("tts/" + encodeURIComponent(b) + ".mp3").then(r => { if (!r.ok) throw 0; return r.arrayBuffer(); }); CLIPS.bins[b].catch(() => { delete CLIPS.bins[b]; }); return CLIPS.bins[b]; }
+// some hosts prepend an ID3 tag (e.g. content credentials) to MP3 files; the index offsets are for the raw audio, so drop it
+function stripID3(ab) {
+  const u = new Uint8Array(ab);
+  if (u.length > 10 && u[0] === 0x49 && u[1] === 0x44 && u[2] === 0x33) {
+    const n = ((u[6] & 127) << 21) | ((u[7] & 127) << 14) | ((u[8] & 127) << 7) | (u[9] & 127);
+    return ab.slice(10 + n + (u[5] & 16 ? 10 : 0));
+  }
+  return ab;
+}
+function clipBin(b) { if (!CLIPS.bins[b]) CLIPS.bins[b] = fetch("tts/" + encodeURIComponent(b) + ".mp3").then(r => { if (!r.ok) throw 0; return r.arrayBuffer(); }).then(stripID3); CLIPS.bins[b].catch(() => { delete CLIPS.bins[b]; }); return CLIPS.bins[b]; }
 function hasClip(key) { return !!(CLIPS.loc && CLIPS.loc[key]); }
 function prefetchClip(key) { if (hasClip(key)) clipBin(CLIPS.loc[key][0]).catch(() => {}); }
 async function clipBuf(key) {
