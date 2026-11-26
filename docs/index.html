@@ -618,6 +618,25 @@ footer.foot small{font-family:var(--f-num)!important;font-weight:500!important;f
 .badge.boost.watch .tagb{background:#4f8ff0}
 @media (max-width:640px){.bv-box{padding:14px 12px 16px;border-radius:20px}.bv-b{font-size:36px}.bv-ctl .btn{min-width:0;flex:1}}
 @media (prefers-reduced-motion:reduce){.bv-scene.kb .photo,.bv-scene.kb .sky,.bv-sent.in,.bv-sent .bv-w,.bv-b{animation:none}}
+
+/* level name button + 10-level guide */
+.lvl .lvname{border:0;background:none;padding:0;font:inherit;color:var(--teal-deep);white-space:nowrap;font-size:22px;cursor:pointer;text-decoration:underline dotted 2px;text-underline-offset:5px;font-family:var(--f-display)}
+@media (max-width:640px){.lvl .lvname{font-size:17px}}
+.lvguide{position:fixed;inset:0;z-index:80;display:flex;align-items:center;justify-content:center;padding:16px;background:rgba(8,30,28,.7);animation:bvFade .2s ease-out}
+.lvg-box{width:min(460px,100%);max-height:calc(100dvh - 24px);overflow:auto;background:var(--sheet);border-radius:24px;padding:16px 16px 18px;box-shadow:0 20px 50px rgba(0,0,0,.35)}
+.lvg-head{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.lvg-head b{font-size:clamp(17px,4.6vw,21px);color:var(--teal-deep)}
+.lvg-tip{margin:6px 0 10px;font-size:15px;color:var(--muted);line-height:1.45}
+.lvg-list{list-style:none;margin:0;padding:0;display:grid;gap:6px}
+.lvg-list li{position:relative;display:flex;align-items:center;gap:12px;padding:8px 12px;border-radius:14px;background:var(--surface-2)}
+.lvg-list li.done{opacity:.6}
+.lvg-list li.now{background:#e3f6f1;box-shadow:inset 0 0 0 3px var(--teal)}
+.lvg-e{font-size:30px;width:64px;white-space:nowrap;letter-spacing:-.2em;text-align:center;flex:none;line-height:1}
+.lvg-n{flex:1;min-width:0;line-height:1.2}
+.lvg-n b{display:block;font-size:17px}
+.lvg-n small{font-size:13.5px;color:var(--muted)}
+.lvg-x{font-size:14px;color:var(--teal-deep);white-space:nowrap}
+.lvg-list em{position:absolute;right:10px;top:-9px;font-style:normal;font-size:11.5px;background:var(--pink);color:#fff;border-radius:999px;padding:1px 8px}
 </style>
 
 <canvas id="fx"></canvas>
@@ -635,7 +654,7 @@ footer.foot small{font-family:var(--f-num)!important;font-weight:500!important;f
       <button class="stat" id="switchBtn" hidden title="로그아웃하고 로그인 화면으로"><span class="ic">🚪</span>로그아웃</button>
     </div>
   </header>
-  <div class="lvl"><b id="lvName">Lv.1</b><div class="bar"><i id="lvBar"></i></div><span id="lvNext" style="font-variant-numeric:tabular-nums"></span><div class="stats"><span class="stat boost-on" id="sBoost" hidden title="오늘 리워드 2배"><span class="ic">🚀</span>x2</span><span class="stat" title="총 점수"><span class="ic">🪙</span><span id="sPts">0</span></span><span class="stat" title="연속 정답"><span class="ic">🔥</span><span id="sStreak">0</span></span><span class="stat" title="마스터한 단어"><span class="ic">⭐</span><span id="sMaster">0</span></span></div></div>
+  <div class="lvl"><button type="button" id="lvName" class="lvname">Lv.1</button><div class="bar"><i id="lvBar"></i></div><span id="lvNext" style="font-variant-numeric:tabular-nums"></span><div class="stats"><span class="stat boost-on" id="sBoost" hidden title="오늘 리워드 2배"><span class="ic">🚀</span>x2</span><span class="stat" title="총 점수"><span class="ic">🪙</span><span id="sPts">0</span></span><span class="stat" title="연속 정답"><span class="ic">🔥</span><span id="sStreak">0</span></span><span class="stat" title="마스터한 단어"><span class="ic">⭐</span><span id="sMaster">0</span></span></div></div>
 
   <nav class="tabs" role="tablist">
     <button class="tab" role="tab" data-v="home" aria-selected="true">📚 학습</button>
@@ -1518,10 +1537,33 @@ let S = normState(null);
 const prog = w => (S.words[w] = S.words[w] || { box: 0, right: 0, wrong: 0, seen: 0 });
 
 /* ---------- levels ---------- */
-const LEVELS = ["🌱 Seed", "🌿 Sprout", "🍀 Leaf", "🌷 Flower", "🌳 Tree", "⭐ Star", "🚀 Rocket", "🌙 Moon", "☀️ Sun", "🌌 Galaxy"];
-const need = n => 100 * n * (n + 1) / 2; // XP needed to reach level n+1
-function levelOf(xp) { let n = 0; while (xp >= need(n + 1) && n < 60) n++; return n; }
-function levelName(n) { return "Lv." + (n + 1) + " " + LEVELS[Math.min(n, LEVELS.length - 1)]; }
+// 10 levels: a seed grows into a mountain. xp = total points needed to reach the level
+const LEVELS = [
+  { e: "🌰", en: "Seed", ko: "씨앗", xp: 0 },
+  { e: "🌱", en: "Sprout", ko: "새싹", xp: 300 },
+  { e: "🌿", en: "Leafy Stem", ko: "줄기와 잎", xp: 800 },
+  { e: "🪴", en: "Bushy Plant", ko: "줄기와 풍성한 잎", xp: 1500 },
+  { e: "🌲", en: "Young Tree", ko: "중간 나무", xp: 2500 },
+  { e: "🌳", en: "Big Tree", ko: "큰 나무", xp: 4000 },
+  { e: "🍎", en: "Fruit Tree", ko: "열매 맺힌 나무", xp: 6000 },
+  { e: "🌲🌳", en: "Forest", ko: "숲", xp: 8500 },
+  { e: "🏞️", en: "Forest & River", ko: "숲과 강", xp: 12000 },
+  { e: "⛰️", en: "Mountain", ko: "산", xp: 16000 }
+];
+const LV_MAX = LEVELS.length - 1;
+const need = n => LEVELS[Math.min(n, LV_MAX)].xp; // XP needed to reach level index n
+function levelOf(xp) { let n = 0; while (n < LV_MAX && xp >= LEVELS[n + 1].xp) n++; return n; }
+function levelName(n) { const L = LEVELS[Math.min(n, LV_MAX)]; return `Lv.${Math.min(n, LV_MAX) + 1} ${L.e} ${L.en}`; }
+function showLevelGuide() {
+  const cur = levelOf(S.xp);
+  const ov = document.createElement("div"); ov.className = "lvguide"; ov.setAttribute("role", "dialog"); ov.setAttribute("aria-label", "레벨 안내");
+  ov.innerHTML = `<div class="lvg-box"><div class="lvg-head"><b>🌰 레벨 10단계 ⛰️</b><button class="bv-x" type="button" aria-label="닫기">✕</button></div>
+    <p class="lvg-tip">문제를 맞히고 게임을 하면 점수가 쌓여요. 점수가 모이면 씨앗이 자라서 산이 돼요!</p>
+    <ol class="lvg-list">${LEVELS.map((L, i) => `<li class="${i < cur ? "done" : i === cur ? "now" : ""}"><span class="lvg-e">${L.e}</span><span class="lvg-n"><b>Lv.${i + 1} ${L.en}</b><small>${L.ko}</small></span><span class="lvg-x">${i ? L.xp.toLocaleString() + "점" : "시작"}</span>${i === cur ? '<em>지금 여기!</em>' : ""}</li>`).join("")}</ol></div>`;
+  const close = () => ov.remove();
+  ov.onclick = e => { if (e.target === ov || e.target.closest(".bv-x")) close(); };
+  document.body.appendChild(ov);
+}
 
 /* ---------- badges ---------- */
 const BADGES = [
@@ -1810,10 +1852,10 @@ function renderTop() {
   { const bo = $("#sBoost"); if (bo) bo.hidden = !boostOn(); }
   $("#sStreak").textContent = S.streak;
   $("#sMaster").textContent = masteredCount() + "/" + S.set.words.length;
-  const n = levelOf(S.xp), lo = n ? need(n) : 0, hi = need(n + 1);
-  $("#lvName").textContent = levelName(n);
-  $("#lvBar").style.width = Math.min(100, (S.xp - lo) / (hi - lo) * 100) + "%";
-  $("#lvNext").textContent = `다음 레벨까지 ${hi - S.xp}점`;
+  const n = levelOf(S.xp), lo = need(n), top = n >= LV_MAX, hi = top ? lo : need(n + 1);
+  $("#lvName").textContent = levelName(n); $("#lvName").title = `${LEVELS[n].ko} · 눌러서 레벨 10단계 보기`;
+  $("#lvBar").style.width = top ? "100%" : Math.min(100, (S.xp - lo) / (hi - lo) * 100) + "%";
+  $("#lvNext").textContent = top ? "⛰️ 최고 레벨 달성!" : `다음 ${LEVELS[n + 1].e} ${LEVELS[n + 1].ko}까지 ${(hi - S.xp).toLocaleString()}점`;
   $("#who").textContent = ACAD.user ? `${ACAD.user.cls ? ACAD.user.cls + " · " : ""}${ACAD.user.name}의 단어 모험` : S.name ? `${S.name}의 단어 모험` : "빈칸에 들어갈 단어를 골라요";
   $("#switchBtn").hidden = !ACAD.user; $("#homeTopBtn").hidden = !ACAD.user;
 }
@@ -2880,6 +2922,7 @@ $("#optVol").value = S.settings.vol;
 applyAudio();
 rebuildPool();
 $("#switchBtn").onclick = () => { if ((Q && !Q.done || G && !G.done) && !confirmLeave()) return; logout(); toast("👋 로그아웃했어요"); };
+$("#lvName").onclick = showLevelGuide;
 show("login");
 if (ACAD.on) { loadRoster(); flush(); setInterval(flush, 60000); addEventListener("online", flush); }
 })();
