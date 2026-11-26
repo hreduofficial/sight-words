@@ -544,6 +544,7 @@ footer.foot small{font-family:var(--f-num)!important;font-weight:500!important;f
 .bubble.talk{animation:bubbleIn .38s cubic-bezier(.2,1.6,.4,1),bubFloat 2.8s ease-in-out .4s infinite}
 .peek-bubble{animation:bubbleIn .3s ease-out,bubFloat 2.8s ease-in-out .3s infinite}
 @media (prefers-reduced-motion:reduce){.bubble,.bubble.talk,.peek-bubble{animation:none}}
+.login-demo{margin:12px auto 0;max-width:460px;font-size:14.5px;line-height:1.5;color:var(--muted);background:var(--chip);border-radius:12px;padding:8px 12px;text-align:center}
 </style>
 
 <canvas id="fx"></canvas>
@@ -1705,7 +1706,7 @@ function renderLogin(msg) {
   } else {
     h += `<form class="login-form" id="loginForm" autocomplete="off"><label class="login-h" for="loginName">이름 쓰고 학습 시작!</label>
       <div class="login-row"><input id="loginName" class="field" placeholder="예: 김민준" maxlength="20" autocapitalize="off" spellcheck="false"><button class="btn primary" type="submit">Let's Go ▶</button></div>
-      <div class="login-msg" id="loginMsg" role="status">${msg ? esc(msg) : ""}</div></form>`;
+      <div class="login-msg" id="loginMsg" role="status">${msg ? esc(msg) : ""}</div>${ACAD.on ? "" : `<p class="login-demo">🧪 연습용 미리보기예요. 학원 명단을 확인하지 않아서 아무 이름이나 들어가지고, 기록은 이 기기에만 남아요. 학생들은 학원 사이트 주소로 들어와요.</p>`}</form>`;
   }
   box.innerHTML = h;
   const cb = $("#chBack"); if (cb) cb.onclick = () => { ACAD.choices = null; renderLogin(); };
