@@ -426,6 +426,95 @@ footer.foot small{display:block;margin-top:8px}
 .hrlogo span{color:#bfe9e2}
 footer.foot small{font-family:var(--f-num)!important;font-weight:500!important;font-size:13px!important;opacity:.8;letter-spacing:.02em}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+/* ---------- games ---------- */
+.ghero{display:flex;align-items:center;gap:12px;margin-bottom:16px}.ghero .avatar{width:72px;height:72px;flex:none}.ghero .bubble{font-size:19px;line-height:1.5}
+.ggrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:14px}
+.gcard{position:relative;display:flex;flex-direction:column;align-items:flex-start;gap:6px;text-align:left;border:0;border-radius:22px;padding:18px 16px 16px;background:var(--sheet);box-shadow:inset 0 0 0 3px var(--gc),0 6px 0 var(--gc);transition:transform .12s;overflow:hidden;font-family:var(--f-ui);color:var(--ink)}
+.gcard:hover{transform:translateY(-3px)}.gcard:active{transform:translateY(3px);box-shadow:inset 0 0 0 3px var(--gc),0 2px 0 var(--gc)}
+.gcard::before{content:"";position:absolute;right:-30px;top:-30px;width:110px;height:110px;border-radius:50%;background:var(--gc);opacity:.13}
+.gcard .ge{font-size:46px;line-height:1;animation:bob 2.6s ease-in-out infinite}.gcard:nth-child(2n) .ge{animation-delay:-1.2s}
+.gcard b{font-family:var(--f-display);font-size:24px;color:var(--gc);filter:brightness(.8)}
+.gcard small{font-size:15.5px;color:var(--muted);line-height:1.45;min-height:3em}
+.gcard .gbest{font-family:var(--f-num);font-size:14.5px;background:var(--surface-2);border-radius:99px;padding:3px 10px}
+.gcard .gplay{align-self:stretch;text-align:center;margin-top:4px;background:var(--gc);color:#fff;border-radius:99px;padding:8px;font-family:var(--f-display);font-size:18px}
+.gwrap{max-width:860px;margin:0 auto}
+.ghead{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:12px}.ghead b{font-family:var(--f-display);font-size:24px;color:var(--teal-deep)}.gsp{flex:1}
+.gstat{font-family:var(--f-num);font-weight:600;font-size:19px;background:var(--sheet);border-radius:99px;padding:5px 13px;box-shadow:inset 0 0 0 2px var(--rule)}
+.gstat.lives span{display:inline-block;transition:transform .2s,filter .2s}.gstat.lives span.off{filter:grayscale(1);opacity:.35;transform:scale(.8)}
+.gstat.lives.hit{animation:nope .4s}
+.gthumb{border-radius:14px;width:100%}
+.gstage .answers .ans{font-size:clamp(24px,5vw,32px)}
+@keyframes nope{0%,100%{transform:none}20%{transform:translateX(-7px)}40%{transform:translateX(7px)}60%{transform:translateX(-5px)}80%{transform:translateX(4px)}}
+.nope{animation:nope .4s}
+/* rain */
+.rain{position:relative;height:min(44vh,400px);min-height:300px;border-radius:22px;overflow:hidden;background:linear-gradient(180deg,#7fa8d8,#bcd9f2 70%,#d8ecd0 70%,#a9d38f)}
+.rcloud{position:absolute;height:46px;border-radius:99px;background:#fff;opacity:.85;top:12px;box-shadow:30px -14px 0 4px #fff,-24px -8px 0 0 #fff}.rcloud.c1{left:12%;width:110px}.rcloud.c2{right:10%;width:90px;top:22px}
+.puddle{position:absolute;left:50%;bottom:8px;transform:translateX(-50%);width:62%;height:16px;border-radius:50%;background:rgba(60,120,200,.35)}
+.rdrop{position:absolute;left:50%;top:10px;width:min(440px,84%);background:var(--sheet);border-radius:20px;padding:8px 8px 6px;box-shadow:0 10px 24px rgba(20,40,80,.25);will-change:transform}
+.rdrop .gthumb{max-height:150px;aspect-ratio:16/7}
+.rdrop::before{content:"💧";position:absolute;left:-14px;top:-14px;font-size:30px}
+.dtext{font-family:var(--f-read);font-weight:700;font-size:clamp(20px,4.4vw,28px);text-align:center;line-height:1.35;padding:6px 4px 2px}
+.rdrop.burst{animation:burst .9s ease-in forwards}.rdrop.splash{animation:splash .8s ease-out forwards}.rdrop.shake{animation:nope .4s}
+@keyframes burst{0%{}35%{filter:brightness(1.15)}100%{opacity:0;margin-top:-60px;scale:1.15}}
+@keyframes splash{to{scale:1.25 .4;opacity:.2}}
+/* dictation */
+.dict{text-align:center}.dhead{display:flex;align-items:center;gap:10px;justify-content:center;margin-bottom:12px}.dhead .avatar{width:60px;height:60px}.dhead .bubble{font-size:19px}
+.btn.big{font-size:22px;padding:12px 24px;background:var(--teal);color:#fff;box-shadow:0 5px 0 var(--teal-deep)}
+.dslots{display:flex;justify-content:center;gap:8px;margin:20px 0 14px;flex-wrap:wrap}
+.dslots span{width:clamp(38px,9vw,54px);height:clamp(48px,11vw,64px);border-radius:12px;background:var(--sheet);box-shadow:inset 0 -4px 0 var(--rule),inset 0 0 0 2px var(--rule);display:grid;place-items:center;font-family:var(--f-read);font-weight:700;font-size:clamp(26px,6vw,36px)}
+.dslots span.hint{background:var(--pink-soft);color:var(--pink)}.dslots span.typed{box-shadow:inset 0 -4px 0 var(--teal),inset 0 0 0 2px var(--teal)}
+.dslots.good span{background:#dff6ea;color:var(--good);box-shadow:inset 0 -4px 0 var(--good);animation:gpop .4s both}
+.dform{display:flex;gap:10px;justify-content:center;max-width:460px;margin:0 auto}.dform .field{flex:1;min-width:0;width:auto;max-width:none;font-family:var(--f-read);font-size:26px;text-align:center;padding:10px}
+.dform .btn.primary{font-size:21px;padding:10px 22px}
+.dsent{font-family:var(--f-read);font-weight:700;font-size:clamp(20px,4.2vw,27px);margin-top:18px;color:var(--muted)}
+/* match */
+.mhint{text-align:center;color:var(--muted);margin-bottom:10px;font-size:16px}
+.match{display:grid;grid-template-columns:1.6fr 1fr;gap:12px}.mcol{display:flex;flex-direction:column;gap:10px}
+.mcard{border:0;border-radius:16px;background:var(--sheet);box-shadow:inset 0 0 0 2px var(--rule),0 4px 0 var(--rule);padding:8px;transition:transform .1s,box-shadow .15s,opacity .3s;color:var(--ink)}
+.mcard.ms{display:grid;grid-template-columns:110px 1fr;gap:10px;align-items:center;text-align:left;font-family:var(--f-read);font-weight:700;font-size:clamp(15px,2.6vw,19px);line-height:1.3}
+.mcard.ms .gthumb{aspect-ratio:4/3}.mcard.ms .credit,.mcard.ms .tag{display:none}
+.mcard.mw{flex:1;font-family:var(--f-read);font-weight:700;font-size:clamp(22px,4.6vw,30px)}
+.mcard.sel{box-shadow:inset 0 0 0 4px var(--blue),0 4px 0 var(--blue);transform:translateY(-2px)}
+.mcard.done{opacity:.45;box-shadow:inset 0 0 0 3px var(--good);pointer-events:none}.mcard.done.mw{background:#dff6ea}
+.mcard .blank{min-width:2.4em;border-bottom-width:3px}
+/* bridge */
+.bridge .gthumb{max-width:420px;margin:0 auto 10px;display:block;aspect-ratio:16/7}
+.river{position:relative;height:120px;border-radius:18px;overflow:hidden;background:linear-gradient(180deg,#bfe3ff,#e8f6ff 55%);margin-bottom:12px}
+.river .water{position:absolute;left:0;right:0;bottom:0;height:34px;background:repeating-linear-gradient(90deg,#4f8ff0 0 22px,#62a0f5 22px 44px);animation:wave 2s linear infinite}
+@keyframes wave{to{background-position:44px 0}}
+.river .bank{position:absolute;bottom:0;width:9%;height:64px;background:#7cc06a;border-radius:10px 10px 0 0;z-index:2;display:grid;place-items:start center;font-size:26px}.bank.l{left:0}.bank.r{right:0}
+.planks{position:absolute;left:9%;right:9%;bottom:34px;height:22px;display:flex;gap:3px;z-index:2}
+.planks i{flex:1;border-radius:4px;background:transparent;border:2px dashed rgba(120,80,40,.3);transition:background .25s}
+.planks i.on{background:linear-gradient(180deg,#c98b4f,#9a6233);border:0;animation:gpop .35s both}
+.bharu{position:absolute;bottom:50px;width:64px;transform:translateX(-30%);transition:left .45s cubic-bezier(.3,1.4,.5,1);z-index:3}
+.bharu.hop{animation:bob .6s 3}.bharu.wobble{animation:nope .4s}
+.bsent{text-align:center;font-family:var(--f-read);font-weight:700;font-size:clamp(20px,4.4vw,28px);min-height:1.6em;margin-bottom:12px;line-height:1.7}
+.bsent .slot{display:inline-block;min-width:2.2em;border-bottom:3px solid var(--rule);margin:0 2px}.bsent .slot.on{border-color:var(--purple);color:var(--purple);animation:gpop .3s both}
+.bchips{display:flex;flex-wrap:wrap;justify-content:center;gap:10px;margin-bottom:12px}
+.bchips .wchip{font-size:clamp(20px,4.2vw,26px);padding:10px 16px;border:0;border-radius:14px;background:var(--sheet);box-shadow:inset 0 0 0 2px var(--rule),0 4px 0 var(--rule)}
+.bchips .wchip.used{visibility:hidden}.bchips .wchip.glow{box-shadow:inset 0 0 0 3px var(--orange),0 4px 0 var(--orange)}
+/* balloons */
+.sky2{position:relative;height:min(50vh,430px);min-height:320px;border-radius:22px;overflow:hidden;background:linear-gradient(180deg,#9fd3ff,#e6f6ff)}
+.bcl{position:absolute;height:40px;border-radius:99px;background:#fff;opacity:.9;box-shadow:26px -12px 0 2px #fff}.bcl.c1{left:8%;top:18%;width:96px}.bcl.c2{right:12%;top:46%;width:80px}
+.bal{position:absolute;bottom:-150px;width:min(21%,130px);aspect-ratio:5/6;border:0;padding:0;border-radius:50% 50% 48% 48%/55% 55% 45% 45%;background:radial-gradient(circle at 32% 28%,rgba(255,255,255,.65) 0 9%,transparent 10%),var(--bc);box-shadow:inset -8px -10px 0 rgba(0,0,0,.12);animation:rise linear forwards;color:#fff;font-family:var(--f-read);font-weight:700;font-size:clamp(17px,3.8vw,25px);text-shadow:0 2px 0 rgba(0,0,0,.25);cursor:pointer}
+.bal::after{content:"";position:absolute;left:50%;top:100%;width:2px;height:60px;background:rgba(80,80,80,.45)}
+.bal span{position:relative;z-index:1}
+@keyframes rise{0%{transform:translateY(0) rotate(-3deg)}50%{transform:translateY(calc(-1 * min(25vh,215px) - 75px)) rotate(3deg)}100%{transform:translateY(calc(-1 * min(50vh,430px) - 320px)) rotate(-2deg)}}
+.bal.pop{animation:popb .35s ease-out forwards!important}.bal.fade{opacity:.25;pointer-events:none}.bal.ans-ok{animation-play-state:paused;box-shadow:0 0 0 6px #fff,0 0 0 10px var(--good)}
+@keyframes popb{0%{scale:1}40%{scale:1.3}100%{scale:1.6;opacity:0}}
+.gres{max-width:640px;margin:0 auto}
+@media (max-width:640px){
+  .ggrid{grid-template-columns:1fr 1fr;gap:10px}.gcard{padding:14px 12px 12px}.gcard .ge{font-size:38px}.gcard b{font-size:20px}.gcard small{font-size:14px;min-height:0}.gcard .gplay{font-size:16px;padding:7px}
+  .ghead b{font-size:20px;width:100%;order:-1}.ghead{gap:8px}.gstat{font-size:17px;padding:4px 10px}
+  .match{grid-template-columns:1.25fr 1fr;gap:8px}.mcol{gap:8px}.mcard.ms{grid-template-columns:1fr;gap:4px;text-align:center;padding:6px;font-size:15px}.mcard.ms .gthumb{aspect-ratio:5/2;border-radius:10px}.mcard.mw{font-size:24px}.mhint{font-size:14px}
+  .gbl{display:none}.ghead b{font-size:21px}.rdrop .gthumb{max-height:110px}.bridge .gthumb{aspect-ratio:5/2}.river{height:104px}
+  .bal{width:22.5%}
+  .dform{flex-direction:column;padding:0 6px}.dform .btn.primary{width:100%}
+}
+@media (max-width:380px){.ggrid{grid-template-columns:1fr}}
+@keyframes gpop{from{transform:scale(.4);opacity:0}to{transform:scale(1);opacity:1}}
+@media (prefers-reduced-motion:reduce){.bal{animation:none!important;bottom:auto;top:28%}.bal.pop{opacity:0}}
 </style>
 
 <canvas id="fx"></canvas>
@@ -448,6 +537,7 @@ footer.foot small{font-family:var(--f-num)!important;font-weight:500!important;f
   <nav class="tabs" role="tablist">
     <button class="tab" role="tab" data-v="home" aria-selected="true">📚 학습</button>
     <button class="tab" role="tab" data-v="words" aria-selected="false" hidden>📂 단어 세트</button>
+    <button class="tab" role="tab" data-v="games" aria-selected="false">🎮 게임</button>
     <button class="tab" role="tab" data-v="stickers" aria-selected="false">🏅 스티커·배지</button>
   </nav>
 
@@ -504,6 +594,20 @@ footer.foot small{font-family:var(--f-num)!important;font-weight:500!important;f
       </div>
       <div class="answers" id="qAnswers"></div>
       <div class="feedback" id="qFeedback"></div>
+    </div>
+  </section>
+
+  <!-- GAMES -->
+  <section id="v-games" hidden>
+    <div class="panel">
+      <div class="ghero"><img class="avatar" src="data:image/webp;base64,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" alt=""><div class="bubble">오늘은 <b>게임</b>으로 단어 놀이 해 볼까? 🎮<br><span class="muted" style="font-size:.85em">문제는 지금 고른 교재 단계 <b id="gSetName"></b> 문장으로 나와!</span></div></div>
+      <div class="ggrid" id="gGrid"></div>
+    </div>
+  </section>
+  <section id="v-play" hidden>
+    <div class="gwrap">
+      <div class="ghead"><button class="btn small" id="gBack">🎮 <span class="gbl">게임 </span>목록</button><b id="gTitle"></b><span class="gsp"></span><span class="gstat lives" id="gLives"></span><span class="gstat">🪙 <span id="gScore">0</span></span><span class="gstat" id="gInfo"></span></div>
+      <div id="gStage" class="gstage"></div>
     </div>
   </section>
 
@@ -641,6 +745,10 @@ const AUDIO = (function () {
       mel: ["C6 . E6 . G6 . E6 . C6 . . . G5 . . .", "B5 . D6 . G6 . D6 . B5 . . . G5 . . .", "A5 . C6 . E6 . C6 . A5 . . . E5 . . .", "F5 . A5 . C6 . A5 . G5 . . . . . . ."] }
   };
   TRACKS.quizAlt = TRACKS.quiz;
+  TRACKS.games = { bpm: 124, chords: ["C", "G", "Am", "F"], lead: "square", leadVol: .085, bass: "bounce", pad: .035, arp: { type: "square", vol: .025, oct: 5, pat: [0, 2, 1, 2] }, drums: { k: "x...x...x...x...", s: "....x.......x...", h: "x.x.x.x.x.x.x.x." },
+    mel: ["G5 . E5 . G5 . C6 . . . G5 . E5 . . .", "D5 . G5 . B5 . D6 . . . B5 . G5 . . .", "E5 . A5 . C6 . E6 . . . C6 . A5 . . .", "F5 . A5 . C6 . A5 . G5 - - - . . . ."] };
+  TRACKS.play = { bpm: 138, chords: ["Am", "F", "C", "G"], lead: "square", leadVol: .065, bass: "pulse", pad: .03, arp: { type: "triangle", vol: .03, oct: 5, pat: [0, 1, 2, 1, 2, 0, 1, 2], eighth: true }, drums: { k: "x.....x.x.......", s: "....x.......x...", h: "x.xxx.xxx.xxx.xx" },
+    mel: ["A5 . . C6 . . E6 . D6 . C6 . A5 . . .", "F5 . . A5 . . C6 . A5 . G5 . F5 . . .", "E5 . . G5 . . C6 . B5 . G5 . E5 . . .", "D5 . G5 . B5 . D6 - - - B5 . G5 . . ."] };
   TRACKS.login = { bpm: 92, chords: ["G", "Em", "C", "D"], lead: "sine", leadVol: .1, bell: true, bass: "long", pad: .05, arp: { type: "triangle", vol: .03, oct: 4, pat: [0, 1, 2, 1], eighth: true }, drums: { k: "x.......x.......", s: "", h: "", sh: "....x.......x..." },
     mel: ["B5 . D6 . G6 - - - D6 . B5 . . . . .", "G5 . B5 . E6 - - - B5 . G5 . . . . .", "E5 . G5 . C6 - - - G5 . E5 . . . . .", "F#5 . A5 . D6 - - - C6 - B5 - A5 - . ."] };
 
@@ -690,7 +798,7 @@ const AUDIO = (function () {
     st.track = name; cur = TRACKS[name]; if (!cur) return;
     step = 0; nextT = ac.currentTime + .08;
     musicBus.gain.cancelScheduledValues(ac.currentTime);
-    musicBus.gain.setValueAtTime(0.0001, ac.currentTime); musicBus.gain.linearRampToValueAtTime(name === "quiz" ? .24 : .32, ac.currentTime + .6);
+    musicBus.gain.setValueAtTime(0.0001, ac.currentTime); musicBus.gain.linearRampToValueAtTime((name === "quiz" || name === "play") ? .24 : .32, ac.currentTime + .6);
     timer = setInterval(tick, 25); tick();
   }
   function stop() { if (timer) clearInterval(timer); timer = null; cur = null; st.track = null; }
@@ -700,7 +808,7 @@ const AUDIO = (function () {
   }
   function duck(on) {
     if (!ac || !cur) return;
-    const base = st.track === "quiz" ? .24 : .32;
+    const base = (st.track === "quiz" || st.track === "play") ? .24 : .32;
     musicBus.gain.cancelScheduledValues(ac.currentTime);
     musicBus.gain.setTargetAtTime(on ? base * .25 : base, ac.currentTime, .12);
   }
@@ -1455,10 +1563,12 @@ function renderTop() {
 function show(v) {
   if (v === "words") v = "home";
   if (!ACAD.user) v = "login";
-  ["home", "quiz", "result", "words", "stickers", "login"].forEach(x => $("#v-" + x).hidden = x !== v);
+  if (v !== "play") gStop();
+  ["home", "quiz", "result", "words", "stickers", "login", "games", "play"].forEach(x => $("#v-" + x).hidden = x !== v);
   document.body.classList.toggle("in-login", v === "login");
   if (v === "login") { $("#who").textContent = "이름을 쓰고 들어가요"; $("#switchBtn").hidden = true; $("#homeTopBtn").hidden = true; renderLogin(); AUDIO.play("login"); scrollTo({ top: 0 }); return; }
-  $$(".tab").forEach(t => t.setAttribute("aria-selected", String(t.dataset.v === v || (v === "quiz" || v === "result") && t.dataset.v === "home")));
+  $$(".tab").forEach(t => t.setAttribute("aria-selected", String(t.dataset.v === v || (v === "quiz" || v === "result") && t.dataset.v === "home" || v === "play" && t.dataset.v === "games")));
+  if (v === "games") renderGames();
   if (v === "home") renderHome();
   if (v === "words") renderWords();
   if (v === "stickers") renderStickers();
@@ -1466,7 +1576,7 @@ function show(v) {
   AUDIO.play(v);
   scrollTo({ top: 0 });
 }
-$$(".tab").forEach(t => t.onclick = () => { if (Q && !Q.done && !confirmLeave()) return; Q = null; show(t.dataset.v); });
+$$(".tab").forEach(t => t.onclick = () => { if ((Q && !Q.done || G && !G.done) && !confirmLeave()) return; Q = null; show(t.dataset.v); });
 let leaveArmed = 0;
 function confirmLeave() { if (Date.now() - leaveArmed < 2500) return true; leaveArmed = Date.now(); toast("한 번 더 누르면 학습을 끝내요"); return false; }
 
@@ -2050,6 +2160,386 @@ function turnPage(d) {
   addEventListener("keydown", e => { if ($("#v-stickers").hidden || /INPUT|SELECT|TEXTAREA/.test((e.target.tagName || ""))) return; if (e.key === "ArrowRight") turnPage(1); if (e.key === "ArrowLeft") turnPage(-1); });
 })();
 
+
+/* ================= 🎮 GAMES ================= */
+const GAMES = [
+  { id: "rain", e: "🌧️", t: "단어 비", d: "하늘에서 문장이 떨어져요! 땅에 닿기 전에 빈칸 단어를 골라요.", c: "var(--blue)" },
+  { id: "dict", e: "🔊", t: "듣고 쓰기", d: "하루가 불러 주는 단어를 듣고 철자를 직접 써요.", c: "var(--teal)" },
+  { id: "match", e: "🃏", t: "짝 맞추기", d: "그림 문장과 단어 카드를 빨리 짝지어요. 시간이 점수!", c: "var(--orange)" },
+  { id: "bridge", e: "🌉", t: "문장 다리", d: "섞인 단어를 순서대로 눌러 다리를 놓으면 하루가 건너가요.", c: "var(--purple)" },
+  { id: "balloon", e: "🎈", t: "풍선 팡", d: "단어를 듣고 그 단어가 적힌 풍선을 팡! 터뜨려요.", c: "var(--pink)" }
+];
+BADGES.push({ id: "gamer", e: "🎮", t: "게임 탐험가", d: "게임 5가지를 모두 해 봤어요" }, { id: "g500", e: "🕹️", t: "게임 고수", d: "게임 한 판에 300점 이상" });
+let G = null;
+const gT = (fn, ms) => { const id = setTimeout(fn, ms); if (G) G.timers.push(id); return id; };
+function gStop() {
+  if (!G) return;
+  G.timers.forEach(clearTimeout); if (G.raf) cancelAnimationFrame(G.raf); if (G.tick) clearInterval(G.tick);
+  G.dead = true;
+  try { speechSynthesis.cancel(); AUDIO.stopVoice(); speakToken++; } catch (e) {}
+  G = null;
+}
+function gPool(min) {
+  let w = S.set.words.filter(hasWord);
+  if (w.length < (min || 4)) w = S.set.words.slice();
+  return shuffle(w);
+}
+function gChoices(w, n = 4) { return shuffle([w, ...distractors(w).slice(0, n - 1)]); }
+const blankHTML = en => sentenceHTML(en).replace(' id="blank"', "");
+function thumbHTML(en) { return `<div class="scene gthumb">${sceneHTML(en)}</div>`; }
+
+function renderGames() {
+  S.games = S.games || {};
+  $("#gSetName").textContent = S.set.name;
+  $("#gGrid").innerHTML = GAMES.map(g => {
+    const r = S.games[g.id] || {};
+    return `<button class="gcard" data-g="${g.id}" style="--gc:${g.c}"><span class="ge">${g.e}</span><b>${g.t}</b><small>${g.d}</small><span class="gbest">${r.best ? `🏆 최고 ${r.best}점 · ${r.plays}판` : "✨ 새 게임"}</span><span class="gplay">▶ 시작</span></button>`;
+  }).join("");
+  $$("#gGrid .gcard").forEach(b => b.onclick = () => { sfx("start"); startGame(b.dataset.g); });
+}
+
+function startGame(id) {
+  gStop();
+  const meta = GAMES.find(g => g.id === id);
+  G = { id, meta, score: 0, lives: 3, right: 0, total: 0, wrongs: [], combo: 0, bestCombo: 0, t0: Date.now(), timers: [], xp0: S.xp };
+  newBadges = [];
+  show("play");
+  $("#gTitle").textContent = meta.e + " " + meta.t;
+  $("#gStage").className = "gstage g-" + id;
+  gHud();
+  ({ rain: rainStart, dict: dictStart, match: matchStart, bridge: bridgeStart, balloon: balloonStart })[id]();
+  gScroll();
+}
+function gScroll() { try { scrollTo({ top: Math.max(0, $(".ghead").getBoundingClientRect().top + scrollY - 6) }); } catch (e) {} }
+function gHud(info) {
+  if (!G) return;
+  $("#gScore").textContent = G.score;
+  $("#gLives").innerHTML = G.lives == null ? "" : [0, 1, 2].map(i => `<span class="${i < G.lives ? "" : "off"}">❤️</span>`).join("");
+  $("#gLives").hidden = G.lives == null;
+  if (info !== undefined) $("#gInfo").textContent = info;
+}
+// one answer: updates word progress, points, streak and badges the same way as the quiz
+function gCredit(en, ok, el, base = 10) {
+  const p = prog(en.w); p.seen++; G.total++;
+  if (ok) {
+    p.right++; p.box = Math.min(3, p.box + 1); G.right++;
+    G.combo++; G.bestCombo = Math.max(G.bestCombo, G.combo); S.streak++; S.bestStreak = Math.max(S.bestStreak, S.streak);
+    const pts = base + Math.min(G.combo - 1, 5) * 2;
+    G.score += pts; const before = levelOf(S.xp); S.xp += pts;
+    if (el) floatPts(el, "+" + pts);
+    sfx("ok", G.combo - 1); if (G.combo >= 3) gT(() => sfx("combo", G.combo), 240);
+    award("first"); if (S.streak >= 5) award("s5"); if (S.streak >= 10) award("s10"); if (S.streak >= 25) award("s25");
+    if (p.box === 3 && p.right >= 3) toast(`⭐ "${en.w}" 스티커 완성!`);
+    checkMastery();
+    if (levelOf(S.xp) > before) gT(() => { toast(`🎊 레벨 업! ${levelName(levelOf(S.xp))}`); confetti(90); sfx("levelup"); }, 400);
+  } else {
+    p.wrong++; p.box = 0; S.streak = 0; G.combo = 0;
+    if (!G.wrongs.includes(en.w)) G.wrongs.push(en.w);
+    sfx("bad");
+  }
+  save(); renderTop(); gHud();
+}
+function loseLife() { if (G.lives == null) return false; G.lives--; gHud(); const h = $("#gLives"); h.classList.remove("hit"); void h.offsetWidth; h.classList.add("hit"); return G.lives <= 0; }
+
+function endGame(extra) {
+  if (!G || G.done) return;
+  G.done = true;
+  const g = G; g.timers.forEach(clearTimeout); if (g.raf) cancelAnimationFrame(g.raf); if (g.tick) clearInterval(g.tick);
+  const acc = g.total ? g.right / g.total : 0;
+  const stars = acc >= .9 ? 3 : acc >= .7 ? 2 : acc >= .4 ? 1 : 0;
+  S.rounds++; S.games = S.games || {};
+  const r = S.games[g.id] = S.games[g.id] || { best: 0, plays: 0 };
+  const isBest = g.score > r.best; r.plays++; r.best = Math.max(r.best, g.score);
+  if (GAMES.every(x => (S.games[x.id] || {}).plays)) award("gamer");
+  if (g.score >= 300) award("g500");
+  if (S.rounds >= 10) award("r10");
+  checkMastery(); S.ts = Date.now();
+  { const today = stamp(new Date()).slice(0, 10); S.studyDays = S.studyDays || []; if (!S.studyDays.includes(today)) S.studyDays.push(today); }
+  save(); renderTop();
+  if (ACAD.on && ACAD.user) queueRound({ id: Date.now().toString(36) + Math.random().toString(36).slice(2, 8), when: stamp(new Date()), cls: ACAD.user.cls, name: ACAD.user.name,
+    set: (S.set.key || S.set.name) + " 🎮" + g.meta.t, total: g.total, right: g.right, pct: Math.round(acc * 100), stars, pts: g.score, combo: g.bestCombo, wrong: g.wrongs,
+    secs: Math.round((Date.now() - g.t0) / 1000), xp: S.xp, level: levelName(levelOf(S.xp)), device: deviceKind() });
+  sfx("end"); if (stars >= 2 || isBest) confetti(stars === 3 ? 160 : 80);
+  AUDIO.play("result");
+  const msg = ["괜찮아! 한 번 더 하면 훨씬 잘할 거야.", "좋은 출발이야! 틀린 단어를 기억해 두자.", "정말 잘했어! 별 3개가 코앞이야!", "와! 완전 게임 고수인걸?"][stars];
+  $("#gStage").className = "gstage";
+  $("#gStage").innerHTML = `<div class="panel result gres">
+    <div class="result-haru"><div class="bubble down" data-who="하루">${isBest && r.plays > 1 ? "🏆 최고 기록 갱신! " : ""}${msg}</div><div class="haru-stand"><img src="${stars === 3 ? HARU.fly : stars ? HARU.wave : HARU.stand}" alt="하루" class="${stars === 3 ? "bob" : "breathe"}">${stars === 3 ? "" : '<i class="ground-shadow"></i>'}</div></div>
+    <h2 style="font-size:31px">${g.meta.e} ${g.meta.t} 끝!</h2>
+    <div class="stars">${[0, 1, 2].map(i => `<span class="${i < stars ? "" : "off"}" style="animation-delay:${i * 150}ms">⭐</span>`).join("")}</div>
+    <div class="rgrid">
+      <div class="rbox"><b>${g.score}</b><span>게임 점수${isBest ? " 🏆" : ""}</span></div>
+      <div class="rbox"><b>${g.right}/${g.total}</b><span>맞힌 문제</span></div>
+      <div class="rbox"><b>${extra || g.bestCombo}</b><span>${extra ? "걸린 시간" : "최고 콤보"}</span></div>
+    </div>
+    ${newBadges.length ? `<div style="margin-bottom:10px">${newBadges.map(id => { const b = BADGES.find(x => x.id === id); return `<span class="newbadge">${b.e} ${b.t}</span>`; }).join("")}</div>` : ""}
+    ${g.wrongs.length ? `<div class="note">다시 볼 단어</div><div class="wlist">${g.wrongs.map(w => `<button class="wchip bad" data-say="${esc(w)}">🔊 ${esc(w)}</button>`).join("")}</div>` : `<p class="muted">틀린 단어가 하나도 없어요!</p>`}
+    <div class="row" style="justify-content:center">
+      <button class="btn primary" id="gAgain">▶ 한 판 더</button>
+      <button class="btn" id="gList">🎮 다른 게임</button>
+      <button class="btn" id="gHome">처음으로</button>
+    </div>${ACAD.on ? `<div id="sendSt" class="sendst"></div>` : ""}</div>`;
+  $("#gAgain").onclick = () => { sfx("start"); startGame(g.id); };
+  $("#gList").onclick = () => { G = null; show("games"); };
+  $("#gHome").onclick = () => { G = null; show("home"); };
+  $$("#gStage [data-say]").forEach(b => b.onclick = () => speak(b.dataset.say));
+  if (typeof sendLine === "function") sendLine();
+}
+$("#gBack").onclick = () => { if (G && !G.done && !confirmLeave()) return; gStop(); show("games"); };
+
+/* ---------- 1. 단어 비 ---------- */
+function rainStart() {
+  G.items = gPool(); G.i = 0; G.max = Math.min(12, Math.max(G.items.length, 6)); G.speed = 9000;
+  $("#gStage").innerHTML = `<div class="rain" id="rain"><div class="rcloud c1"></div><div class="rcloud c2"></div><div class="rdrop" id="drop"></div><div class="puddle"></div></div><div class="answers" id="gAns"></div>`;
+  $("#gAns").onclick = e => { const b = e.target.closest(".ans"); if (b && !b.disabled) rainAnswer(b); };
+  rainNext();
+}
+function rainNext() {
+  if (!G || G.dead) return;
+  if (G.i >= G.max || G.lives <= 0) return endGame();
+  const en = G.items[G.i % G.items.length]; G.i++;
+  G.cur = { en, done: false };
+  gHud(`${G.i}/${G.max}`);
+  const d = $("#drop"); d.className = "rdrop"; d.innerHTML = `${thumbHTML(en)}<div class="dtext">${blankHTML(en)}</div>`;
+  d.style.transform = "translate(-50%,0)";
+  $("#gAns").innerHTML = gChoices(en.w).map((w, i) => `<button class="ans" data-w="${esc(w)}"><span class="k" style="background:${["var(--pink)", "var(--teal)", "var(--orange)", "var(--blue)"][i]}">${i + 1}</span>${esc(w)}</button>`).join("");
+  speakBlank(en.s, en.w);
+  const rain = $("#rain"), t0 = performance.now(), dur = G.speed;
+  const fall = now => {
+    if (!G || G.dead || G.cur.done) return;
+    const k = Math.min(1, (now - t0) / dur), max = rain.clientHeight - d.offsetHeight - 18;
+    d.style.transform = `translate(-50%,${k * max}px) rotate(${Math.sin(now / 400) * 2}deg)`;
+    if (k >= 1) return rainMiss();
+    G.raf = requestAnimationFrame(fall);
+  };
+  G.raf = requestAnimationFrame(fall);
+}
+function rainReveal(okBtn) {
+  const en = G.cur.en, d = $("#drop");
+  $$("#gAns .ans").forEach(b => { b.disabled = true; if (b.dataset.w === en.w) b.classList.add("right"); });
+  const bl = d.querySelector(".blank"); if (bl) bl.classList.add("filled");
+}
+function rainAnswer(btn) {
+  const c = G.cur; if (!c || c.done) return; c.done = true; cancelAnimationFrame(G.raf);
+  const ok = btn.dataset.w === c.en.w;
+  rainReveal();
+  if (ok) { $("#drop").classList.add("burst"); G.speed = Math.max(4800, G.speed - 450); gCredit(c.en, true, btn, 10); }
+  else { btn.classList.add("wrong"); $("#drop").classList.add("shake"); gCredit(c.en, false); loseLife(); }
+  if (S.settings.tts) gT(() => speak(c.en.s), 300);
+  gT(rainNext, ok ? 1500 : 2300);
+}
+function rainMiss() {
+  const c = G.cur; if (c.done) return; c.done = true;
+  rainReveal(); $("#drop").classList.add("splash");
+  toast(`💧 첨벙! 정답은 "${c.en.w}"`);
+  gCredit(c.en, false); loseLife();
+  gT(rainNext, 2300);
+}
+
+/* ---------- 2. 듣고 쓰기 ---------- */
+function dictStart() {
+  G.items = gPool().slice(0, 8); G.i = 0; G.lives = null;
+  $("#gStage").innerHTML = `<div class="panel dict">
+    <div class="dhead"><img src="${HARU.face}" alt="" class="avatar"><div class="bubble" id="dBubble">잘 듣고 단어를 써 봐!</div></div>
+    <div class="row" style="justify-content:center;gap:10px"><button class="btn big" id="dPlay">🔊 다시 듣기</button><button class="btn" id="dSlow">🐢 천천히</button><button class="btn" id="dSent">📖 문장 듣기</button></div>
+    <div class="dslots" id="dSlots" aria-hidden="true"></div>
+    <form id="dForm" class="dform" autocomplete="off"><input id="dIn" class="field" autocapitalize="off" autocorrect="off" spellcheck="false" aria-label="들은 단어 쓰기" placeholder="여기에 써요"><button class="btn primary" type="submit">확인</button></form>
+    <div class="dsent" id="dSentBox"></div>
+  </div>`;
+  $("#dPlay").onclick = () => speak(G.cur.en.w);
+  $("#dSlow").onclick = () => speakSeq([G.cur.en.w], { rate: .55 });
+  $("#dSent").onclick = () => speakBlank(G.cur.en.s, G.cur.en.w);
+  $("#dIn").oninput = dictSlots;
+  $("#dForm").onsubmit = e => { e.preventDefault(); dictCheck(); };
+  dictNext();
+}
+function dictSlots() {
+  const w = G.cur.en.w, v = $("#dIn").value.trim();
+  $("#dSlots").innerHTML = [...w].map((ch, i) => `<span class="${i === 0 ? "hint" : ""} ${v[i] ? "typed" : ""}">${i === 0 ? esc(ch) : v[i] ? esc(v[i]) : ""}</span>`).join("");
+}
+function dictNext() {
+  if (!G || G.dead) return;
+  if (G.i >= G.items.length) return endGame();
+  const en = G.items[G.i++]; G.cur = { en, tries: 0 };
+  gHud(`${G.i}/${G.items.length}`);
+  $("#dIn").value = ""; $("#dIn").disabled = false; dictSlots();
+  $("#dSentBox").innerHTML = blankHTML(en);
+  $("#dBubble").innerHTML = `첫 글자는 <b>${esc(en.w[0])}</b>! 몇 글자인지 칸을 세어 봐.`;
+  gT(() => speak(en.w), 350);
+  try { $("#dIn").focus({ preventScroll: true }); } catch (e) {}
+}
+function dictCheck() {
+  const c = G.cur; if (!c || c.locked) return;
+  const v = $("#dIn").value.trim(); if (!v) return speak(c.en.w);
+  const ok = v.toLowerCase() === c.en.w.toLowerCase();
+  if (ok) {
+    c.locked = true; $("#dIn").disabled = true;
+    $("#dSlots").classList.add("good"); $("#dSentBox .blank").classList.add("filled");
+    $("#dBubble").innerHTML = c.tries ? `좋아, 맞았어! 👍` : `완벽해! 한 번에 맞혔어! 🎉`;
+    gCredit(c.en, true, $("#dSlots"), c.tries ? 8 : 15);
+    if (S.settings.tts) gT(() => speak(c.en.s), 300);
+    gT(() => { $("#dSlots").classList.remove("good"); dictNext(); }, 2000);
+  } else {
+    c.tries++;
+    const sl = $("#dSlots"); sl.classList.remove("nope"); void sl.offsetWidth; sl.classList.add("nope"); sfx("bad");
+    if (c.tries >= 2) {
+      c.locked = true; $("#dIn").disabled = true;
+      gCredit(c.en, false);
+      $("#dIn").value = c.en.w; dictSlots(); $("#dSentBox .blank").classList.add("wrongfill");
+      $("#dBubble").innerHTML = `정답은 <b>${esc(c.en.w)}</b>야. 같이 따라 써 보자!`;
+      gT(() => speak(c.en.w), 300);
+      gT(dictNext, 2800);
+    } else {
+      const k = [...v.toLowerCase()].findIndex((ch, i) => ch !== c.en.w.toLowerCase()[i]);
+      $("#dBubble").innerHTML = `아깝다! ${k >= 0 && k < c.en.w.length ? `<b>${k + 1}번째</b> 글자를 다시 들어 봐.` : `글자 수를 다시 세어 봐.`} 한 번 더!`;
+      gT(() => speakSeq([c.en.w], { rate: .6 }), 300);
+    }
+  }
+}
+
+/* ---------- 3. 짝 맞추기 ---------- */
+function matchStart() {
+  G.lives = null; G.board = 0; G.boards = 3; G.miss = 0;
+  const pool = gPool(); const seen = new Set();
+  G.items = pool.filter(e => { const k = e.w.toLowerCase(); if (seen.has(k)) return false; seen.add(k); return true; });
+  G.tick = setInterval(() => { if (G && !G.done) gHud(`⏱️ ${Math.round((Date.now() - G.t0) / 1000)}초`); }, 500);
+  matchBoard();
+}
+function matchBoard() {
+  if (!G || G.dead) return;
+  const per = Math.min(4, G.items.length);
+  const set = G.items.slice(G.board * per, G.board * per + per);
+  if (G.board >= G.boards || set.length < 2) return endGame(`${Math.round((Date.now() - G.t0) / 1000)}초`);
+  G.board++; G.left = set.length; G.sel = null;
+  const L = shuffle(set), R = shuffle(set);
+  $("#gStage").innerHTML = `<div class="mhint">판 ${G.board}/${G.boards} · 문장 카드를 누르고, 빈칸에 맞는 단어를 눌러요</div><div class="match">
+    <div class="mcol">${L.map(e => `<button class="mcard ms" data-w="${esc(e.w)}">${thumbHTML(e)}<span>${blankHTML(e)}</span></button>`).join("")}</div>
+    <div class="mcol">${R.map(e => `<button class="mcard mw" data-w="${esc(e.w)}">${esc(e.w)}</button>`).join("")}</div></div>`;
+  $$("#gStage .mcard").forEach(b => b.onclick = () => matchTap(b));
+  if (G.board > 1) gScroll();
+}
+function matchTap(b) {
+  if (b.classList.contains("done")) return;
+  const side = b.classList.contains("ms") ? "s" : "w";
+  if (side === "w") speak(b.dataset.w);
+  if (!G.sel || G.sel.side === side) {
+    $$("#gStage .mcard.sel").forEach(x => x.classList.remove("sel"));
+    b.classList.add("sel"); G.sel = { b, side }; sfx("pop"); return;
+  }
+  const a = G.sel.b; G.sel = null;
+  const sb = side === "s" ? b : a, wb = side === "w" ? b : a;
+  const en = S.set.words.find(e => e.w === sb.dataset.w);
+  if (sb.dataset.w.toLowerCase() === wb.dataset.w.toLowerCase()) {
+    [sb, wb].forEach(x => { x.classList.remove("sel"); x.classList.add("done"); });
+    const bl = sb.querySelector(".blank"); if (bl) bl.classList.add("filled");
+    const secs = (Date.now() - (G.lastHit || G.t0)) / 1000; G.lastHit = Date.now();
+    gCredit(en, true, wb, secs < 4 ? 15 : secs < 8 ? 12 : 10);
+    if (--G.left === 0) { gT(() => { toast(G.board < G.boards ? "✨ 다음 판!" : "🏁 다 맞췄어!"); matchBoard(); }, 900); }
+  } else {
+    [sb, wb].forEach(x => { x.classList.remove("sel"); x.classList.remove("nope"); void x.offsetWidth; x.classList.add("nope"); });
+    G.miss++;
+    gCredit(en, false);
+  }
+}
+
+/* ---------- 4. 문장 다리 ---------- */
+const toks = s => s.trim().split(/\s+/);
+function bridgeStart() {
+  G.lives = null;
+  G.items = gPool().filter(e => { const n = toks(e.s).length; return n >= 3 && n <= 9; }).slice(0, 6);
+  if (G.items.length < 3) G.items = gPool().slice(0, 6);
+  G.i = 0; bridgeNext();
+}
+function bridgeNext() {
+  if (!G || G.dead) return;
+  if (G.i >= G.items.length) return endGame();
+  const en = G.items[G.i++], words = toks(en.s);
+  G.cur = { en, words, k: 0, miss: 0 };
+  gHud(`${G.i}/${G.items.length}`);
+  let order = shuffle(words.map((w, i) => i)); if (order.every((x, i) => x === i) && words.length > 1) order = order.reverse();
+  $("#gStage").innerHTML = `<div class="bridge">
+    ${thumbHTML(en)}
+    <div class="river"><div class="bank l"></div><div class="planks" id="bPlanks">${words.map(() => `<i></i>`).join("")}</div><div class="bank r">🏁</div><img src="${HARU.stand}" alt="하루" class="bharu" id="bHaru"><div class="water"></div></div>
+    <div class="bsent" id="bSent">${words.map(() => `<span class="slot"></span>`).join(" ")}</div>
+    <div class="bchips" id="bChips">${order.map(i => `<button class="wchip" data-i="${i}">${esc(words[i])}</button>`).join("")}</div>
+    <div class="row" style="justify-content:center"><button class="btn small" id="bSay">🔊 문장 듣기</button><button class="btn small" id="bHint">💡 다음 단어</button></div>
+  </div>`;
+  $("#bSay").onclick = () => speak(en.s);
+  $("#bHint").onclick = () => { const c = G.cur; const b = $$("#bChips .wchip").find(x => !x.disabled && words[+x.dataset.i] === words[c.k]); if (b) { b.classList.add("glow"); c.miss++; sfx("hint"); } };
+  $("#bChips").onclick = e => { const b = e.target.closest(".wchip"); if (b && !b.disabled) bridgeTap(b); };
+  bridgeHaru();
+}
+function bridgeHaru() {
+  const c = G.cur, n = c.words.length, h = $("#bHaru");
+  h.style.left = `calc(${(c.k / n) * 76 + 4}% )`;
+}
+function bridgeTap(b) {
+  const c = G.cur, w = c.words[+b.dataset.i];
+  if (w === c.words[c.k]) {
+    b.disabled = true; b.classList.add("used");
+    $$("#bSent .slot")[c.k].textContent = w; $$("#bSent .slot")[c.k].classList.add("on");
+    $$("#bPlanks i")[c.k].classList.add("on");
+    c.k++; sfx("blip", c.k); bridgeHaru();
+    if (c.k === c.words.length) {
+      $("#bHaru").classList.add("hop"); $("#bHaru").src = HARU.wave;
+      gCredit(c.en, c.miss <= 1, $("#bSent"), c.miss ? 12 : 20);
+      gT(() => speak(c.en.s), 250);
+      gT(bridgeNext, 2600);
+    }
+  } else {
+    c.miss++; b.classList.remove("nope"); void b.offsetWidth; b.classList.add("nope"); sfx("denied");
+    const h = $("#bHaru"); h.classList.remove("wobble"); void h.offsetWidth; h.classList.add("wobble");
+  }
+}
+
+/* ---------- 5. 풍선 팡 ---------- */
+const BCOL = ["#ff6b8b", "#4f8ff0", "#f6a623", "#2bb3a3", "#a276d9", "#ff8a3d"];
+function balloonStart() {
+  G.items = gPool(); G.i = 0; G.max = Math.min(10, Math.max(G.items.length, 6));
+  $("#gStage").innerHTML = `<div class="sky2" id="bSky"><div class="bcl c1"></div><div class="bcl c2"></div></div><div class="row" style="justify-content:center;margin-top:10px"><button class="btn big" id="pPlay">🔊 다시 듣기</button></div>`;
+  $("#pPlay").onclick = () => G.cur && speak(G.cur.en.w);
+  $("#bSky").onclick = e => { const b = e.target.closest(".bal"); if (b && !b.classList.contains("pop")) balloonTap(b); };
+  balloonNext();
+}
+function balloonNext() {
+  if (!G || G.dead) return;
+  if (G.i >= G.max || G.lives <= 0) return endGame();
+  const en = G.items[G.i % G.items.length]; G.i++;
+  G.cur = { en, done: false };
+  gHud(`${G.i}/${G.max}`);
+  const sky = $("#bSky"); $$(".bal", sky).forEach(x => x.remove());
+  const words = gChoices(en.w, 4), cols = shuffle(BCOL), dur = Math.max(6.5, 9.5 - G.i * .25);
+  const lanes = shuffle([0, 1, 2, 3]);
+  words.forEach((w, i) => {
+    const b = document.createElement("button");
+    b.className = "bal"; b.dataset.w = w;
+    b.style.cssText = `--bc:${cols[i]};left:${2 + lanes[i] * 24.5}%;animation-duration:${dur + Math.random() * 1.2}s;animation-delay:${i * .18}s`;
+    b.innerHTML = `<span>${esc(w)}</span>`;
+    sky.appendChild(b);
+  });
+  gT(() => speak(en.w), 300);
+  G.cur.miss = gT(() => { const c = G && G.cur; if (!c || c.done || c.en !== en) return; c.done = true; toast(`🎈 날아갔어! 정답은 "${en.w}"`); balloonShow(); gCredit(en, false); loseLife(); gT(balloonNext, 2000); }, (dur + 1.6) * 1000);
+}
+function balloonShow() { $$("#bSky .bal").forEach(b => { if (b.dataset.w === G.cur.en.w) b.classList.add("ans-ok"); else b.classList.add("fade"); }); }
+function balloonTap(b) {
+  const c = G.cur; if (!c || c.done) return;
+  if (b.dataset.w === c.en.w) {
+    c.done = true; clearTimeout(c.miss);
+    b.classList.add("pop"); sfx("pop");
+    $$("#bSky .bal").forEach(x => { if (x !== b) x.classList.add("fade"); });
+    gCredit(c.en, true, b, 10);
+    if (S.settings.tts) gT(() => speak(c.en.s), 350);
+    gT(balloonNext, 1700);
+  } else {
+    b.classList.add("pop", "bad"); sfx("bad");
+    speak(b.dataset.w);
+    c.done = true; clearTimeout(c.miss);
+    gCredit(c.en, false); loseLife();
+    gT(balloonShow, 250);
+    gT(balloonNext, 2200);
+  }
+}
+
 /* ---------- boot ---------- */
 S.streak = S.streak || 0;
 if (S.settings.music === undefined) S.settings.music = true;
@@ -2059,7 +2549,7 @@ $("#optVol").oninput = e => { S.settings.vol = +e.target.value; save(); applyAud
 $("#optVol").value = S.settings.vol;
 applyAudio();
 rebuildPool();
-$("#switchBtn").onclick = () => { if (Q && !Q.done && !confirmLeave()) return; logout(); toast("👋 로그아웃했어요"); };
+$("#switchBtn").onclick = () => { if ((Q && !Q.done || G && !G.done) && !confirmLeave()) return; logout(); toast("👋 로그아웃했어요"); };
 show("login");
 if (ACAD.on) { loadRoster(); flush(); setInterval(flush, 60000); addEventListener("online", flush); }
 })();
