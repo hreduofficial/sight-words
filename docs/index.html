@@ -255,7 +255,7 @@ canvas#fx{position:fixed;inset:0;pointer-events:none;z-index:40}
 @media (max-width:640px){.eyebrow{letter-spacing:.04em;font-size:13px;white-space:nowrap}}
 /* Haru, the academy character */
 .bubble{position:relative;background:#fff;color:var(--ink);border:2.5px solid var(--teal-deep);border-radius:20px;padding:10px 16px;font-family:var(--f-ui);font-size:19px;line-height:1.4;max-width:100%}
-.bubble b{color:var(--pink)!important}
+.bubble b{color:var(--bc,var(--pink))!important}
 .bubble::before{content:"";position:absolute;left:-10px;bottom:18px;width:16px;height:16px;background:#fff;border-left:2.5px solid var(--teal-deep);border-bottom:2.5px solid var(--teal-deep);transform:rotate(45deg)}
 .bubble.down::before{left:50%;bottom:-10px;margin-left:-8px;transform:rotate(-45deg)}
 .coach{display:flex;align-items:flex-end;justify-content:center;gap:14px;min-width:0}
@@ -1338,6 +1338,8 @@ const RG_STEPS = [...new Set(RG.map(r => r.step))];
 const RG_LV = [...new Set(RG.map(r => r.lv))];
 const lvLabel = lv => lv.replace(/^SW(\d+)$/, "SW $1");
 const LV_COLORS = ["var(--pink)", "var(--teal)", "var(--orange)", "var(--blue)", "var(--purple)"];
+const LV_TEXT = ["#d81f7d", "#0f9384", "#e08600", "#2f6fd6", "#8352c4"]; // same hues, a little deeper so text reads well on white
+function lvTxt() { const i = typeof RG_LV !== "undefined" && S.set && S.set.key ? RG_LV.indexOf(String(S.set.key).split("-")[0]) : -1; return i < 0 ? "" : ` style="--bc:${LV_TEXT[i % LV_TEXT.length]}"`; }
 function rgSet(key) {
   const rows = key === "ALL" ? RG : RG.filter(r => r.step === key || r.lv === key);
   const lv = key === "ALL" ? "전체" : key.replace(/^SW(\d+)$/, "SW $1 전체");
@@ -1720,7 +1722,7 @@ function renderHome() {
   const ex = S.set.words.find(hasWord) || makeEntry("look");
   $("#demoCard").innerHTML = `<div class="card"><div class="scene">${sceneHTML(ex)}</div><div class="sentence" style="font-size:26.5px">${sentenceHTML(ex).replace('id="blank"', "")}</div></div>`;
   $("#startBtn").disabled = !cnt;
-  typeIn($("#heroBubble"), `<b class="welcome">Welcome</b> 🎉<br>Hi${S.name ? ", <b>" + esc(S.name) + "</b>" : ""}! <span class="nw">Welcome to Sight Words</span> 👋<br>Today, let's do <b class="nw">[ ${esc(S.set.key || S.set.name)} · ${cnt} ${S.set.key ? "sentences" : "words"} ]</b>!`);
+  typeIn($("#heroBubble"), `<b class="welcome">Welcome</b> 🎉<br>Hi${S.name ? ", <b>" + esc(S.name) + "</b>" : ""}! <span class="nw">Welcome to Sight Words</span> 👋<br>Today, let's do <b class="nw lvtxt"${lvTxt()}>[ ${esc(S.set.key || S.set.name)} · ${cnt} ${S.set.key ? "sentences" : "words"} ]</b>!`);
   const sel = $("#rgSel");
   if (!sel.options.length) sel.innerHTML = `<option value="ALL">전체 1,023문장</option>` +
     RG_LV.map(lv => `<optgroup label="${lv.replace("SW", "SW ")}"><option value="${lv}">${lv.replace("SW", "SW ")} 전체</option>${RG_STEPS.filter(x => x.startsWith(lv + "-")).map(x => `<option value="${x}">${x}</option>`).join("")}</optgroup>`).join("");
