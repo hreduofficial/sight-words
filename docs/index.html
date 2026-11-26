@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <style>body{margin:0}[hidden]{display:none!important}</style>
-<title>모두의 Sight Words</title>
+<title>Sight Words For Everyone</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -251,6 +251,8 @@ canvas#fx{position:fixed;inset:0;pointer-events:none;z-index:40}
 .badge small{font-family:var(--f-ui);font-weight:400;letter-spacing:0}
 .drop .big{font-family:var(--f-display)}
 .eyebrow{font-family:var(--f-num);font-weight:600}
+#who{display:none!important}
+@media (max-width:640px){.eyebrow{letter-spacing:.04em;font-size:13px;white-space:nowrap}}
 /* Haru, the academy character */
 .bubble{position:relative;background:#fff;color:var(--ink);border:2.5px solid var(--teal-deep);border-radius:20px;padding:10px 16px;font-family:var(--f-ui);font-size:19px;line-height:1.4;max-width:100%}
 .bubble b{color:var(--pink)!important}
@@ -550,9 +552,9 @@ footer.foot small{font-family:var(--f-num)!important;font-weight:500!important;f
 <div class="logobar" id="brandBar"><div class="brand-logos" id="brandLogos"></div><div class="brand-name" id="brandName"></div><button id="musicBtn" aria-pressed="true" title="배경음악 켜기/끄기" aria-label="배경음악 켜기/끄기"><span class="ic">🎵</span><span class="t">BGM</span></button></div>
   <header class="top">
     <div class="brand">
-      <div class="eyebrow">SIGHT WORDS 학습프로그램 : MOSA 1000</div>
-      <h1>모두의 <em>Sight Words</em></h1>
-      <small id="who">빈칸에 들어갈 단어를 골라요</small>
+      <div class="eyebrow">SIGHT WORDS 학습 프로그램 : MOSA 1000제</div>
+      <h1><em>Sight Words</em> For Everyone</h1>
+      <small id="who" hidden>빈칸에 들어갈 단어를 골라요</small>
     </div>
     <div class="navbtns">
       <button class="stat" id="homeTopBtn" hidden title="레벨 고르는 처음 화면으로"><span class="ic">🏠</span>처음으로</button>
@@ -1702,7 +1704,7 @@ function renderLogin(msg) {
     h += `<h2 class="login-h">${esc(ACAD.choices[0].n)} · 내 반을 골라요</h2><div class="pickgrid">${ACAD.choices.map((r, i) => `<button class="pick cls" data-ch="${i}"><b>${esc(r.c)}</b></button>`).join("")}</div><div class="row" style="justify-content:center;margin-top:14px"><button class="btn" id="chBack">◀ 이름 다시 쓰기</button></div>`;
   } else {
     h += `<form class="login-form" id="loginForm" autocomplete="off"><label class="login-h" for="loginName">학생 이름</label>
-      <div class="login-row"><input id="loginName" class="field" placeholder="예: 김민준" maxlength="20" autocapitalize="off" spellcheck="false"><button class="btn primary" type="submit">들어가기 ▶</button></div>
+      <div class="login-row"><input id="loginName" class="field" placeholder="예: 김민준" maxlength="20" autocapitalize="off" spellcheck="false"><button class="btn primary" type="submit">Let's Go ▶</button></div>
       <div class="login-msg" id="loginMsg" role="status">${msg ? esc(msg) : ""}</div></form>`;
   }
   box.innerHTML = h;
