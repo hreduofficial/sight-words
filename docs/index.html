@@ -448,17 +448,31 @@ footer.foot small{font-family:var(--f-num)!important;font-weight:500!important;f
 .gstage .answers .ans{font-size:clamp(24px,5vw,32px)}
 @keyframes nope{0%,100%{transform:none}20%{transform:translateX(-7px)}40%{transform:translateX(7px)}60%{transform:translateX(-5px)}80%{transform:translateX(4px)}}
 .nope{animation:nope .4s}
-/* rain */
-.rain{position:relative;height:min(44vh,400px);min-height:300px;border-radius:22px;overflow:hidden;background:linear-gradient(180deg,#7fa8d8,#bcd9f2 70%,#d8ecd0 70%,#a9d38f)}
-.rcloud{position:absolute;height:46px;border-radius:99px;background:#fff;opacity:.85;top:12px;box-shadow:30px -14px 0 4px #fff,-24px -8px 0 0 #fff}.rcloud.c1{left:12%;width:110px}.rcloud.c2{right:10%;width:90px;top:22px}
-.puddle{position:absolute;left:50%;bottom:8px;transform:translateX(-50%);width:62%;height:16px;border-radius:50%;background:rgba(60,120,200,.35)}
-.rdrop{position:absolute;left:50%;top:10px;width:min(440px,84%);background:var(--sheet);border-radius:20px;padding:8px 8px 6px;box-shadow:0 10px 24px rgba(20,40,80,.25);will-change:transform}
-.rdrop .gthumb{max-height:150px;aspect-ratio:16/7}
-.rdrop::before{content:"💧";position:absolute;left:-14px;top:-14px;font-size:30px}
+/* rescue tank */
+.tank{position:relative;max-width:520px;margin:0 auto;border-radius:18px 18px 26px 26px;padding:14px 14px 18px;background:linear-gradient(180deg,rgba(220,240,255,.55),rgba(200,230,250,.35));box-shadow:inset 0 0 0 4px #9fd0f0,inset 0 -10px 0 #7fb8de,0 8px 0 #5d97bf;overflow:hidden}
+.tank::before{content:"";position:absolute;left:-6px;right:-6px;top:0;height:12px;background:#5d97bf;border-radius:8px;z-index:4}
+.tcard{position:relative;z-index:1;background:var(--sheet);border-radius:16px;padding:8px 8px 4px;box-shadow:0 6px 16px rgba(20,60,100,.18)}
+.tcard .gthumb{aspect-ratio:16/8}
 .dtext{font-family:var(--f-read);font-weight:700;font-size:clamp(20px,4.4vw,28px);text-align:center;line-height:1.35;padding:6px 4px 2px}
-.rdrop.burst{animation:burst .9s ease-in forwards}.rdrop.splash{animation:splash .8s ease-out forwards}.rdrop.shake{animation:nope .4s}
-@keyframes burst{0%{}35%{filter:brightness(1.15)}100%{opacity:0;margin-top:-60px;scale:1.15}}
-@keyframes splash{to{scale:1.25 .4;opacity:.2}}
+.water{position:absolute;left:0;right:0;bottom:0;height:0;z-index:2;background:linear-gradient(180deg,rgba(64,156,235,.62),rgba(30,110,200,.82));pointer-events:none}
+.tank.saved .water{transition:height .6s ease-in}
+.water .wv{position:absolute;left:0;right:0;top:-9px;height:12px;background:radial-gradient(circle at 10px -2px,transparent 9px,rgba(64,156,235,.62) 10px) 0 0/20px 12px repeat-x;animation:wave 1.4s linear infinite}
+.water .bb{position:absolute;bottom:4px;width:10px;height:10px;border-radius:50%;border:2px solid rgba(255,255,255,.75);animation:bub 2.4s ease-in infinite}
+.bb.b1{left:12%}.bb.b2{left:38%;animation-delay:.7s;width:7px;height:7px}.bb.b3{left:66%;animation-delay:1.3s}.bb.b4{left:86%;animation-delay:.3s;width:6px;height:6px}
+@keyframes bub{0%{transform:translateY(0);opacity:0}15%{opacity:1}100%{transform:translateY(-160px);opacity:0}}
+.water .fish{position:absolute;font-size:26px;bottom:20%;animation:swim 7s linear infinite}.fish.f2{bottom:55%;animation-duration:9s;animation-direction:reverse}
+@keyframes swim{0%{left:-10%}100%{left:105%}}
+.tsay{position:absolute;right:12px;top:16px;z-index:5;background:var(--pink);color:#fff;border-radius:99px;padding:4px 12px;font-family:var(--f-ui);font-size:16px;box-shadow:0 3px 0 #b51f69}
+.tank.panic{animation:panic .5s infinite}.tank.panic .tsay{background:var(--orange);box-shadow:0 3px 0 #c47d0d}
+@keyframes panic{50%{box-shadow:inset 0 0 0 4px #ff8a8a,inset 0 -10px 0 #7fb8de,0 8px 0 #5d97bf}}
+.tank.saved .tsay{background:var(--good);box-shadow:none;animation:gpop .4s both}.tank.saved .tcard{animation:bob .6s 2}
+.tank.sunk .tcard{filter:saturate(.4) brightness(.8)}
+.slots{display:flex;justify-content:center;gap:8px;margin:16px 0 12px;flex-wrap:wrap}
+.slots span{width:clamp(40px,10vw,56px);height:clamp(50px,12vw,66px);border-radius:12px;background:var(--sheet);box-shadow:inset 0 -4px 0 var(--rule),inset 0 0 0 2px var(--rule);display:grid;place-items:center;font-family:var(--f-read);font-weight:700;font-size:clamp(28px,6.4vw,38px)}
+.slots span.on{color:var(--blue);box-shadow:inset 0 -4px 0 var(--blue),inset 0 0 0 2px var(--blue);animation:gpop .25s both}.slots span.late{color:var(--bad);box-shadow:inset 0 -4px 0 var(--bad),inset 0 0 0 2px var(--bad)}
+.tiles{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-bottom:12px}
+.tile{width:clamp(50px,12vw,66px);height:clamp(50px,12vw,66px);border:0;border-radius:14px;background:#fff6d8;color:var(--ink);font-family:var(--f-read);font-weight:700;font-size:clamp(28px,6.4vw,38px);box-shadow:inset 0 0 0 3px var(--orange),0 5px 0 #c47d0d;transform:rotate(var(--r));transition:transform .1s}
+.tile:active{transform:translateY(3px) rotate(var(--r))}.tile.used{visibility:hidden}
 /* dictation */
 .dict{text-align:center}.dhead{display:flex;align-items:center;gap:10px;justify-content:center;margin-bottom:12px}.dhead .avatar{width:60px;height:60px}.dhead .bubble{font-size:19px}
 .btn.big{font-size:22px;padding:12px 24px;background:var(--teal);color:#fff;box-shadow:0 5px 0 var(--teal-deep)}
@@ -2164,7 +2178,7 @@ function turnPage(d) {
 
 /* ================= 🎮 GAMES ================= */
 const GAMES = [
-  { id: "rain", e: "🌧️", t: "단어 비", d: "하늘에서 문장이 떨어져요! 땅에 닿기 전에 빈칸 단어를 골라요.", c: "var(--blue)" },
+  { id: "rain", e: "🐠", t: "사이트 워드 구출 작전", d: "어항 물이 그림을 다 덮기 전에, 섞인 알파벳을 순서대로 눌러 사이트 워드를 구해요!", c: "var(--blue)" },
   { id: "dict", e: "🔊", t: "듣고 쓰기", d: "하루가 불러 주는 단어를 듣고 철자를 직접 써요.", c: "var(--teal)" },
   { id: "match", e: "🃏", t: "짝 맞추기", d: "그림 문장과 단어 카드를 빨리 짝지어요. 시간이 점수!", c: "var(--orange)" },
   { id: "bridge", e: "🌉", t: "문장 다리", d: "섞인 단어를 순서대로 눌러 다리를 놓으면 하루가 건너가요.", c: "var(--purple)" },
@@ -2288,53 +2302,92 @@ function endGame(extra) {
 }
 $("#gBack").onclick = () => { if (G && !G.done && !confirmLeave()) return; gStop(); show("games"); };
 
-/* ---------- 1. 단어 비 ---------- */
+/* ---------- 1. 사이트 워드 구출 작전 (fish-tank rescue) ---------- */
 function rainStart() {
-  G.items = gPool(); G.i = 0; G.max = Math.min(12, Math.max(G.items.length, 6)); G.speed = 9000;
-  $("#gStage").innerHTML = `<div class="rain" id="rain"><div class="rcloud c1"></div><div class="rcloud c2"></div><div class="rdrop" id="drop"></div><div class="puddle"></div></div><div class="answers" id="gAns"></div>`;
-  $("#gAns").onclick = e => { const b = e.target.closest(".ans"); if (b && !b.disabled) rainAnswer(b); };
+  G.items = gPool(); G.i = 0; G.max = Math.min(10, Math.max(G.items.length, 6)); G.speed = 22000;
+  $("#gStage").innerHTML = `<div class="tank" id="tank">
+      <div class="tcard" id="tCard"></div>
+      <div class="water" id="water"><i class="wv"></i><i class="bb b1"></i><i class="bb b2"></i><i class="bb b3"></i><i class="bb b4"></i><span class="fish f1">🐟</span><span class="fish f2">🐠</span></div>
+      <div class="tsay" id="tSay">Save the word! 🛟</div>
+    </div>
+    <div class="slots" id="tSlots"></div>
+    <div class="tiles" id="tTiles"></div>
+    <div class="row" style="justify-content:center;gap:10px"><button class="btn small" id="tHear">🔊 문장 듣기</button><button class="btn small" id="tUndo">↩️ 한 글자 지우기</button></div>`;
+  $("#tTiles").onclick = e => { const b = e.target.closest(".tile"); if (b && !b.disabled) rescueTap(b); };
+  $("#tHear").onclick = () => G.cur && speakBlank(G.cur.en.s, G.cur.en.w);
+  $("#tUndo").onclick = rescueUndo;
   rainNext();
+}
+function scramble(w) {
+  const a = [...w]; if (a.length < 2 || new Set(a.map(c => c.toLowerCase())).size < 2) return a;
+  let s; do { s = shuffle(a); } while (s.join("").toLowerCase() === w.toLowerCase());
+  return s;
 }
 function rainNext() {
   if (!G || G.dead) return;
   if (G.i >= G.max || G.lives <= 0) return endGame();
   const en = G.items[G.i % G.items.length]; G.i++;
-  G.cur = { en, done: false };
+  const letters = [...en.w];
+  G.cur = { en, letters, k: 0, done: false, level: 0, push: 0, picked: [] };
   gHud(`${G.i}/${G.max}`);
-  const d = $("#drop"); d.className = "rdrop"; d.innerHTML = `${thumbHTML(en)}<div class="dtext">${blankHTML(en)}</div>`;
-  d.style.transform = "translate(-50%,0)";
-  $("#gAns").innerHTML = gChoices(en.w).map((w, i) => `<button class="ans" data-w="${esc(w)}"><span class="k" style="background:${["var(--pink)", "var(--teal)", "var(--orange)", "var(--blue)"][i]}">${i + 1}</span>${esc(w)}</button>`).join("");
-  speakBlank(en.s, en.w);
-  const rain = $("#rain"), t0 = performance.now(), dur = G.speed;
-  const fall = now => {
-    if (!G || G.dead || G.cur.done) return;
-    const k = Math.min(1, (now - t0) / dur), max = rain.clientHeight - d.offsetHeight - 18;
-    d.style.transform = `translate(-50%,${k * max}px) rotate(${Math.sin(now / 400) * 2}deg)`;
-    if (k >= 1) return rainMiss();
-    G.raf = requestAnimationFrame(fall);
+  $("#tank").classList.remove("saved", "sunk");
+  $("#tCard").innerHTML = `${thumbHTML(en)}<div class="dtext">${blankHTML(en)}</div>`;
+  $("#tSay").textContent = "Save the word! 🛟";
+  $("#tSlots").innerHTML = letters.map(() => `<span></span>`).join("");
+  $("#tTiles").innerHTML = scramble(en.w).map((c, i) => `<button class="tile" data-c="${esc(c)}" style="--r:${(i % 2 ? 1 : -1) * (3 + i % 3)}deg">${esc(c)}</button>`).join("");
+  $("#water").style.height = "0%";
+  gT(() => speakBlank(en.s, en.w), 300);
+  const t0 = performance.now(), dur = G.speed, c = G.cur;
+  const rise = now => {
+    if (!G || G.dead || c.done || G.cur !== c) return;
+    c.level = Math.min(1, (now - t0) / dur + c.push);
+    $("#water").style.height = (c.level * 100) + "%";
+    $("#tank").classList.toggle("panic", c.level > .7);
+    if (c.level >= 1) return rescueFail();
+    G.raf = requestAnimationFrame(rise);
   };
-  G.raf = requestAnimationFrame(fall);
+  G.raf = requestAnimationFrame(rise);
 }
-function rainReveal(okBtn) {
-  const en = G.cur.en, d = $("#drop");
-  $$("#gAns .ans").forEach(b => { b.disabled = true; if (b.dataset.w === en.w) b.classList.add("right"); });
-  const bl = d.querySelector(".blank"); if (bl) bl.classList.add("filled");
+function rescueTap(b) {
+  const c = G.cur; if (!c || c.done) return;
+  const want = c.letters[c.k];
+  if (b.dataset.c.toLowerCase() === want.toLowerCase()) {
+    b.disabled = true; b.classList.add("used"); c.picked.push(b);
+    const s = $$("#tSlots span")[c.k]; s.textContent = want; s.classList.add("on");
+    c.k++; sfx("blip", c.k);
+    if (c.k === c.letters.length) rescueWin();
+  } else {
+    b.classList.remove("nope"); void b.offsetWidth; b.classList.add("nope"); sfx("denied");
+    c.push += .06; c.miss = (c.miss || 0) + 1;   // a wrong letter lets the water rise a little faster
+    $("#tSay").textContent = "Hurry! 💦";
+  }
 }
-function rainAnswer(btn) {
-  const c = G.cur; if (!c || c.done) return; c.done = true; cancelAnimationFrame(G.raf);
-  const ok = btn.dataset.w === c.en.w;
-  rainReveal();
-  if (ok) { $("#drop").classList.add("burst"); G.speed = Math.max(4800, G.speed - 450); gCredit(c.en, true, btn, 10); }
-  else { btn.classList.add("wrong"); $("#drop").classList.add("shake"); gCredit(c.en, false); loseLife(); }
-  if (S.settings.tts) gT(() => speak(c.en.s), 300);
-  gT(rainNext, ok ? 1500 : 2300);
+function rescueUndo() {
+  const c = G && G.cur; if (!c || c.done || !c.k) return;
+  c.k--; const b = c.picked.pop(); b.disabled = false; b.classList.remove("used");
+  const s = $$("#tSlots span")[c.k]; s.textContent = ""; s.classList.remove("on"); sfx("pop");
 }
-function rainMiss() {
-  const c = G.cur; if (c.done) return; c.done = true;
-  rainReveal(); $("#drop").classList.add("splash");
-  toast(`💧 첨벙! 정답은 "${c.en.w}"`);
-  gCredit(c.en, false); loseLife();
+function rescueWin() {
+  const c = G.cur; c.done = true; cancelAnimationFrame(G.raf);
+  $("#tank").classList.remove("panic"); $("#tank").classList.add("saved");
+  $("#water").style.height = "0%";
+  const bl = $("#tCard .blank"); if (bl) bl.classList.add("filled");
+  $("#tSay").textContent = ["Saved! 🎉", "You did it! 🛟", "Great rescue! ⭐"][Math.floor(Math.random() * 3)];
+  const left = 1 - c.level, bonus = Math.round(left * 10);
+  gCredit(c.en, !c.miss || c.miss < 3, $("#tSlots"), 10 + bonus);
+  G.speed = Math.max(13000, G.speed - 1000);
+  if (S.settings.tts) gT(() => speak(c.en.s), 350);
   gT(rainNext, 2300);
+}
+function rescueFail() {
+  const c = G.cur; if (c.done) return; c.done = true;
+  $("#tank").classList.remove("panic"); $("#tank").classList.add("sunk");
+  $$("#tSlots span").forEach((s, i) => { s.textContent = c.letters[i]; s.classList.add("on", "late"); });
+  $$("#tTiles .tile").forEach(t => t.disabled = true);
+  $("#tSay").textContent = `Oh no! It's "${c.en.w}" 💧`;
+  gCredit(c.en, false); loseLife();
+  gT(() => speak(c.en.w), 300);
+  gT(rainNext, 2600);
 }
 
 /* ---------- 2. 듣고 쓰기 ---------- */
