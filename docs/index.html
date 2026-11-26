@@ -545,6 +545,7 @@ footer.foot small{font-family:var(--f-num)!important;font-weight:500!important;f
 .peek-bubble{animation:bubbleIn .3s ease-out,bubFloat 2.8s ease-in-out .3s infinite}
 @media (prefers-reduced-motion:reduce){.bubble,.bubble.talk,.peek-bubble{animation:none}}
 .login-demo{margin:12px auto 0;max-width:460px;font-size:14.5px;line-height:1.5;color:var(--muted);background:var(--chip);border-radius:12px;padding:8px 12px;text-align:center}
+.login-msg.bad{font-size:21px;font-family:var(--f-display);animation:nope .4s}.field.nope{box-shadow:0 0 0 3px var(--pink)}
 </style>
 
 <canvas id="fx"></canvas>
@@ -1729,8 +1730,9 @@ function tryName(raw, preferCls) {
   if (pref) return login(pref.c, pref.n);
   if (hits.length === 1) return login(hits[0].c, hits[0].n);
   if (hits.length > 1) { ACAD.choices = hits; sfx("pop"); return renderLogin(); }
-  sfx("bad"); renderLogin(`"${name}" 이름이 학원 명단에 없어요. 철자를 확인하거나 선생님께 말해 주세요.`);
-  const inp = $("#loginName"); if (inp) inp.value = name;
+  sfx("denied"); renderLogin("이름을 확인해 주세요");
+  const inp = $("#loginName"); if (inp) { inp.value = name; inp.classList.add("nope"); try { inp.select(); } catch (e) {} }
+  const lm = $("#loginMsg"); if (lm) lm.classList.add("bad");
 }
 function login(cls, name) {
   ACAD.user = { cls, name }; ACAD.choices = null; STK.lv = null;
