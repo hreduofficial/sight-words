@@ -1511,12 +1511,13 @@ const today = () => stamp(new Date()).slice(0, 10);
 const boostOn = () => S.boostDay === today();
 const boostMul = () => boostOn() ? 2 : 1;
 let boostPop = null, boostCount = 0;
+const BOOST_TEST = /[?&]boosttest\b/.test(location.search); // teacher test: ?boosttest -> booster on every correct answer
 function maybeBooster() {
   boostCount++;
-  if (boostPop || boostCount < 4) return;                 // never in the first few answers
+  if (boostPop || (!BOOST_TEST && boostCount < 4)) return;                 // never in the first few answers
   const d = today(); S.boostDrops = S.boostDrops && S.boostDrops.d === d ? S.boostDrops : { d, n: 0 };
-  if (S.boostDrops.n >= 2) return;                       // at most 2 surprise boosters a day
-  if (Math.random() > .09) return;
+  if (!BOOST_TEST && S.boostDrops.n >= 2) return;                       // at most 2 surprise boosters a day
+  if (!BOOST_TEST && Math.random() > .09) return;
   const b = BOOSTERS[Math.floor(Math.random() * BOOSTERS.length)];
   S.boostDrops.n++; save();
   const el = document.createElement("button");
