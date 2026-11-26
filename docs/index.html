@@ -637,6 +637,15 @@ footer.foot small{font-family:var(--f-num)!important;font-weight:500!important;f
 .lvg-n small{font-size:13.5px;color:var(--muted)}
 .lvg-x{font-size:14px;color:var(--teal-deep);white-space:nowrap}
 .lvg-list em{position:absolute;right:10px;top:-9px;font-style:normal;font-size:11.5px;background:var(--pink);color:#fff;border-radius:999px;padding:1px 8px}
+
+.bv-box{position:relative}
+.bv-ask{position:absolute;inset:0;z-index:2;display:flex;align-items:center;justify-content:center;padding:16px;background:rgba(255,255,255,.82);border-radius:22px;animation:bvFade .2s ease-out}
+.bv-ask[hidden]{display:none}
+.bv-askbox{width:min(360px,100%);text-align:center;background:var(--sheet);border-radius:22px;padding:18px 16px;box-shadow:0 10px 30px rgba(0,0,0,.25),inset 0 0 0 3px var(--pink);animation:popIn .35s cubic-bezier(.2,1.6,.4,1)}
+.bv-askbox>b{display:block;font-size:21px;line-height:1.35;color:var(--pink)!important;margin:4px 0 6px}
+.bv-askbox small{display:block;font-size:15px;color:var(--muted);margin-bottom:14px}
+.bv-askbtns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+.bv-askbtns .btn{flex:1;min-width:110px;white-space:nowrap;font-size:18px;padding:12px 10px}
 </style>
 
 <canvas id="fx"></canvas>
@@ -1633,17 +1642,20 @@ function openBoostVideo(i) {
   ov.className = "bvid"; ov.setAttribute("role", "dialog"); ov.setAttribute("aria-label", "이벤트 부스터 영상");
   ov.style.setProperty("--bc", col);
   ov.innerHTML = `<div class="bv-box">
-    <div class="bv-head"><span class="bv-b">${b.e}</span><div><small>🎁 이벤트 부스터</small><b>${lv ? lvLabel(lv) + " " : ""}사이트 워드 문장 영상</b></div><button class="bv-x" type="button" aria-label="나중에 보기">✕</button></div>
+    <div class="bv-head"><span class="bv-b">${b.e}</span><div><small>🎁 이벤트 부스터</small><b>${lv ? lvLabel(lv) + " " : ""}사이트 워드 문장 영상</b></div><button class="bv-x" type="button" aria-label="나가기">✕</button></div>
     <p class="bv-tip">영상을 끝까지 보면 <b>${b.t}</b>를 받아요!</p>
     <div class="bv-screen"><div class="scene bv-scene"></div><div class="bv-sent"></div><span class="bv-num"></span><div class="bv-pausebadge" hidden>⏸ 일시정지</div></div>
     <div class="bv-bar"><i></i></div>
-    <div class="bv-ctl"><button class="btn bv-pp" type="button">⏸ 일시정지</button><button class="btn bv-later" type="button">나중에 보기</button></div>
+    <div class="bv-ctl"><button class="btn bv-pp" type="button">⏸ 일시정지</button></div>
+    <div class="bv-ask" hidden><div class="bv-askbox"><div class="bv-big">😢</div><b>지금 나가면<br>부스터 배지를 받지 못해요</b><small>영상을 끝까지 봐야 받을 수 있어요.</small><div class="bv-askbtns"><button class="btn primary bv-stay" type="button">▶ 계속 보기</button><button class="btn bv-leave" type="button">나가기</button></div></div></div>
     <div class="bv-done" hidden><div class="bv-big">${b.e}</div><b>영상 시청 완료!</b><button class="btn primary bv-get" type="button">🎁 ${b.t} 받기</button></div>
   </div>`;
   document.body.appendChild(ov);
   BV = { ov, i, id, b, list, k: -1, el: 0, dur: 0, total: 0, paused: false, last: performance.now(), timer: 0, done: false };
   BV.total = list.reduce((a, e) => a + bvDur(e), 0);
-  ov.querySelector(".bv-x").onclick = ov.querySelector(".bv-later").onclick = () => { closeBoostVideo(); toast(`🎬 ${b.t}는 스티커·배지 탭에서 이어서 볼 수 있어요`); };
+  ov.querySelector(".bv-x").onclick = bvAskLeave;
+  ov.querySelector(".bv-stay").onclick = () => { ov.querySelector(".bv-ask").hidden = true; if (!BV.wasPaused) bvPause(false); ov.querySelector(".bv-pp").focus(); };
+  ov.querySelector(".bv-leave").onclick = bvGiveUp;
   ov.querySelector(".bv-pp").onclick = () => bvPause(!BV.paused);
   ov.querySelector(".bv-get").onclick = bvClaim;
   bvSlide(0);
@@ -1667,6 +1679,19 @@ function bvTick() {
   const before = BV.list.slice(0, BV.k).reduce((a, e) => a + bvDur(e), 0);
   BV.ov.querySelector(".bv-bar i").style.width = Math.min(100, (before + BV.el) / BV.total * 100) + "%";
   if (BV.el >= BV.dur) { if (BV.k + 1 < BV.list.length) bvSlide(BV.k + 1); else bvFinish(); }
+}
+function bvAskLeave() {
+  if (!BV || BV.done) return;
+  const ask = BV.ov.querySelector(".bv-ask"); if (!ask.hidden) return;
+  BV.wasPaused = BV.paused; if (!BV.paused) bvPause(true);
+  ask.hidden = false; sfx("denied"); BV.ov.querySelector(".bv-stay").focus();
+}
+function bvGiveUp() {
+  if (!BV) return;
+  const { i, id, b } = BV; S.boostPending = S.boostPending || [];
+  const pi = S.boostPending[i] === id ? i : S.boostPending.indexOf(id);
+  if (pi >= 0) S.boostPending.splice(pi, 1); save();
+  closeBoostVideo(); toast(`😢 ${b.e} ${b.t}를 받지 못했어요. 다음 기회에 끝까지 봐요!`);
 }
 function bvPause(p) {
   if (!BV || BV.done) return;
@@ -1701,7 +1726,7 @@ function closeBoostVideo(silent) {
   if (Q && !Q.done && Q.items[Q.i]) Q.items[Q.i].t0 = performance.now();   // the video time does not count as answer time
   if (!silent && viewNow() === "stickers") renderStickers();
 }
-addEventListener("keydown", e => { if (BV && e.key === "Escape") { e.stopPropagation(); closeBoostVideo(); } }, true);
+addEventListener("keydown", e => { if (BV && e.key === "Escape") { e.stopPropagation(); bvAskLeave(); } }, true);
 function useBooster(i) {
   S.boosters = S.boosters || [];
   if (boostOn()) { sfx("denied"); toast("🚀 오늘은 이미 리워드 2배가 켜져 있어요!"); return; }
