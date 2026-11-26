@@ -1796,7 +1796,7 @@ function renderLogin(msg) {
     h += `<h2 class="login-h">${esc(ACAD.choices[0].n)} · 내 반을 골라요</h2><div class="pickgrid">${ACAD.choices.map((r, i) => `<button class="pick cls" data-ch="${i}"><b>${esc(r.c)}</b></button>`).join("")}</div><div class="row" style="justify-content:center;margin-top:14px"><button class="btn" id="chBack">◀ 이름 다시 쓰기</button></div>`;
   } else {
     h += `<form class="login-form" id="loginForm" autocomplete="off"><label class="login-h" for="loginName">이름 쓰고 학습 시작!</label>
-      <div class="login-row"><input id="loginName" class="field" placeholder="예: 김민준" maxlength="20" autocapitalize="off" spellcheck="false"><button class="btn primary" type="submit">Let's Go ▶</button></div>
+      <div class="login-row"><input id="loginName" class="field" placeholder="예: 남하루" maxlength="20" autocapitalize="off" spellcheck="false"><button class="btn primary" type="submit">Let's Go ▶</button></div>
       <div class="login-msg" id="loginMsg" role="status">${msg ? esc(msg) : ""}</div>${ACAD.on ? "" : `<p class="login-demo">🧪 연습용 미리보기예요. 학원 명단을 확인하지 않아서 아무 이름이나 들어가지고, 기록은 이 기기에만 남아요. 학생들은 학원 사이트 주소로 들어와요.</p>`}</form>`;
   }
   box.innerHTML = h;
