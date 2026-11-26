@@ -581,6 +581,43 @@ footer.foot small{font-family:var(--f-num)!important;font-weight:500!important;f
 .lvtab.soon small{font-family:var(--f-ui);font-size:11px}
 .boostpop{width:max-content;max-width:calc(100vw - 24px);white-space:nowrap}
 @media (max-width:640px){.boostpop{padding:10px 16px 10px 12px;gap:10px;bottom:14px}.boostpop .be{font-size:38px}.boostpop b{font-size:20px}.boostpop small,.boostpop em{font-size:13px}}
+
+/* booster video page */
+@keyframes bvFade{from{opacity:0}to{opacity:1}}
+.bvid{position:fixed;inset:0;z-index:80;display:flex;align-items:center;justify-content:center;padding:16px;background:rgba(8,30,28,.78);backdrop-filter:blur(3px);animation:bvFade .25s ease-out}
+.bv-box{width:min(720px,100%);max-height:calc(100dvh - 24px);overflow:auto;background:var(--sheet);border-radius:26px;padding:18px 18px 20px;box-shadow:0 8px 0 #c47d0d,0 24px 60px rgba(0,0,0,.4);border:4px solid #ffc94a}
+.bv-head{display:flex;align-items:center;gap:12px}
+.bv-head>div{flex:1;min-width:0;line-height:1.25}
+.bv-head small{display:block;font-size:14px;color:#b86e00}
+.bv-head b{font-size:clamp(19px,4.6vw,25px);color:var(--bc)!important}
+.bv-b{font-size:44px;animation:bob 1.6s ease-in-out infinite}
+.bv-x{border:0;background:var(--surface-2);border-radius:999px;width:40px;height:40px;font-size:18px;cursor:pointer;color:var(--muted);flex:none}
+.bv-tip{margin:6px 0 10px;font-size:16px;color:var(--muted)}
+.bv-tip b{color:#b86e00!important}
+.bv-screen{position:relative;border-radius:18px;overflow:hidden;background:#000}
+.bv-scene{border-radius:0}
+.bv-scene.kb .photo,.bv-scene.kb .sky{animation:bvKen var(--d,6s) linear both}
+@keyframes bvKen{from{transform:scale(1)}to{transform:scale(1.12)}}
+.bv-sent{position:absolute;left:0;right:0;bottom:0;padding:34px 16px 16px;text-align:center;color:#fff;font-size:clamp(21px,4.6vw,32px);line-height:1.3;background:linear-gradient(180deg,transparent,rgba(0,0,0,.72) 45%);text-shadow:0 2px 6px rgba(0,0,0,.6)}
+.bv-sent.in{animation:bvUp .5s ease-out both}
+@keyframes bvUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+.bv-sent .bv-w{display:inline-block;color:#fff;background:var(--bc);border-radius:10px;padding:0 8px;margin:0 2px;border:0;min-width:0;text-shadow:none;animation:bvPop .6s cubic-bezier(.2,1.6,.4,1) .5s both}
+@keyframes bvPop{from{transform:scale(.4);opacity:0}to{transform:none;opacity:1}}
+.bv-num{position:absolute;left:10px;top:10px;font-size:13px;color:#fff;background:rgba(0,0,0,.45);border-radius:999px;padding:2px 10px}
+.bv-pausebadge{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:26px;color:#fff;background:rgba(0,0,0,.35)}
+.bvid.paused .bv-scene .photo,.bvid.paused .bv-scene .sky{animation-play-state:paused}
+.bv-bar{height:12px;border-radius:999px;background:var(--surface-2);margin:12px 0 10px;overflow:hidden;box-shadow:inset 0 0 0 2px var(--rule)}
+.bv-bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,#ffc94a,#ff9f43);border-radius:999px;transition:width .1s linear}
+.bv-ctl{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+.bv-ctl .btn{min-width:150px}
+.bv-done{text-align:center;padding:6px 0 2px;animation:popIn .45s cubic-bezier(.2,1.6,.4,1)}
+.bv-done>b{display:block;font-size:22px;margin-bottom:10px}
+.bv-big{font-size:64px;line-height:1.1}
+.bv-get{font-size:20px;padding:14px 26px}
+.badge.boost.watch{background:linear-gradient(160deg,#fffbe6,#e6f3ff)}
+.badge.boost.watch .tagb{background:#4f8ff0}
+@media (max-width:640px){.bv-box{padding:14px 12px 16px;border-radius:20px}.bv-b{font-size:36px}.bv-ctl .btn{min-width:0;flex:1}}
+@media (prefers-reduced-motion:reduce){.bv-scene.kb .photo,.bv-scene.kb .sky,.bv-sent.in,.bv-sent .bv-w,.bv-b{animation:none}}
 </style>
 
 <canvas id="fx"></canvas>
@@ -1522,17 +1559,107 @@ function maybeBooster() {
   S.boostDrops.n++; save();
   const el = document.createElement("button");
   el.className = "boostpop"; el.type = "button";
-  el.innerHTML = `<span class="be">${b.e}</span><span class="bt"><small>🎁 이벤트 배지 등장!</small><b>${b.t}</b><em>눌러서 받기</em></span>`;
+  el.innerHTML = `<span class="be">${b.e}</span><span class="bt"><small>🎁 이벤트 배지 등장!</small><b>${b.t}</b><em>눌러서 영상 보고 받기</em></span>`;
   document.body.appendChild(el); boostPop = el; sfx("hint");
   const gone = setTimeout(() => { el.classList.add("bye"); setTimeout(() => { el.remove(); if (boostPop === el) boostPop = null; }, 400); }, 6500);
   el.onclick = e => {
     e.stopPropagation(); clearTimeout(gone);
-    S.boosters = S.boosters || []; S.boosters.push(b.id); save();
-    el.classList.add("got"); sfx("badge"); confetti(60);
-    toast(`${b.e} ${b.t} 획득! 스티커·배지 탭에서 사용할 수 있어요`);
+    S.boostPending = S.boostPending || []; S.boostPending.push(b.id); save();
+    el.classList.add("got"); sfx("badge");
     setTimeout(() => { el.remove(); if (boostPop === el) boostPop = null; }, 600);
+    if (viewNow() === "play") toast(`🎬 ${b.e} ${b.t}: 게임이 끝나면 스티커·배지 탭에서 영상을 보고 받을 수 있어요`);
+    else setTimeout(() => openBoostVideo(S.boostPending.length - 1), 450);
   };
 }
+/* ---------- booster video: a short auto-playing movie of sight-word sentences from the student's level; watch to the end to get the booster ---------- */
+let BV = null;
+const viewNow = () => ["home", "quiz", "result", "stickers", "login", "games", "play"].find(x => { const v = $("#v-" + x); return v && !v.hidden; });
+function bvClips() {
+  const key = S.set && S.set.key ? String(S.set.key) : "";
+  const lv = key && key !== "ALL" ? key.split("-")[0] : "";
+  let pool = lv ? RG.filter(r => r.lv === lv).map(r => ({ w: norm(r.w), s: r.s, e: r.e, src: "rg", n: r.n })) : (S.set.words || []).filter(hasWord);
+  if (pool.length < 3) pool = RG.filter(r => r.lv === "SW1").map(r => ({ w: norm(r.w), s: r.s, e: r.e, src: "rg", n: r.n }));
+  return { lv: lv || (key === "ALL" ? "" : ""), list: shuffle(pool.slice()).slice(0, 6) };
+}
+function openBoostVideo(i) {
+  const id = (S.boostPending || [])[i]; if (!id) return;
+  const b = BOOSTERS.find(x => x.id === id) || BOOSTERS[0];
+  closeBoostVideo(true);
+  const { lv, list } = bvClips();
+  const li = RG_LV.indexOf(lv), col = li < 0 ? "#e8338b" : LV_TEXT[li % LV_TEXT.length];
+  const ov = document.createElement("div");
+  ov.className = "bvid"; ov.setAttribute("role", "dialog"); ov.setAttribute("aria-label", "이벤트 부스터 영상");
+  ov.style.setProperty("--bc", col);
+  ov.innerHTML = `<div class="bv-box">
+    <div class="bv-head"><span class="bv-b">${b.e}</span><div><small>🎁 이벤트 부스터</small><b>${lv ? lvLabel(lv) + " " : ""}사이트 워드 문장 영상</b></div><button class="bv-x" type="button" aria-label="나중에 보기">✕</button></div>
+    <p class="bv-tip">영상을 끝까지 보면 <b>${b.t}</b>를 받아요!</p>
+    <div class="bv-screen"><div class="scene bv-scene"></div><div class="bv-sent"></div><span class="bv-num"></span><div class="bv-pausebadge" hidden>⏸ 일시정지</div></div>
+    <div class="bv-bar"><i></i></div>
+    <div class="bv-ctl"><button class="btn bv-pp" type="button">⏸ 일시정지</button><button class="btn bv-later" type="button">나중에 보기</button></div>
+    <div class="bv-done" hidden><div class="bv-big">${b.e}</div><b>영상 시청 완료!</b><button class="btn primary bv-get" type="button">🎁 ${b.t} 받기</button></div>
+  </div>`;
+  document.body.appendChild(ov);
+  BV = { ov, i, id, b, list, k: -1, el: 0, dur: 0, total: 0, paused: false, last: performance.now(), timer: 0, done: false };
+  BV.total = list.reduce((a, e) => a + bvDur(e), 0);
+  ov.querySelector(".bv-x").onclick = ov.querySelector(".bv-later").onclick = () => { closeBoostVideo(); toast(`🎬 ${b.t}는 스티커·배지 탭에서 이어서 볼 수 있어요`); };
+  ov.querySelector(".bv-pp").onclick = () => bvPause(!BV.paused);
+  ov.querySelector(".bv-get").onclick = bvClaim;
+  bvSlide(0);
+  BV.timer = setInterval(bvTick, 100);
+}
+const bvDur = e => Math.max(5200, 2200 + e.s.split(/\s+/).length * 480);
+function bvSlide(k) {
+  const e = BV.list[k]; BV.k = k; BV.el = 0; BV.dur = bvDur(e);
+  const sc = BV.ov.querySelector(".bv-scene");
+  sc.innerHTML = sceneHTML(e); sc.style.setProperty("--d", BV.dur + "ms");
+  sc.classList.remove("kb"); void sc.offsetWidth; sc.classList.add("kb");
+  const se = BV.ov.querySelector(".bv-sent"); se.innerHTML = sentenceHTML(e, "", "bv-w"); se.classList.remove("in"); void se.offsetWidth; se.classList.add("in");
+  BV.ov.querySelector(".bv-num").textContent = `${k + 1} / ${BV.list.length}`;
+  setTimeout(() => { if (BV && BV.k === k && !BV.paused) speak(e.s); }, 500);
+}
+function bvTick() {
+  if (!BV || BV.done) return;
+  const now = performance.now(), dt = now - BV.last; BV.last = now;
+  if (BV.paused || document.hidden) return;                     // only time actually watched counts
+  BV.el += Math.min(dt, 250);
+  const before = BV.list.slice(0, BV.k).reduce((a, e) => a + bvDur(e), 0);
+  BV.ov.querySelector(".bv-bar i").style.width = Math.min(100, (before + BV.el) / BV.total * 100) + "%";
+  if (BV.el >= BV.dur) { if (BV.k + 1 < BV.list.length) bvSlide(BV.k + 1); else bvFinish(); }
+}
+function bvPause(p) {
+  if (!BV || BV.done) return;
+  BV.paused = p; BV.ov.classList.toggle("paused", p);
+  BV.ov.querySelector(".bv-pp").textContent = p ? "▶ 계속 보기" : "⏸ 일시정지";
+  BV.ov.querySelector(".bv-pausebadge").hidden = !p;
+  try { speechSynthesis.cancel(); } catch (e) {} AUDIO.stopVoice();
+  if (!p) { BV.last = performance.now(); speak(BV.list[BV.k].s); }
+}
+function bvFinish() {
+  BV.done = true; clearInterval(BV.timer);
+  BV.ov.querySelector(".bv-bar i").style.width = "100%";
+  BV.ov.querySelector(".bv-ctl").hidden = true; BV.ov.querySelector(".bv-x").hidden = true;
+  BV.ov.querySelector(".bv-done").hidden = false; sfx("badge");
+  BV.ov.querySelector(".bv-get").focus();
+}
+function bvClaim() {
+  if (!BV || !BV.done) return;
+  const { i, id, b } = BV;
+  S.boostPending = S.boostPending || [];
+  const pi = S.boostPending[i] === id ? i : S.boostPending.indexOf(id);
+  if (pi >= 0) S.boostPending.splice(pi, 1);
+  S.boosters = S.boosters || []; S.boosters.push(id); save();
+  closeBoostVideo(); confetti(90); sfx("levelup");
+  toast(`${b.e} ${b.t} 획득! 스티커·배지 탭에서 사용할 수 있어요`);
+  if (viewNow() === "stickers") renderStickers();
+}
+function closeBoostVideo(silent) {
+  if (!BV) return;
+  clearInterval(BV.timer); BV.ov.remove(); BV = null;
+  try { speechSynthesis.cancel(); } catch (e) {} AUDIO.stopVoice();
+  if (Q && !Q.done && Q.items[Q.i]) Q.items[Q.i].t0 = performance.now();   // the video time does not count as answer time
+  if (!silent && viewNow() === "stickers") renderStickers();
+}
+addEventListener("keydown", e => { if (BV && e.key === "Escape") { e.stopPropagation(); closeBoostVideo(); } }, true);
 function useBooster(i) {
   S.boosters = S.boosters || [];
   if (boostOn()) { sfx("denied"); toast("🚀 오늘은 이미 리워드 2배가 켜져 있어요!"); return; }
@@ -2248,11 +2375,13 @@ $("#pasteBtn").onclick = () => { const t = $("#pasteIn").value; if (!t.trim()) r
 function renderStickers() {
   const own = S.boosters || [];
   const slots = own.map((id, i) => { const b = BOOSTERS.find(x => x.id === id) || BOOSTERS[0]; return `<button class="badge boost" data-use="${i}"><span class="tagb">EVENT</span><span class="e">${b.e}</span><div><b>${b.t}</b><small>눌러서 사용하면<br>오늘 리워드 2배!</small></div></button>`; });
+  (S.boostPending || []).forEach((id, i) => { const b = BOOSTERS.find(x => x.id === id) || BOOSTERS[0]; slots.push(`<button class="badge boost watch" data-watch="${i}"><span class="tagb">EVENT</span><span class="e">${b.e}</span><div><b>${b.t}</b><small>🎬 영상을 보면<br>받을 수 있어요!</small></div></button>`); });
   if (boostOn()) slots.unshift(`<div class="badge boost active"><span class="tagb">ON</span><span class="e">🚀</span><div><b>부스터 사용 중</b><small>오늘 모든 점수 2배!</small></div></div>`);
   const fill = (4 - (BADGES.length + slots.length) % 4) % 4 || (slots.length ? 0 : 4);
   for (let k = 0; k < fill && slots.length < 8; k++) slots.push(`<div class="badge boost empty"><span class="tagb">EVENT</span><span class="e">🎁</span><div><b>이벤트 부스터</b><small>공부하다 보면<br>깜짝 등장해요!</small></div></div>`);
   $("#badgeGrid").innerHTML = BADGES.map(b => `<div class="badge ${S.badges.includes(b.id) ? "" : "lock"}"><span class="e">${b.e}</span><div><b>${b.t}</b><small>${b.d}</small></div></div>`).join("") + slots.join("");
   $$("#badgeGrid [data-use]").forEach(el => el.onclick = () => useBooster(+el.dataset.use));
+  $$("#badgeGrid [data-watch]").forEach(el => el.onclick = () => openBoostVideo(+el.dataset.watch));
   renderBook();
 }
 const STK = { lv: null, pg: 0 };
