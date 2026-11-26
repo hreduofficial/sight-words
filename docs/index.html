@@ -546,6 +546,8 @@ footer.foot small{font-family:var(--f-num)!important;font-weight:500!important;f
 @media (prefers-reduced-motion:reduce){.bubble,.bubble.talk,.peek-bubble{animation:none}}
 .login-demo{margin:12px auto 0;max-width:460px;font-size:14.5px;line-height:1.5;color:var(--muted);background:var(--chip);border-radius:12px;padding:8px 12px;text-align:center}
 .login-msg.bad{font-size:21px;font-family:var(--f-display);animation:nope .4s}.field.nope{box-shadow:0 0 0 3px var(--pink)}
+#startBtn{min-width:min(340px,100%);padding-left:44px;padding-right:44px;letter-spacing:.02em}
+@media (max-width:640px){#startBtn{width:100%}}
 </style>
 
 <canvas id="fx"></canvas>
@@ -598,7 +600,7 @@ footer.foot small{font-family:var(--f-num)!important;font-weight:500!important;f
             </div>
             <div class="row"><span class="lab">소리 크기</span><input type="range" id="optVol" min="0" max="1" step="0.05" style="width:160px"></div>
           </div>
-          <div class="row" style="margin-top:16px"><button class="btn primary" id="startBtn">▶ 학습 시작</button></div>
+          <div class="row" style="margin-top:16px"><button class="btn primary" id="startBtn">▶ Let's Start!</button></div>
         </div>
         <div class="haru-hero">
           <div class="bubble down" data-who="Haru" id="heroBubble">Hi! I'm <b>Haru</b> 👋<br>Let's find the missing word!</div>
