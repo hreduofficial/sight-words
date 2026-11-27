@@ -818,6 +818,12 @@ body.homev .lvl{flex-wrap:wrap}
 .dshout.on{animation:dShout 1s ease-out}
 @keyframes dShout{0%{opacity:0;transform:translateX(-50%) scale(.4)}20%{opacity:1;transform:translateX(-50%) scale(1.3)}100%{opacity:0;transform:translateX(-50%) translateY(-14px) scale(1)}}
 @media (max-width:640px){.drun{height:120px}.drunner{width:64px}}
+
+/* dictation: one-use listen buttons */
+.dbtns{display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:8px}
+.dlbl{font-family:var(--f-display);font-size:18px;color:#2a9d8f}
+.dchance{width:54px;height:54px;padding:0;border-radius:50%;font-size:24px;background:#2bb5a0;color:#fff;box-shadow:0 4px 0 #1b7a6c}
+.dbtns .btn.used,.dbtns .btn:disabled{background:#d9dde2!important;color:#9aa1aa!important;box-shadow:none!important;transform:none!important;cursor:default;opacity:.7}
 </style>
 
 <canvas id="fx"></canvas>
@@ -2952,14 +2958,15 @@ function dictStart() {
   $("#gStage").innerHTML = `<div class="panel dict">
     <div class="drun" id="dRunWrap" aria-hidden="true"><div class="dsky"></div><div class="dground"></div><div class="drunner" id="dRunner"><span class="dshout" id="dShout">📣</span><img src="${HARU.wave}" alt=""><i class="ddust"></i></div><span class="dflag">🏁</span></div>
     <div class="dhead"><img src="${HARU.face}" alt="" class="avatar"><div class="bubble" id="dBubble">Listen and write the word!</div></div>
-    <div class="row" style="justify-content:center;gap:10px"><button class="btn big" id="dPlay">🔊 다시 듣기</button><button class="btn" id="dSlow">🐢 천천히</button><button class="btn" id="dSent">📖 문장 듣기</button></div>
+    <div class="dbtns"><span class="dlbl">🔊 듣기</span><button class="btn dchance" data-n="1">1</button><button class="btn dchance" data-n="2">2</button><button class="btn dchance" data-n="3">3</button><button class="btn dspare" id="dSlow">🐢 천천히</button><button class="btn dspare" id="dSent">📖 문장 듣기</button></div>
     <div class="dslots" id="dSlots" aria-hidden="true"></div>
     <form id="dForm" class="dform" autocomplete="off"><input id="dIn" class="field" autocapitalize="off" autocorrect="off" spellcheck="false" aria-label="들은 단어 쓰기" placeholder="여기에 써요"><button class="btn primary" type="submit">확인</button></form>
     <div class="dsent" id="dSentBox"></div>
   </div>`;
-  $("#dPlay").onclick = () => dictRun(false);
-  $("#dSlow").onclick = () => dictRun(true);
-  $("#dSent").onclick = () => speak(G.cur.en.s);
+  const use = (b, fn) => b.onclick = () => { if (b.disabled || !G || !G.cur) return; b.disabled = true; b.classList.add("used"); fn(); };
+  $$("#gStage .dchance").forEach(b => use(b, () => dictRun(false)));
+  use($("#dSlow"), () => dictRun(true));
+  use($("#dSent"), () => speak(G.cur.en.s));
   $("#dIn").oninput = dictSlots;
   $("#dForm").onsubmit = e => { e.preventDefault(); dictCheck(); };
   dictNext();
@@ -2984,13 +2991,13 @@ function dictNext() {
   gHud(`${G.i}/${G.items.length}`);
   $("#dIn").value = ""; $("#dIn").disabled = false; dictSlots();
   $("#dSentBox").innerHTML = blankHTML(en);
-  $("#dBubble").innerHTML = `It starts with <b>${esc(en.w[0])}</b>! Count the boxes.`;
-  gT(() => dictRun(false), 350);
+  $("#dBubble").innerHTML = `Tap <b>1</b> to listen! It starts with <b>${esc(en.w[0])}</b>.`;
+  $$("#gStage .dbtns .btn").forEach(b => { b.disabled = false; b.classList.remove("used"); });
   try { $("#dIn").focus({ preventScroll: true }); } catch (e) {}
 }
 function dictCheck() {
   const c = G.cur; if (!c || c.locked) return;
-  const v = $("#dIn").value.trim(); if (!v) return speak(c.en.w);
+  const v = $("#dIn").value.trim(); if (!v) return;
   const ok = v.toLowerCase() === c.en.w.toLowerCase();
   if (ok) {
     c.locked = true; $("#dIn").disabled = true;
