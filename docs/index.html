@@ -659,6 +659,7 @@ footer.foot small{font-family:var(--f-num)!important;font-weight:500!important;f
 .stats .stat.lvup .lvup-t{font-size:11px;letter-spacing:.06em;margin:0;align-self:end;opacity:.9}
 .stats .stat.lvup>span:last-child{align-self:start}
 @media (max-width:640px){.stats .stat.lvup{padding:4px 10px 4px 6px;column-gap:5px}.stats .stat.lvup .lvup-t{font-size:9.5px}}
+.bv-sent .bv-w.shout{animation:bvShout .5s cubic-bezier(.2,1.6,.4,1)}@keyframes bvShout{0%{transform:scale(1)}40%{transform:scale(1.35) rotate(-4deg)}100%{transform:scale(1)}}
 </style>
 
 <canvas id="fx"></canvas>
@@ -917,6 +918,10 @@ const AUDIO = (function () {
     mel: ["G5 - - . G5 . A5 . B5 - - . D6 - - .", "A5 - - . F#5 . A5 . D6 - - - . . . .", "B5 - - . G5 . B5 . E6 - - . D6 . B5 .", "C6 - - . B5 . A5 . G5 - - - - - . ."] };
   TRACKS.g_balloon = { bpm: 132, chords: ["F", "C", "G7", "C"], lead: "triangle", leadVol: .1, bass: "bounce", pad: .03, arp: { type: "square", vol: .022, oct: 5, pat: [0, 2, 1, 2] }, drums: { k: "x...x...x...x...", s: "", h: "", sh: "..x...x...x...x." },
     mel: ["C6 . A5 . F5 . A5 . C6 . . . A5 . . .", "G5 . E5 . C5 . E5 . G5 . . . C6 . . .", "B5 . G5 . D5 . F5 . G5 . B5 . D6 . . .", "C6 . G5 . E5 . G5 . C6 - - - . . . ."] };
+
+  /* booster video: a jazz-chant beat so the sentences are read like a rap */
+  TRACKS.g_chant = { bpm: 92, chords: ["C", "Am", "F", "G"], lead: "triangle", leadVol: .05, bass: "bounce", pad: .02, arp: null, drums: { k: "x.....x...x.....", s: "....x.......x...", h: "x.x.x.x.x.x.x.x.", sh: "..x...x...x...x." },
+    mel: [". . . . . . . . . . . . G5 . E5 .", ". . . . . . . . . . . . A5 . C6 .", ". . . . . . . . . . . . F5 . A5 .", ". . . . . . . . G5 . A5 . B5 . D6 ."] };
 
   /* --- scheduler --- */
   let timer = null, nextT = 0, step = 0, cur = null;
@@ -1664,7 +1669,8 @@ function openBoostVideo(i) {
     <div class="bv-done" hidden><div class="bv-big">${b.e}</div><b>영상 시청 완료!</b><button class="btn primary bv-get" type="button">🎁 ${b.t} 받기</button></div>
   </div>`;
   document.body.appendChild(ov);
-  BV = { ov, i, id, b, list, k: -1, el: 0, dur: 0, total: 0, paused: false, last: performance.now(), timer: 0, done: false };
+  const prevTrack = AUDIO.state && AUDIO.state.track; AUDIO.play("g_chant");
+  BV = { prevTrack, ov, i, id, b, list, k: -1, el: 0, dur: 0, total: 0, paused: false, last: performance.now(), timer: 0, done: false };
   BV.total = list.reduce((a, e) => a + bvDur(e), 0);
   ov.querySelector(".bv-x").onclick = bvAskLeave;
   ov.querySelector(".bv-stay").onclick = () => { ov.querySelector(".bv-ask").hidden = true; if (!BV.wasPaused) bvPause(false); ov.querySelector(".bv-pp").focus(); };
@@ -1682,7 +1688,8 @@ function bvSlide(k) {
   sc.classList.remove("kb"); void sc.offsetWidth; sc.classList.add("kb");
   const se = BV.ov.querySelector(".bv-sent"); se.innerHTML = sentenceHTML(e, "", "bv-w"); se.classList.remove("in"); void se.offsetWidth; se.classList.add("in");
   BV.ov.querySelector(".bv-num").textContent = `${k + 1} / ${BV.list.length}`;
-  setTimeout(() => { if (BV && BV.k === k && !BV.paused) speak(e.s); }, 500);
+  setTimeout(() => { if (BV && BV.k === k && !BV.paused) speak(e.s, .95); }, 450);
+  setTimeout(() => { if (BV && BV.k === k && !BV.paused) { sfx("pop"); const w = BV.ov.querySelector(".bv-w"); if (w) { w.classList.remove("shout"); void w.offsetWidth; w.classList.add("shout"); } speak(e.w); } }, BV.dur - 1700);
 }
 function bvTick() {
   if (!BV || BV.done) return;
@@ -1734,7 +1741,8 @@ function bvClaim() {
 }
 function closeBoostVideo(silent) {
   if (!BV) return;
-  clearInterval(BV.timer); BV.ov.remove(); BV = null;
+  const pt = BV.prevTrack; clearInterval(BV.timer); BV.ov.remove(); BV = null;
+  if (pt) AUDIO.play(pt);
   try { speechSynthesis.cancel(); } catch (e) {} AUDIO.stopVoice();
   if (Q && !Q.done && Q.items[Q.i]) Q.items[Q.i].t0 = performance.now();   // the video time does not count as answer time
   if (!silent && viewNow() === "stickers") renderStickers();
