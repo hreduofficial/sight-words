@@ -660,6 +660,33 @@ footer.foot small{font-family:var(--f-num)!important;font-weight:500!important;f
 .stats .stat.lvup>span:last-child{align-self:start}
 @media (max-width:640px){.stats .stat.lvup{padding:4px 10px 4px 6px;column-gap:5px}.stats .stat.lvup .lvup-t{font-size:9.5px}}
 .bv-sent .bv-w.shout{animation:bvShout .5s cubic-bezier(.2,1.6,.4,1)}@keyframes bvShout{0%{transform:scale(1)}40%{transform:scale(1.35) rotate(-4deg)}100%{transform:scale(1)}}
+
+/* rescue v66: photo not cropped, realistic water, Haru floating on the water */
+.tank{padding-top:50px}
+.tank .tsay{left:50%;right:auto;top:18px;transform:translateX(-50%);white-space:nowrap}
+.tank.saved .tsay{animation:none}
+.tcard .gthumb{aspect-ratio:16/9}
+.tank .water{background:linear-gradient(180deg,rgba(80,170,245,.55) 0,rgba(40,125,215,.72) 45%,rgba(18,80,160,.88) 100%);overflow:visible}
+.water .wv{position:absolute;left:0;right:0;height:24px;background-repeat:repeat-x;background-color:transparent;border:0;animation:none}
+.water .w1{top:-21px;background-image:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%22220%22%20height%3D%2224%22%20viewBox%3D%220%200%20220%2024%22%3E%3Cpath%20d%3D%22M0%2C12.0%20L0%2C12.0%20L5%2C12.9%20L10%2C13.7%20L15%2C14.5%20L20%2C15.2%20L25%2C15.9%20L30%2C16.5%20L35%2C17.0%20L40%2C17.5%20L45%2C17.8%20L50%2C17.9%20L55%2C18.0%20L60%2C17.9%20L65%2C17.8%20L70%2C17.5%20L75%2C17.0%20L80%2C16.5%20L85%2C15.9%20L90%2C15.2%20L95%2C14.5%20L100%2C13.7%20L105%2C12.9%20L110%2C12.0%20L115%2C11.1%20L120%2C10.3%20L125%2C9.5%20L130%2C8.8%20L135%2C8.1%20L140%2C7.5%20L145%2C7.0%20L150%2C6.5%20L155%2C6.2%20L160%2C6.1%20L165%2C6.0%20L170%2C6.1%20L175%2C6.2%20L180%2C6.5%20L185%2C7.0%20L190%2C7.5%20L195%2C8.1%20L200%2C8.8%20L205%2C9.5%20L210%2C10.3%20L215%2C11.1%20L220%2C12.0%20L220%2C24%20L0%2C24%20Z%22%20fill%3D%22rgba%28110%2C190%2C250%2C0.55%29%22/%3E%3C/svg%3E");background-size:220px 24px;animation:wvx 6s linear infinite}
+.water .w2{top:-17px;background-image:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%22160%22%20height%3D%2224%22%20viewBox%3D%220%200%20160%2024%22%3E%3Cpath%20d%3D%22M0%2C12.0%20L0%2C12.0%20L5%2C13.0%20L10%2C13.9%20L15%2C14.8%20L20%2C15.5%20L25%2C16.2%20L30%2C16.6%20L35%2C16.9%20L40%2C17.0%20L45%2C16.9%20L50%2C16.6%20L55%2C16.2%20L60%2C15.5%20L65%2C14.8%20L70%2C13.9%20L75%2C13.0%20L80%2C12.0%20L85%2C11.0%20L90%2C10.1%20L95%2C9.2%20L100%2C8.5%20L105%2C7.8%20L110%2C7.4%20L115%2C7.1%20L120%2C7.0%20L125%2C7.1%20L130%2C7.4%20L135%2C7.8%20L140%2C8.5%20L145%2C9.2%20L150%2C10.1%20L155%2C11.0%20L160%2C12.0%20L160%2C24%20L0%2C24%20Z%22%20fill%3D%22rgba%2870%2C160%2C240%2C0.7%29%22/%3E%3C/svg%3E");background-size:160px 24px;animation:wvx 3.6s linear infinite reverse}
+.water .w3{top:-12px;background-image:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%22120%22%20height%3D%2224%22%20viewBox%3D%220%200%20120%2024%22%3E%3Cpath%20d%3D%22M0%2C12.0%20L0%2C12.0%20L5%2C13.0%20L10%2C14.0%20L15%2C14.8%20L20%2C15.5%20L25%2C15.9%20L30%2C16.0%20L35%2C15.9%20L40%2C15.5%20L45%2C14.8%20L50%2C14.0%20L55%2C13.0%20L60%2C12.0%20L65%2C11.0%20L70%2C10.0%20L75%2C9.2%20L80%2C8.5%20L85%2C8.1%20L90%2C8.0%20L95%2C8.1%20L100%2C8.5%20L105%2C9.2%20L110%2C10.0%20L115%2C11.0%20L120%2C12.0%20L120%2C24%20L0%2C24%20Z%22%20fill%3D%22rgba%2848%2C132%2C222%2C0.85%29%22/%3E%3C/svg%3E");background-size:120px 24px;animation:wvx 2.4s linear infinite}
+@keyframes wvx{from{background-position-x:0}to{background-position-x:440px}}
+.water .caus{position:absolute;inset:0;opacity:.35;mix-blend-mode:screen;background:radial-gradient(ellipse 40px 10px at 20% 20%,rgba(255,255,255,.8),transparent 70%),radial-gradient(ellipse 55px 12px at 60% 35%,rgba(255,255,255,.7),transparent 70%),radial-gradient(ellipse 35px 8px at 85% 15%,rgba(255,255,255,.8),transparent 70%),radial-gradient(ellipse 50px 10px at 40% 60%,rgba(255,255,255,.5),transparent 70%);background-size:220px 120px;animation:caus 5s ease-in-out infinite alternate}
+@keyframes caus{from{background-position:0 0}to{background-position:60px 18px}}
+.water .thar{position:absolute;top:-64px;left:14%;width:74px;z-index:3;animation:tharSwim 9s ease-in-out infinite}
+.water .thar img{width:100%;display:block;animation:tharBob 1.6s ease-in-out infinite;filter:drop-shadow(0 4px 4px rgba(0,40,80,.3))}
+.water .thar .ring{position:absolute;left:50%;bottom:-6px;transform:translateX(-50%);font-size:34px;line-height:1;animation:tharBob 1.6s ease-in-out infinite}
+@keyframes tharSwim{0%,100%{left:8%}50%{left:calc(92% - 74px)}}
+@keyframes tharBob{0%,100%{transform:translateY(0) rotate(-4deg)}50%{transform:translateY(5px) rotate(4deg)}}
+.water .thar .ring{transform:translateX(-50%)}
+.tank.panic .thar img{animation:tharPanic .35s ease-in-out infinite}
+@keyframes tharPanic{0%,100%{transform:translateY(0) rotate(-10deg)}50%{transform:translateY(-6px) rotate(10deg)}}
+.tank.saved .thar{animation:tharJump .9s ease-out both}
+@keyframes tharJump{0%{transform:translateY(0)}40%{transform:translateY(-70px) rotate(-8deg)}100%{transform:translateY(0)}}
+.tank.sunk .thar{opacity:.5;filter:grayscale(.5)}
+@media (max-width:640px){.water .thar{width:60px;top:-54px}.water .thar .ring{font-size:28px}}
+@media (prefers-reduced-motion:reduce){.water .wv,.water .caus,.water .thar,.water .thar img,.water .thar .ring{animation:none}}
 </style>
 
 <canvas id="fx"></canvas>
@@ -2652,7 +2679,7 @@ function rainStart() {
   G.items = gPool(); G.i = 0; G.max = Math.min(10, Math.max(G.items.length, 6)); G.speed = 22000;
   $("#gStage").innerHTML = `<div class="tank" id="tank">
       <div class="tcard" id="tCard"></div>
-      <div class="water" id="water"><i class="wv"></i><i class="bb b1"></i><i class="bb b2"></i><i class="bb b3"></i><i class="bb b4"></i><span class="fish f1">🐟</span><span class="fish f2">🐠</span></div>
+      <div class="water" id="water"><i class="wv w1"></i><i class="wv w2"></i><i class="wv w3"></i><i class="caus"></i><div class="thar" aria-hidden="true"><img src="${HARU.fly}" alt=""><span class="ring">🛟</span></div><i class="bb b1"></i><i class="bb b2"></i><i class="bb b3"></i><i class="bb b4"></i><span class="fish f1">🐟</span><span class="fish f2">🐠</span></div>
       <div class="tsay" id="tSay">Save the word! 🛟</div>
     </div>
     <div class="slots" id="tSlots"></div>
