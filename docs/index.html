@@ -799,6 +799,25 @@ body.homev .lvl{flex-wrap:wrap}
 .mcard.lost{opacity:.35;filter:grayscale(1)}
 #gStage.shake{animation:shake .45s}
 @media (prefers-reduced-motion:reduce){.fz-spark,.fz-bomb,.fz-num{animation:none!important}}
+/* Listen & Write: Haru runs across shouting the word */
+.drun{position:relative;height:150px;border-radius:18px;overflow:hidden;margin-bottom:10px;background:linear-gradient(180deg,#bfe6ff,#e8f7ff 70%)}
+.drun .dsky{position:absolute;inset:0;background:radial-gradient(ellipse 60px 18px at 20% 25%,#fff 60%,transparent 62%),radial-gradient(ellipse 80px 22px at 70% 18%,#fff 60%,transparent 62%);background-size:400px 150px;animation:dCloud 30s linear infinite}
+@keyframes dCloud{to{background-position:-400px 0}}
+.drun .dground{position:absolute;left:0;right:0;bottom:0;height:34px;background:repeating-linear-gradient(90deg,#7ccf6a 0 30px,#6fc35e 30px 60px);box-shadow:inset 0 4px 0 #5aa84b}
+.drun .dflag{position:absolute;right:10px;bottom:28px;font-size:34px}
+.drunner{position:absolute;left:-90px;bottom:22px;width:80px}
+.drunner img{width:100%;display:block;filter:drop-shadow(0 4px 3px rgba(0,0,0,.2))}
+.drunner.go{animation:dRun var(--rd,3400ms) linear forwards}
+.drunner.go img{animation:dHop .32s ease-in-out infinite}
+@keyframes dRun{0%{left:-90px}100%{left:calc(100% + 10px)}}
+@keyframes dHop{0%,100%{transform:translateY(0) rotate(-6deg)}50%{transform:translateY(-14px) rotate(6deg)}}
+.drunner .ddust{position:absolute;left:-14px;bottom:0;width:22px;height:12px;border-radius:50%;background:rgba(160,120,80,.35);opacity:0}
+.drunner.go .ddust{animation:dDust .32s ease-out infinite}
+@keyframes dDust{0%{opacity:.7;transform:scale(.5)}100%{opacity:0;transform:translateX(-14px) scale(1.4)}}
+.dshout{position:absolute;left:50%;top:-30px;transform:translateX(-50%);font-size:30px;opacity:0}
+.dshout.on{animation:dShout 1s ease-out}
+@keyframes dShout{0%{opacity:0;transform:translateX(-50%) scale(.4)}20%{opacity:1;transform:translateX(-50%) scale(1.3)}100%{opacity:0;transform:translateX(-50%) translateY(-14px) scale(1)}}
+@media (max-width:640px){.drun{height:120px}.drunner{width:64px}}
 </style>
 
 <canvas id="fx"></canvas>
@@ -2931,18 +2950,28 @@ function rescueFail() {
 function dictStart() {
   G.items = gPool().slice(0, 8); G.i = 0; G.lives = null;
   $("#gStage").innerHTML = `<div class="panel dict">
+    <div class="drun" id="dRunWrap" aria-hidden="true"><div class="dsky"></div><div class="dground"></div><div class="drunner" id="dRunner"><span class="dshout" id="dShout">📣</span><img src="${HARU.wave}" alt=""><i class="ddust"></i></div><span class="dflag">🏁</span></div>
     <div class="dhead"><img src="${HARU.face}" alt="" class="avatar"><div class="bubble" id="dBubble">Listen and write the word!</div></div>
     <div class="row" style="justify-content:center;gap:10px"><button class="btn big" id="dPlay">🔊 다시 듣기</button><button class="btn" id="dSlow">🐢 천천히</button><button class="btn" id="dSent">📖 문장 듣기</button></div>
     <div class="dslots" id="dSlots" aria-hidden="true"></div>
     <form id="dForm" class="dform" autocomplete="off"><input id="dIn" class="field" autocapitalize="off" autocorrect="off" spellcheck="false" aria-label="들은 단어 쓰기" placeholder="여기에 써요"><button class="btn primary" type="submit">확인</button></form>
     <div class="dsent" id="dSentBox"></div>
   </div>`;
-  $("#dPlay").onclick = () => speak(G.cur.en.w);
-  $("#dSlow").onclick = () => speakSeq([G.cur.en.w], { rate: .55 });
+  $("#dPlay").onclick = () => dictRun(false);
+  $("#dSlow").onclick = () => dictRun(true);
   $("#dSent").onclick = () => speak(G.cur.en.s);
   $("#dIn").oninput = dictSlots;
   $("#dForm").onsubmit = e => { e.preventDefault(); dictCheck(); };
   dictNext();
+}
+/* Haru runs from left to right shouting the word */
+function dictRun(slow) {
+  const r = $("#dRunner"); if (!r || !G || !G.cur) return;
+  const w = G.cur.en.w, dur = slow ? 5200 : 3400;
+  r.style.setProperty("--rd", dur + "ms");
+  r.classList.remove("go"); void r.offsetWidth; r.classList.add("go");
+  const shout = () => { const sh = $("#dShout"); if (sh) { sh.classList.remove("on"); void sh.offsetWidth; sh.classList.add("on"); } slow ? speakSeq([w], { rate: .55 }) : speak(w); };
+  gT(shout, 250); gT(shout, dur * .55);
 }
 function dictSlots() {
   const w = G.cur.en.w, v = $("#dIn").value.trim();
@@ -2956,7 +2985,7 @@ function dictNext() {
   $("#dIn").value = ""; $("#dIn").disabled = false; dictSlots();
   $("#dSentBox").innerHTML = blankHTML(en);
   $("#dBubble").innerHTML = `It starts with <b>${esc(en.w[0])}</b>! Count the boxes.`;
-  gT(() => speak(en.w), 350);
+  gT(() => dictRun(false), 350);
   try { $("#dIn").focus({ preventScroll: true }); } catch (e) {}
 }
 function dictCheck() {
