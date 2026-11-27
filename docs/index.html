@@ -649,6 +649,7 @@ footer.foot small{font-family:var(--f-num)!important;font-weight:500!important;f
 #nextBtn{font-size:22px;padding:12px 26px;min-width:150px;background:var(--teal-deep);color:#fff!important;border:0;box-shadow:0 4px 0 #084a42;letter-spacing:.02em}
 #nextBtn:hover{filter:brightness(1.1)}
 @media (max-width:640px){#nextBtn{font-size:20px;padding:11px 22px}}
+#tSlots span.on{cursor:pointer}#tSlots span.on:hover{filter:brightness(.95);transform:translateY(-2px)}
 </style>
 
 <canvas id="fx"></canvas>
@@ -2643,6 +2644,10 @@ function rainStart() {
   $("#tTiles").onclick = e => { const b = e.target.closest(".tile"); if (b && !b.disabled) rescueTap(b); };
   $("#tHear").onclick = () => G.cur && speak(G.cur.en.s);
   $("#tUndo").onclick = rescueUndo;
+  $("#tSlots").onclick = e => {   // tap a placed letter: it (and any letters after it) go back to the tiles
+    const sp = e.target.closest("span.on"); if (!sp || !G.cur || G.cur.done) return;
+    const j = [...$("#tSlots").children].indexOf(sp); while (G.cur.k > j) rescueUndo();
+  };
   rainNext();
 }
 function scramble(w) {
