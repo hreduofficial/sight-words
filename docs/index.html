@@ -1560,8 +1560,8 @@ const LEVELS = [
   { e: "🌳", en: "Big Tree", ko: "큰 나무", xp: 4000 },
   { e: "🍎", en: "Fruit Tree", ko: "열매 맺힌 나무", xp: 6000 },
   { e: "🌲🌳", en: "Forest", ko: "숲", xp: 8500 },
-  { e: "🏞️", en: "Forest & River", ko: "숲과 강", xp: 12000 },
-  { e: "⛰️", en: "Mountain", ko: "산", xp: 16000 }
+  { e: "⛰️", en: "Mountain", ko: "산", xp: 12000 },
+  { e: "🏞️", en: "Forest & River", ko: "숲과 강", xp: 16000 }
 ];
 const LV_MAX = LEVELS.length - 1;
 const need = n => LEVELS[Math.min(n, LV_MAX)].xp; // XP needed to reach level index n
@@ -1570,8 +1570,8 @@ function levelName(n) { const L = LEVELS[Math.min(n, LV_MAX)]; return `Lv.${Math
 function showLevelGuide() {
   const cur = levelOf(S.xp);
   const ov = document.createElement("div"); ov.className = "lvguide"; ov.setAttribute("role", "dialog"); ov.setAttribute("aria-label", "레벨 안내");
-  ov.innerHTML = `<div class="lvg-box"><div class="lvg-head"><b>🌰 레벨 10단계 ⛰️</b><button class="bv-x" type="button" aria-label="닫기">✕</button></div>
-    <p class="lvg-tip">문제를 맞히고 게임을 하면 점수가 쌓여요. 점수가 모이면 씨앗이 자라서 산이 돼요!</p>
+  ov.innerHTML = `<div class="lvg-box"><div class="lvg-head"><b>🌰 레벨 10단계 🏞️</b><button class="bv-x" type="button" aria-label="닫기">✕</button></div>
+    <p class="lvg-tip">문제를 맞히고 게임을 하면 점수가 쌓여요. 점수가 모이면 씨앗이 자라서 숲과 강이 돼요!</p>
     <ol class="lvg-list">${LEVELS.map((L, i) => `<li class="${i < cur ? "done" : i === cur ? "now" : ""}"><span class="lvg-e">${L.e}</span><span class="lvg-n"><b>Lv.${i + 1} ${L.en}</b><small>${L.ko}</small></span><span class="lvg-x">${i ? L.xp.toLocaleString() + "점" : "시작"}</span>${i === cur ? '<em>지금 여기!</em>' : ""}</li>`).join("")}</ol></div>`;
   const close = () => ov.remove();
   ov.onclick = e => { if (e.target === ov || e.target.closest(".bv-x")) close(); };
@@ -1884,7 +1884,7 @@ function renderTop() {
   const n = levelOf(S.xp), lo = need(n), top = n >= LV_MAX, hi = top ? lo : need(n + 1);
   $("#lvName").textContent = levelName(n); $("#lvName").title = `${LEVELS[n].ko} · 눌러서 레벨 10단계 보기`;
   $("#lvBar").style.width = top ? "100%" : Math.min(100, (S.xp - lo) / (hi - lo) * 100) + "%";
-  $("#lvNext").textContent = top ? "⛰️ 최고 레벨 달성!" : `다음 ${LEVELS[n + 1].e} ${LEVELS[n + 1].ko}까지 ${(hi - S.xp).toLocaleString()}점`;
+  $("#lvNext").textContent = top ? "🏞️ 최고 레벨 달성!" : `다음 ${LEVELS[n + 1].e} ${LEVELS[n + 1].ko}까지 ${(hi - S.xp).toLocaleString()}점`;
   $("#who").textContent = ACAD.user ? `${ACAD.user.cls ? ACAD.user.cls + " · " : ""}${ACAD.user.name}의 단어 모험` : S.name ? `${S.name}의 단어 모험` : "빈칸에 들어갈 단어를 골라요";
   $("#switchBtn").hidden = !ACAD.user; $("#homeTopBtn").hidden = !ACAD.user;
 }
