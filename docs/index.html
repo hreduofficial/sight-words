@@ -687,6 +687,33 @@ footer.foot small{font-family:var(--f-num)!important;font-weight:500!important;f
 .tank.sunk .thar{opacity:.5;filter:grayscale(.5)}
 @media (max-width:640px){.water .thar{width:60px;top:-54px}.water .thar .ring{font-size:28px}}
 @media (prefers-reduced-motion:reduce){.water .wv,.water .caus,.water .thar,.water .thar img,.water .thar .ring{animation:none}}
+
+/* celebrations */
+.celeb{position:fixed;inset:0;z-index:90;display:flex;align-items:center;justify-content:center;padding:16px;background:radial-gradient(circle,rgba(255,240,200,.35),rgba(10,40,36,.55));animation:bvFade .2s ease-out;cursor:pointer}
+.celeb.bye{animation:celBye .35s ease-in forwards}@keyframes celBye{to{opacity:0;transform:scale(.9)}}
+.cel-card{position:relative;width:min(340px,100%);text-align:center;padding:26px 18px 16px;border-radius:28px;background:linear-gradient(160deg,#fffdf3,#ffe9f4);box-shadow:0 0 0 5px #ffc94a,0 10px 0 5px #d08a10,0 30px 60px rgba(0,0,0,.35);overflow:hidden;animation:celIn .6s cubic-bezier(.2,1.7,.4,1)}
+@keyframes celIn{0%{transform:scale(.2) rotate(-12deg);opacity:0}100%{transform:none;opacity:1}}
+.cel-rays{position:absolute;left:50%;top:38%;width:560px;height:560px;margin:-280px 0 0 -280px;background:repeating-conic-gradient(rgba(255,201,74,.35) 0 10deg,transparent 10deg 20deg);animation:celSpin 8s linear infinite;pointer-events:none}
+@keyframes celSpin{to{transform:rotate(360deg)}}
+.cel-card>*:not(.cel-rays){position:relative}
+.cel-tag{display:inline-block;font-family:var(--f-display);font-size:20px;letter-spacing:.06em;color:#fff;background:var(--pink);border-radius:999px;padding:3px 16px;box-shadow:0 4px 0 #b51f69;animation:celPulse .8s ease-in-out infinite alternate}
+@keyframes celPulse{to{transform:scale(1.08)}}
+.cel-e{font-size:92px;line-height:1.1;margin:10px 0 4px;filter:drop-shadow(0 6px 6px rgba(0,0,0,.2));animation:celBounce 1s cubic-bezier(.2,1.6,.4,1) .2s both}
+@keyframes celBounce{0%{transform:scale(0) rotate(-40deg)}60%{transform:scale(1.25) rotate(8deg)}100%{transform:none}}
+.cel-card b{display:block;font-family:var(--f-display);font-size:28px;color:var(--ink)!important;line-height:1.2}
+.cel-card small{display:block;margin-top:4px;font-size:16px;color:var(--muted)}
+.cel-tap{display:block;margin-top:12px;font-size:12px;color:#b9a77a}
+.celeb.sticker .cel-tag{background:var(--purple);box-shadow:0 4px 0 #6d47a3}
+.celeb.sticker .cel-card b{font-family:var(--f-read);font-size:40px;color:#7a3fc0!important}
+.celeb.level{background:radial-gradient(circle,rgba(40,20,80,.35),rgba(5,10,30,.72))}
+.celeb.level .cel-card{background:linear-gradient(160deg,#fff7d6,#ffd9ec 60%,#d9ecff);box-shadow:0 0 0 6px #ffd23f,0 0 40px 10px rgba(255,210,63,.6),0 12px 0 6px #c98a00}
+.celeb.level .cel-tag{font-size:26px;background:linear-gradient(90deg,#ff4d8d,#ff8c42,#ffd23f,#3ddc97,#4f8ff0,#a276d9);background-size:300% 100%;animation:celPulse .6s ease-in-out infinite alternate,celRain 2s linear infinite}
+@keyframes celRain{to{background-position:300% 0}}
+.celeb.level .cel-e{font-size:110px}
+canvas.fw{position:fixed;inset:0;width:100vw;height:100vh;z-index:89;pointer-events:none}
+@media (prefers-reduced-motion:reduce){.cel-rays,.cel-tag,.cel-e,.cel-card{animation:none!important}}
+.lvl{flex-wrap:wrap;row-gap:8px}.lvl .bar{flex:1 1 140px;min-width:140px}.lvl #lvNext{flex:0 1 auto}.lvl .stats{margin-left:auto;flex:none}
+@media (max-width:640px){.lvl .stats{margin-left:0;width:100%}}
 </style>
 
 <canvas id="fx"></canvas>
@@ -1033,6 +1060,13 @@ const AUDIO = (function () {
     levelup(t) { const s = [523, 659, 784, 1047, 784, 1047, 1319]; s.forEach((f, i) => osc(sfxBus, "square", f, t + i * .08, i === s.length - 1 ? .5 : .1, .09, { r: i === s.length - 1 ? .6 : .12, lp: 4000 })); kickFx(t + .56); },
     end(t) { [392, 523, 659, 784, 1047].forEach((f, i) => osc(sfxBus, "square", f, t + i * .1, .15, .08, { r: .2, lp: 3500 })); osc(sfxBus, "triangle", 1047, t + .5, .7, .12, { r: .8, vib: 6 }); },
     blip(t, k = 0) { osc(sfxBus, "triangle", 620 + (k % 4) * 45, t, .035, .045, { r: .03, lp: 2600 }); },
+    fanfare(t) {   // brass "ta-ta-ta-taaa!" + cymbal
+      const seq = [[523, 0, .12], [523, .14, .12], [523, .28, .12], [698, .42, .5], [622, .95, .16], [784, 1.12, .7]];
+      seq.forEach(([f, d, l]) => [1, 1.5, 2].forEach((m, k) => osc(sfxBus, "sawtooth", f * m, t + d, l, k ? .025 : .07, { r: .18, lp: 2600, vib: l > .3 ? 5 : 0 })));
+      noise(sfxBus, t + .42, 1.2, .06, "highpass", 5000); noise(sfxBus, t + 1.12, 1.4, .07, "highpass", 5000); kickFx(t + .42); kickFx(t + 1.12);
+    },
+    boom(t) { noise(sfxBus, t, .5, .22, "lowpass", 900); osc(sfxBus, "sine", 120, t, .35, .35, { to: 40, glide: .3, r: .3 }); for (let i = 0; i < 8; i++) noise(sfxBus, t + .15 + Math.random() * .5, .04, .05, "highpass", 4000); },
+    whoosh(t) { noise(sfxBus, t, .5, .05, "bandpass", 800, 2, 3500); },
     sticker(t) { osc(sfxBus, "sine", 1200, t, .05, .2, { to: 2400, r: .07 }); osc(sfxBus, "sine", 2400, t + .06, .2, .08, { r: .25 }); }
   };
   function kickFx(t) { osc(sfxBus, "sine", 160, t, .25, .5, { to: 50, glide: .15, r: .25 }); }
@@ -1783,7 +1817,47 @@ function useBooster(i) {
   sfx("levelup"); confetti(140); swoop();
   toast(`${b.e} ${b.t} 사용! 오늘 하루 모든 점수가 2배예요`);
 }
-function award(id) { if (!S.badges.includes(id)) { S.badges.push(id); newBadges.push(id); const b = BADGES.find(x => x.id === id); toast(`${b.e} 배지 획득: ${b.t}`); sfx("badge"); } }
+function award(id) { if (!S.badges.includes(id)) { S.badges.push(id); newBadges.push(id); const b = BADGES.find(x => x.id === id); celebrate({ kind: "badge", e: b.e, tag: "NEW BADGE!", title: b.t, sub: b.d }); } }
+/* ---------- celebrations: big popup + fanfare (badges, stickers), fireworks (level up) ---------- */
+const CEL = { q: [], on: false };
+function celebrate(c) { CEL.q.push(c); if (!CEL.on) nextCelebrate(); }
+function nextCelebrate() {
+  const c = CEL.q.shift(); if (!c) { CEL.on = false; return; }
+  CEL.on = true;
+  const el = document.createElement("div");
+  el.className = "celeb " + c.kind; el.setAttribute("role", "status");
+  el.innerHTML = `<div class="cel-card"><div class="cel-rays"></div><div class="cel-tag">${c.tag}</div><div class="cel-e">${c.e}</div><b>${esc(c.title)}</b>${c.sub ? `<small>${esc(c.sub)}</small>` : ""}<span class="cel-tap">눌러서 닫기</span></div>`;
+  document.body.appendChild(el);
+  if (c.kind === "level") { fireworks(4200); sfx("levelup"); setTimeout(() => sfx("fanfare"), 500); }
+  else { sfx("fanfare"); confetti(c.kind === "sticker" ? 90 : 130); }
+  let closed = false;
+  const close = () => { if (closed) return; closed = true; el.classList.add("bye"); setTimeout(() => { el.remove(); nextCelebrate(); }, 350); };
+  el.onclick = close; setTimeout(close, c.kind === "level" ? 4200 : 2600);
+}
+function levelUpCelebrate() { const n = levelOf(S.xp), L = LEVELS[n]; swoop(); celebrate({ kind: "level", e: L.e, tag: "LEVEL UP!", title: `Lv.${n + 1} ${L.en}`, sub: `${L.e} ${L.ko}까지 자랐어요!` }); }
+function fireworks(ms = 4000) {
+  if (matchMedia("(prefers-reduced-motion: reduce)").matches) { confetti(160); return; }
+  const cv = document.createElement("canvas"); cv.className = "fw"; document.body.appendChild(cv);
+  const dpr = Math.min(2, devicePixelRatio || 1), W = innerWidth, H = innerHeight; cv.width = W * dpr; cv.height = H * dpr;
+  const x = cv.getContext("2d"); x.scale(dpr, dpr);
+  const COLS = ["#ff4d8d", "#ffd23f", "#3ddc97", "#4f8ff0", "#a276d9", "#ff8c42", "#ffffff"];
+  const rockets = [], parts = []; let t0 = performance.now(), last = t0, nextLaunch = 0;
+  const launch = () => { rockets.push({ x: W * (.15 + Math.random() * .7), y: H + 10, vy: -(H * .011 + Math.random() * H * .004), ty: H * (.15 + Math.random() * .3), c: COLS[Math.floor(Math.random() * COLS.length)] }); sfx("whoosh"); };
+  const burst = r => {
+    const n = 70 + Math.floor(Math.random() * 40), c2 = COLS[Math.floor(Math.random() * COLS.length)];
+    for (let i = 0; i < n; i++) { const a = Math.PI * 2 * i / n, sp = 2.2 + Math.random() * 3.2; parts.push({ x: r.x, y: r.y, vx: Math.cos(a) * sp, vy: Math.sin(a) * sp, life: 1, c: i % 3 ? r.c : c2, s: 2 + Math.random() * 2 }); }
+    sfx("boom");
+  };
+  const step = now => {
+    const dt = Math.min(2, (now - last) / 16.7); last = now;
+    if (now - t0 < ms && now >= nextLaunch) { launch(); if (Math.random() < .5) launch(); nextLaunch = now + 260 + Math.random() * 320; }
+    x.globalCompositeOperation = "destination-out"; x.fillStyle = "rgba(0,0,0,.22)"; x.fillRect(0, 0, W, H); x.globalCompositeOperation = "lighter";
+    for (let i = rockets.length - 1; i >= 0; i--) { const r = rockets[i]; r.y += r.vy * dt; x.fillStyle = r.c; x.beginPath(); x.arc(r.x, r.y, 3, 0, 7); x.fill(); if (r.y <= r.ty) { burst(r); rockets.splice(i, 1); } }
+    for (let i = parts.length - 1; i >= 0; i--) { const p = parts[i]; p.x += p.vx * dt; p.y += p.vy * dt; p.vy += .05 * dt; p.vx *= .985; p.vy *= .985; p.life -= .012 * dt; if (p.life <= 0) { parts.splice(i, 1); continue; } x.globalAlpha = p.life; x.fillStyle = p.c; x.beginPath(); x.arc(p.x, p.y, p.s, 0, 7); x.fill(); x.globalAlpha = 1; }
+    if (now - t0 < ms + 2200 || parts.length) requestAnimationFrame(step); else cv.remove();
+  };
+  requestAnimationFrame(step);
+}
 const STK_NEED = 2;
 const isM = p => !!p && (p.right || 0) >= STK_NEED;
 const masteredCount = () => S.set.words.filter(e => isM(S.words[e.w])).length;
@@ -2231,9 +2305,9 @@ function answer(btn) {
     if (secs < 3) award("speed");
     if (it.retry) award("comeback");
     maybeBooster();
-    if (p.right === STK_NEED) setTimeout(() => sfx("sticker"), 500), toast(`⭐ "${en.w}" 스티커 완성!`);
+    if (p.right === STK_NEED) setTimeout(() => celebrate({ kind: "sticker", e: "⭐", tag: "NEW STICKER!", title: en.w, sub: "스티커북에 붙었어요!" }), 500);
     checkMastery();
-    if (levelOf(S.xp) > before) { setTimeout(() => { toast(`🎊 레벨 업! ${levelName(levelOf(S.xp))}`); confetti(90); swoop(); sfx("levelup"); }, 400); }
+    if (levelOf(S.xp) > before) setTimeout(levelUpCelebrate, 400);
     if (S.settings.tts) setTimeout(() => speak(it.listen ? en.w : en.s), 350);
     setTimeout(() => { if (Q && Q.items[Q.i] === it) next(); }, S.settings.tts ? 2300 : 1300);
   } else {
@@ -2616,9 +2690,9 @@ function gCredit(en, ok, el, base = 10) {
     sfx("ok", G.combo - 1); if (G.combo >= 3) gT(() => sfx("combo", G.combo), 240);
     award("first"); if (S.streak >= 3) award("s5"); if (S.streak >= 5) award("s10"); if (S.streak >= 10) award("s25");
     maybeBooster();
-    if (p.right === STK_NEED) toast(`⭐ "${en.w}" 스티커 완성!`);
+    if (p.right === STK_NEED) celebrate({ kind: "sticker", e: "⭐", tag: "NEW STICKER!", title: en.w, sub: "스티커북에 붙었어요!" });
     checkMastery();
-    if (levelOf(S.xp) > before) gT(() => { toast(`🎊 레벨 업! ${levelName(levelOf(S.xp))}`); confetti(90); sfx("levelup"); }, 400);
+    if (levelOf(S.xp) > before) gT(levelUpCelebrate, 400);
   } else {
     p.wrong++; p.box = 0; S.streak = 0; G.combo = 0;
     if (!G.wrongs.includes(en.w)) G.wrongs.push(en.w);
