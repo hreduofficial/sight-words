@@ -741,6 +741,36 @@ body.focus .lvl #lvNext{font-size:14px;white-space:nowrap}
   body.focus .qwrap .card .tools{margin-top:2px;margin-bottom:6px}
   body.focus .brandbar,body.focus #brandBar{padding-top:6px;padding-bottom:6px}
 }
+
+/* home on one PC screen: wider sheet, slim title, one-line level row, 3 columns (settings | Haru | levels) */
+@media (min-width:1100px){
+  body.homev .wrap{max-width:1240px;padding-block:10px 16px}
+  body.homev .top{padding-bottom:8px;margin-bottom:10px}
+  body.homev .brand h1{font-size:34px}
+  body.homev .eyebrow{font-size:12px}
+  body.homev .lvl{flex-wrap:nowrap;padding:6px 16px;margin-bottom:10px}
+  body.homev .lvl .stats{margin-left:10px}
+  body.homev .tabs{margin-bottom:0}
+  body.homev .panel{padding:14px 18px;margin-top:10px}
+  body.homev .hero{grid-template-columns:minmax(0,1.1fr) minmax(0,1.3fr);gap:20px;align-items:stretch}
+  body.homev .hero h2{font-size:28px;margin-bottom:4px}
+  body.homev .hero p.muted{font-size:15px;line-height:1.45;margin:0}
+  body.homev .hero p.muted br{display:none}
+  body.homev .opts{gap:4px;margin-top:2px}
+  body.homev .opts .row{margin:0;flex-wrap:nowrap;white-space:nowrap}
+  body.homev .opts .row:first-child{display:none}
+  body.homev .opts .seg button{padding-top:5px;padding-bottom:5px}
+  body.homev .top > :last-child{flex-direction:row!important;display:flex;gap:8px;align-items:center}
+  body.homev .top{align-items:center}
+  body.homev .haru-hero .bubble{font-size:16px}
+  body.homev .setline{margin:4px 0}
+  body.homev #startBtn{width:100%;margin-top:0}
+  body.homev .haru-hero{grid-template-columns:minmax(0,1fr) 220px;grid-template-rows:auto 1fr;column-gap:16px;row-gap:6px;align-items:center;justify-items:center}
+  body.homev .haru-hero .bubble{grid-column:1;grid-row:1}
+  body.homev .haru-hero .haru-stand{grid-column:1;grid-row:2}
+  body.homev .haru-hero .haru-img{height:min(250px,calc(100vh - 470px));min-height:150px}
+  body.homev .roadmap{grid-column:2;grid-row:1/3;grid-template-columns:1fr 1fr;margin:0;align-self:center}
+}
 </style>
 
 <canvas id="fx"></canvas>
@@ -2041,7 +2071,8 @@ function show(v) {
   if (v !== "play") gStop();
   ["home", "quiz", "result", "words", "stickers", "login", "games", "play"].forEach(x => $("#v-" + x).hidden = x !== v);
   document.body.classList.toggle("in-login", v === "login");
-  document.body.classList.toggle("focus", v === "quiz" || v === "play");   // study/game: hide the big title + tabs so it fits one screen
+  document.body.classList.toggle("focus", v === "quiz" || v === "play");
+  document.body.classList.toggle("homev", v === "home");   // study/game: hide the big title + tabs so it fits one screen
   if (v === "login") { $("#who").textContent = "이름을 쓰고 들어가요"; $("#switchBtn").hidden = true; $("#homeTopBtn").hidden = true; renderLogin(); AUDIO.play("login"); scrollTo({ top: 0 }); return; }
   $$(".tab").forEach(t => t.setAttribute("aria-selected", String(t.dataset.v === v || (v === "quiz" || v === "result") && t.dataset.v === "home" || v === "play" && t.dataset.v === "games")));
   if (v === "games") renderGames();
