@@ -722,7 +722,7 @@ body.focus .lvl .stats{margin-left:8px}
 @media (min-width:900px){
   body.focus .qwrap{max-width:none;display:grid;grid-template-columns:minmax(0,1.5fr) minmax(250px,1fr);grid-template-areas:"head head" "stage ans" "stage fb";column-gap:24px;align-items:start}
   body.focus .qwrap .qhead{grid-area:head}
-  body.focus .qwrap .stage{grid-area:stage;max-width:calc((100vh - 330px) * 16 / 9 + 40px);width:100%;justify-self:center}
+  body.focus .qwrap .stage{grid-area:stage;max-width:min(680px,calc((100vh - 330px) * 16 / 9 + 40px));width:100%;justify-self:center}
   body.focus .qwrap .answers{grid-area:ans;grid-template-columns:1fr;margin-top:calc(var(--ph,150px) * .8 + 10px);gap:10px}
   body.focus .qwrap .answers .ans{min-height:0;padding-top:12px;padding-bottom:12px}
   body.focus .qwrap .feedback{grid-area:fb}
@@ -732,7 +732,7 @@ body.focus .lvl .stats{margin-left:8px}
 body.focus .lvl .bar{min-width:60px;flex:1 1 60px}
 body.focus .lvl #lvNext{font-size:14px;white-space:nowrap}
 @media (min-width:900px) and (max-height:820px){
-  body.focus .qwrap .stage{--ph:104px;padding-top:calc(var(--ph) * .8);max-width:calc((100vh - 425px) * 16 / 9 + 30px)}
+  body.focus .qwrap .stage{--ph:104px;padding-top:calc(var(--ph) * .8);max-width:min(620px,calc((100vh - 400px) * 16 / 9 + 30px))}
   body.focus .qwrap .answers .ans{padding-top:8px;padding-bottom:8px}
   body.focus .qwrap{grid-template-columns:auto minmax(260px,1fr)}
   body.focus .qwrap .peek-bubble{font-size:14.5px;line-height:1.35;padding:16px 12px 8px}
@@ -856,6 +856,14 @@ body.homev .lvl{flex-wrap:wrap}
 @media (max-width:420px){.lvl .stats{gap:4px}.lvl .stats .stat{flex:1 1 0;min-width:0;padding:5px 6px;gap:4px;font-size:16px}.lvl .stats .stat svg{width:20px;height:20px;flex:none}.lvl .stats .stat small,.lvl .stats .stat .lb{font-size:8px;letter-spacing:0}}
 
 @media (max-width:420px){.stats .stat.lvup{padding:4px 5px!important;column-gap:3px!important;font-size:15px}.stats .stat.lvup .lvup-t{font-size:7.5px!important;letter-spacing:0!important}.stats .stat.lvup .ic svg{width:18px;height:18px}}
+
+/* v79 laptop: fuller screen */
+@media (min-width:900px) and (orientation:landscape){
+  .wrap{padding-block:6px 6px!important}
+  .foot{display:none}
+  body.focus .qwrap{grid-template-columns:minmax(0,1.3fr) minmax(280px,1fr)!important}
+  body.focus .qwrap .stage{justify-self:end!important}
+}
 </style>
 
 <canvas id="fx"></canvas>
@@ -3277,10 +3285,14 @@ $("#lvName").onclick = showLevelGuide;
 const FIT = { el: document.querySelector(".wrap"), z: 1, t: 0 };
 function fitScreen() {
   const el = FIT.el; if (!el) return;
-  if (innerWidth < 900 || innerWidth < innerHeight) { if (FIT.z !== 1) { FIT.z = 1; el.style.zoom = ""; } return; }
+  const root = document.documentElement.style;
+  if (innerWidth < 900 || innerWidth < innerHeight) { if (FIT.z !== 1) { FIT.z = 1; el.style.zoom = ""; } el.style.maxWidth = ""; root.removeProperty("--fitvh"); return; }
   const natural = el.getBoundingClientRect().height / FIT.z + 10;   // unscaled page height
-  let z = Math.min(1, innerHeight / natural); z = Math.max(.5, Math.floor(z * 100) / 100);
-  if (Math.abs(z - FIT.z) >= .01) { FIT.z = z; el.style.zoom = z === 1 ? "" : String(z); }
+  let z = Math.min(1.25, innerHeight / natural); z = Math.max(.5, Math.floor(z * 100) / 100);
+  if (Math.abs(z - FIT.z) >= .02) { FIT.z = z; el.style.zoom = z === 1 ? "" : String(z); }
+  /* laptop: fill the window width too (layout width grows as zoom shrinks) */
+  el.style.maxWidth = Math.round(Math.min(1800, (innerWidth - 12) / FIT.z)) + "px";
+  root.setProperty("--fitvh", Math.round(innerHeight / FIT.z) + "px");
 }
 const fitSoon = () => { clearTimeout(FIT.t); FIT.t = setTimeout(fitScreen, 60); };
 addEventListener("resize", fitSoon);
