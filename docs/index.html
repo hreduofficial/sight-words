@@ -965,6 +965,29 @@ body.homev .lvl{flex-wrap:wrap}
 .river.quake{animation:shake .45s}
 .river .bclock{position:absolute;right:10px;top:8px;z-index:6;background:#fff;border-radius:999px;padding:3px 12px;font-family:var(--f-display);font-size:20px;color:#1f6fd6;box-shadow:0 3px 0 rgba(0,0,0,.12)}
 .river .bclock.hurry{color:#ff4d4d;animation:fzPulse .5s ease-in-out infinite alternate}
+
+/* v96 Hero coin shop */
+.coin-ic{width:1.1em;height:1.1em;vertical-align:-.18em;flex:none}
+.wallet{display:inline-flex;align-items:center;gap:5px;background:#fff6d6;border:2px solid #f5c542;border-radius:999px;padding:2px 12px;font-size:20px;color:#9a6a00}
+.badge.buyable,.stk{position:relative}
+.badge.buyable{cursor:pointer;font:inherit;border:0}
+.badge .price,.stk .price{display:inline-flex;align-items:center;gap:3px;margin-top:4px;background:#fff6d6;border:1.5px solid #f5c542;color:#9a6a00;border-radius:999px;padding:1px 8px;font-size:13px;font-weight:700;font-family:var(--f-display);filter:none;opacity:1}
+.badge.lock .price{filter:none!important;opacity:1!important}
+.stk .price{position:absolute;right:4px;top:4px;margin:0;font-size:11px;padding:0 6px}
+.badge.lock.buyable:hover{transform:translateY(-2px)}
+.buybox{position:fixed;inset:0;z-index:90;background:rgba(10,40,36,.45);display:grid;place-items:center;padding:16px;animation:fadeIn .2s}
+.buycard{background:#fff;border-radius:24px;padding:22px 24px 18px;width:min(340px,100%);text-align:center;display:grid;gap:6px;box-shadow:0 18px 40px rgba(0,0,0,.25);animation:gpop .3s both}
+.buycard .be{font-size:56px;line-height:1}
+.buycard b{font-size:24px}
+.buycard .bprice{display:flex;justify-content:center;align-items:center;gap:6px;font-family:var(--f-display);font-size:34px;color:#c98700}
+.buycard .bhave{color:var(--muted);font-size:15px}
+.buycard .bneed{background:#fff0f0;color:#d0384a;border-radius:12px;padding:6px 10px;font-size:14px}
+.buycard .brow{display:flex;gap:8px;justify-content:center;margin-top:6px}
+.gstat.coinhit{animation:gpop .4s}
+.gstat{position:relative}
+.coinfly{position:absolute;left:50%;top:-6px;transform:translateX(-50%);font-family:var(--f-display);color:#e0a000;font-size:16px;white-space:nowrap;pointer-events:none;animation:coinFly .9s ease-out forwards}
+@keyframes coinFly{to{transform:translate(-50%,-26px);opacity:0}}
+@keyframes fadeIn{from{opacity:0}}
 </style>
 
 <canvas id="fx"></canvas>
@@ -1110,7 +1133,7 @@ body.homev .lvl{flex-wrap:wrap}
   <!-- STICKERS -->
   <section id="v-stickers" hidden>
     <div class="panel">
-      <h2 style="font-size:26px">뱃지</h2>
+      <h2 style="font-size:26px;display:flex;align-items:center;gap:10px">뱃지 <span class="wallet" id="coinWallet" title="내 히어로 코인"></span><small class="muted" style="font-size:14px;font-family:var(--f-ui)">게임에서 맞히면 1코인!</small></h2>
       <div class="bgrid" id="badgeGrid"></div>
     </div>
     <div class="panel">
@@ -1310,6 +1333,7 @@ const AUDIO = (function () {
     badge(t) { [784, 988, 1175, 1568].forEach((f, i) => { osc(sfxBus, "sine", f, t + i * .07, .5, .1, { r: .6 }); osc(sfxBus, "sine", f * 2, t + i * .07, .3, .03, { r: .3 }); }); noise(sfxBus, t, .6, .03, "highpass", 8000); },
     levelup(t) { const s = [523, 659, 784, 1047, 784, 1047, 1319]; s.forEach((f, i) => osc(sfxBus, "square", f, t + i * .08, i === s.length - 1 ? .5 : .1, .09, { r: i === s.length - 1 ? .6 : .12, lp: 4000 })); kickFx(t + .56); },
     end(t) { [392, 523, 659, 784, 1047].forEach((f, i) => osc(sfxBus, "square", f, t + i * .1, .15, .08, { r: .2, lp: 3500 })); osc(sfxBus, "triangle", 1047, t + .5, .7, .12, { r: .8, vib: 6 }); },
+    coin(t) { osc(sfxBus, "square", 988, t, .06, .05, { r: .04, lp: 3200 }); osc(sfxBus, "square", 1319, t + .07, .16, .05, { r: .12, lp: 3200 }); },
     blip(t, k = 0) { osc(sfxBus, "triangle", 620 + (k % 4) * 45, t, .035, .045, { r: .03, lp: 2600 }); },
     fanfare(t) {   // brass "ta-ta-ta-taaa!" + cymbal
       const seq = [[523, 0, .12], [523, .14, .12], [523, .28, .12], [698, .42, .5], [622, .95, .16], [784, 1.12, .7]];
@@ -1920,6 +1944,27 @@ const BADGES = [
   { id: "setdone", e: "🏆", t: "세트 정복", d: "현재 세트의 모든 단어 마스터" }
 ];
 let newBadges = [];
+/* ---------- Hero coin shop: buy locked badges and stickers ---------- */
+const BADGE_PRICE = { first: 5, s5: 10, comeback: 10, s10: 15, speed: 15, m10: 20, r10: 20, gamer: 20, perfect: 25, s25: 30, m50: 40, g500: 40, setdone: 50, m100: 80 };
+const badgePrice = id => BADGE_PRICE[id] || 30;
+const STK_PRICE = [3, 4, 5, 6, 8, 10, 12, 14, 16, 18];          // SW1 .. SW10: harder levels cost more
+const stkPrice = lv => STK_PRICE[Math.max(0, RG_LV.indexOf(lv))] || 8;
+const COIN_SVG = `<svg class="coin-ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="11" fill="#f5b400"/><circle cx="12" cy="12" r="8.2" fill="#ffd23f" stroke="#e09a00" stroke-width="1.4"/><path d="M12 7.2l1.4 2.9 3.2.4-2.3 2.2.6 3.1-2.9-1.5-2.9 1.5.6-3.1-2.3-2.2 3.2-.4z" fill="#e09a00"/></svg>`;
+const priceTag = n => `<span class="price">${COIN_SVG}${n}</span>`;
+function buyAsk(o) {
+  const have = S.coins || 0, ok = have >= o.price;
+  const box = document.createElement("div"); box.className = "buybox";
+  box.innerHTML = `<div class="buycard" role="dialog" aria-modal="true"><div class="be">${o.e}</div><b>${esc(o.title)}</b><small>${o.kind === "badge" ? "뱃지" : "스티커"}를 코인으로 살까요?</small>
+    <div class="bprice">${COIN_SVG}<span>${o.price}</span></div><div class="bhave">내 코인 ${COIN_SVG}${have}</div>
+    ${ok ? "" : `<div class="bneed">코인이 ${o.price - have}개 모자라요. 게임에서 문제를 맞히면 1개씩 모여요!</div>`}
+    <div class="brow"><button class="btn" data-x>닫기</button>${ok ? `<button class="btn primary" data-buy>${COIN_SVG}${o.price} 사기</button>` : ""}</div></div>`;
+  document.body.appendChild(box);
+  const close = () => box.remove();
+  box.onclick = e => { if (e.target === box || e.target.closest("[data-x]")) close(); };
+  const bb = box.querySelector("[data-buy]");
+  if (bb) bb.onclick = () => { if ((S.coins || 0) < o.price) return close(); S.coins -= o.price; close(); o.buy(); save(); renderTop(); renderStickers(); sfx("coin"); };
+  if (!ok) sfx("denied");
+}
 /* ---------- event boosters: appear by surprise while studying, tap to collect, use = double rewards for the day ---------- */
 const BOOSTERS = [
   { id: "rocket", e: "🚀", t: "로켓 부스터" }, { id: "bolt", e: "⚡", t: "번개 부스터" }, { id: "fire", e: "🔥", t: "파이어 부스터" },
@@ -2821,7 +2866,10 @@ function renderStickers() {
   if (boostOn()) slots.unshift(`<div class="badge boost active"><span class="tagb">ON</span><span class="e">🚀</span><div><b>부스터 사용 중</b><small>오늘 모든 점수 2배!</small></div></div>`);
   const fill = (4 - (BADGES.length + slots.length) % 4) % 4 || (slots.length ? 0 : 4);
   for (let k = 0; k < fill && slots.length < 8; k++) slots.push(`<div class="badge boost empty"><span class="tagb">EVENT</span><span class="e">🎁</span><div><b>이벤트 부스터</b><small>공부하다 보면<br>깜짝 등장해요!</small></div></div>`);
-  $("#badgeGrid").innerHTML = BADGES.map(b => `<div class="badge ${S.badges.includes(b.id) ? "" : "lock"}"><span class="e">${b.e}</span><div><b>${b.t}</b><small>${b.d}</small></div></div>`).join("") + slots.join("");
+  $("#badgeGrid").innerHTML = BADGES.map(b => S.badges.includes(b.id) ? `<div class="badge"><span class="e">${b.e}</span><div><b>${b.t}</b><small>${b.d}</small></div></div>`
+    : `<button class="badge lock buyable" data-buyb="${b.id}"><span class="e">${b.e}</span><div><b>${b.t}</b><small>${b.d}</small></div>${priceTag(badgePrice(b.id))}</button>`).join("") + slots.join("");
+  { const w = $("#coinWallet"); if (w) w.innerHTML = `${COIN_SVG}<b>${S.coins || 0}</b>`; }
+  $$("#badgeGrid [data-buyb]").forEach(el => el.onclick = () => { const b = BADGES.find(x => x.id === el.dataset.buyb); buyAsk({ kind: "badge", e: b.e, title: b.t, price: badgePrice(b.id), buy: () => award(b.id) }); });
   $$("#badgeGrid [data-use]").forEach(el => el.onclick = () => useBooster(+el.dataset.use));
   $$("#badgeGrid [data-watch]").forEach(el => el.onclick = () => openBoostVideo(+el.dataset.watch));
   renderBook();
@@ -2852,10 +2900,15 @@ function renderBook(dir) {
   const g = $("#stkGrid");
   g.innerHTML = rows.map(r => {
     const p = S.words[norm(r.w)] || { box: 0 }; const em = graphemes(r.e || "📖")[0] || "📖";
-    return `<button class="stk ${isM(p) ? "done" : p.right ? "" : "lock"}" data-say="${esc(norm(r.w))}" title="눌러서 듣기"><div class="e">${em}</div><div class="t${r.w.length >= 9 ? " l2" : r.w.length >= 7 ? " l1" : ""}">${esc(norm(r.w))}</div><div class="d">${[0, 1].map(i => `<i class="${i < (p.right || 0) ? "on" : ""}"></i>`).join("")}</div><span class="no">${r.n}</span></button>`;
+    return `<button class="stk ${isM(p) ? "done" : p.right ? "" : "lock"}" data-say="${esc(norm(r.w))}" title="눌러서 듣기"><div class="e">${em}</div><div class="t${r.w.length >= 9 ? " l2" : r.w.length >= 7 ? " l1" : ""}">${esc(norm(r.w))}</div><div class="d">${[0, 1].map(i => `<i class="${i < (p.right || 0) ? "on" : ""}"></i>`).join("")}</div><span class="no">${r.n}</span>${isM(p) ? "" : priceTag(stkPrice(STK.lv))}</button>`;
   }).join("");
   if (dir) { g.classList.remove("turn-l", "turn-r"); void g.offsetWidth; g.classList.add(dir > 0 ? "turn-l" : "turn-r"); }
-  $$("#stkGrid [data-say]").forEach(b => b.onclick = () => speak(b.dataset.say, .8));
+  $$("#stkGrid [data-say]").forEach(b => b.onclick = () => {
+    const w = b.dataset.say; speak(w, .8);
+    if (isM(S.words[w])) return;
+    const r = rows.find(x => norm(x.w) === w), em = graphemes((r && r.e) || "📖")[0] || "📖";
+    buyAsk({ kind: "sticker", e: em, title: w, price: stkPrice(STK.lv), buy: () => { const q = prog(w); q.right = Math.max(q.right || 0, STK_NEED); q.bought = 1; celebrate({ kind: "sticker", e: "⭐", tag: "NEW STICKER!", title: w, sub: "코인으로 샀어요!" }); } });
+  });
   $("#pgPrev").onclick = () => turnPage(-1); $("#pgNext").onclick = () => turnPage(1);
   $$("#stkDots [data-pg]").forEach(b => b.onclick = () => { const k = +b.dataset.pg; if (k !== STK.pg) { const d = k > STK.pg ? 1 : -1; STK.pg = k; sfx("pop"); renderBook(d); } });
   $$("#stkLv [data-blv]").forEach(b => b.onclick = () => { if (b.dataset.blv === STK.lv) return; const d = RG_LV.indexOf(b.dataset.blv) > RG_LV.indexOf(STK.lv) ? 1 : -1; STK.lv = b.dataset.blv; STK.pg = 0; sfx("pop"); renderBook(d); });
@@ -2930,16 +2983,24 @@ function startGame(id) {
 function gScroll() { try { scrollTo({ top: Math.max(0, $(".ghead").getBoundingClientRect().top + scrollY - 6) }); } catch (e) {} }
 function gHud(info) {
   if (!G) return;
-  $("#gScore").textContent = G.score;
+  $("#gScore").textContent = S.coins || 0;
   $("#gLives").innerHTML = G.lives == null ? "" : [0, 1, 2].map(i => `<span class="${i < G.lives ? "" : "off"}">❤️</span>`).join("");
   $("#gLives").hidden = G.lives == null;
   if (info !== undefined) $("#gInfo").textContent = info;
 }
 // one answer: updates word progress, points, streak and badges the same way as the quiz
+/* Hero coin: +1 for every correct answer in a game */
+function coinPop() {
+  const c = $("#gScore"); if (!c) return; c.textContent = S.coins || 0;
+  const w = c.parentNode; w.classList.remove("coinhit"); void w.offsetWidth; w.classList.add("coinhit");
+  const f = document.createElement("span"); f.className = "coinfly"; f.textContent = "+1 🪙"; w.appendChild(f); setTimeout(() => f.remove(), 900);
+  sfx("coin");
+}
 function gCredit(en, ok, el, base = 10) {
   const p = prog(en.w); p.seen++; G.total++;
   if (ok) {
     p.right++; p.box = Math.min(3, p.box + 1); G.right++;
+    S.coins = (S.coins || 0) + 1; coinPop();
     G.combo++; G.bestCombo = Math.max(G.bestCombo, G.combo); S.streak++; S.bestStreak = Math.max(S.bestStreak, S.streak);
     const pts = (base + Math.min(G.combo - 1, 5) * 2) * boostMul();
     G.score += pts; const before = levelOf(S.xp); S.xp += pts;
