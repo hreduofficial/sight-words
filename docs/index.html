@@ -882,6 +882,10 @@ body.homev .lvl{flex-wrap:wrap}
   body.homev #startBtn{font-size:26px;padding:14px}
   body.homev .hero>div:first-child>.row:first-of-type{margin:14px 0 0!important}
 }
+
+/* v81 game cards: badge + Start pinned to the bottom */
+.gcard .gbest{margin-top:auto}
+.ggrid{align-items:stretch}
 </style>
 
 <canvas id="fx"></canvas>
@@ -2795,7 +2799,7 @@ function turnPage(d) {
 const GAMES = [
   { id: "rain", en: "Sight Word Rescue", e: "🐠", t: "어항 물빼기", d: "어항 물이 그림을 다 덮기 전에, 섞인 알파벳을 순서대로 눌러 사이트 워드를 구해요!", c: "var(--blue)" },
   { id: "dict", en: "Listen & Write", e: "🔊", t: "듣고 쓰기", d: "하루가 불러 주는 단어를 듣고 철자를 직접 써요.", c: "var(--teal)" },
-  { id: "match", en: "Match Up", e: "🃏", t: "짝 맞추기", d: "그림 문장과 단어 카드를 빨리 짝지어요. 시간이 점수!", c: "var(--orange)" },
+  { id: "match", en: "Match Up", e: "🃏", t: "짝 맞추기", d: "30초 안에 그림 문장과 단어를 짝지어요. 심지가 다 타면 펑!", c: "var(--orange)" },
   { id: "bridge", en: "Sentence Bridge", e: "🌉", t: "문장 다리", d: "섞인 단어를 순서대로 눌러 다리를 놓으면 하루가 건너가요.", c: "var(--purple)" },
   { id: "balloon", en: "Balloon Pop", e: "🎈", t: "풍선 팡", d: "단어를 듣고 그 단어가 적힌 풍선을 팡! 터뜨려요.", c: "var(--pink)" }
 ];
@@ -2823,7 +2827,7 @@ function renderGames() {
   $("#gSetName").textContent = S.set.name;
   $("#gGrid").innerHTML = GAMES.map(g => {
     const r = S.games[g.id] || {};
-    return `<button class="gcard" data-g="${g.id}" style="--gc:${g.c}"><span class="ge">${g.e}</span><b>${g.en} <small class="gko">(${g.t})</small></b><small>${g.d}</small><span class="gbest">${r.best ? `🏆 최고 ${r.best}점 · ${r.plays}판` : "✨ 새 게임"}</span><span class="gplay">▶ 시작</span></button>`;
+    return `<button class="gcard" data-g="${g.id}" style="--gc:${g.c}"><span class="ge">${g.e}</span><b>${g.en} <small class="gko">(${g.t})</small></b><small>${g.d}</small><span class="gbest">${r.best ? `🏆 최고 ${r.best}점 · ${r.plays}판` : "✨ 새 게임"}</span><span class="gplay">▶ Start</span></button>`;
   }).join("");
   $$("#gGrid .gcard").forEach(b => b.onclick = () => { sfx("start"); startGame(b.dataset.g); });
 }
