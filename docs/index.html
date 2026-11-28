@@ -912,6 +912,12 @@ body.homev .lvl{flex-wrap:wrap}
   body.homev .roadmap button{min-height:72px;font-size:24px!important;padding:8px 6px!important;border-radius:16px;line-height:1.1;display:flex!important;flex-direction:column;align-items:center;justify-content:center}
   body.homev .roadmap button small{font-size:14px!important;margin-top:3px}
 }
+
+/* dictation hint: Haru carries a sign with the word */
+.dsign{display:none;position:absolute;left:62%;bottom:28%;z-index:3;transform:translate(-50%,0) rotate(-4deg);background:#fff;border:3px solid #8b5a2b;border-radius:10px;padding:2px 12px;font-family:var(--f-display);font-size:26px;color:#e6398f;white-space:nowrap;box-shadow:0 4px 0 #8b5a2b}
+.dsign::after{content:"";position:absolute;left:50%;top:100%;width:4px;height:12px;margin-left:-2px;background:#8b5a2b}
+.drunner.sign .dsign{display:block}.drunner.sign .dshout{display:none}
+.dbtns .dhintb:not(:disabled){background:#fff4cc;color:#8a5a00}
 </style>
 
 <canvas id="fx"></canvas>
@@ -3044,9 +3050,9 @@ function rescueFail() {
 function dictStart() {
   G.items = gPool().slice(0, 8); G.i = 0; G.lives = null;
   $("#gStage").innerHTML = `<div class="panel dict">
-    <div class="drun" id="dRunWrap" aria-hidden="true"><div class="dsky"></div><div class="dground"></div><div class="drunner" id="dRunner"><span class="dshout" id="dShout">📣</span><img src="${HARU.wave}" alt=""><i class="ddust"></i></div><span class="dflag">🏁</span></div>
+    <div class="drun" id="dRunWrap" aria-hidden="true"><div class="dsky"></div><div class="dground"></div><div class="drunner" id="dRunner"><span class="dshout" id="dShout">📣</span><span class="dsign" id="dSign"></span><img src="${HARU.wave}" alt=""><i class="ddust"></i></div><span class="dflag">🏁</span></div>
     <div class="dhead"><img src="${HARU.face}" alt="" class="avatar"><div class="bubble" id="dBubble">Listen and write the word!</div></div>
-    <div class="dbtns"><span class="dlbl">🔊 듣기</span><button class="btn dchance" data-n="1">1</button><button class="btn dchance" data-n="2">2</button><button class="btn dchance" data-n="3">3</button><button class="btn dspare" id="dSlow">🐢 천천히</button><button class="btn dspare" id="dSent">📖 문장 듣기</button></div>
+    <div class="dbtns"><span class="dlbl">🔊 듣기</span><button class="btn dchance" data-n="1">1</button><button class="btn dchance" data-n="2">2</button><button class="btn dchance" data-n="3">3</button><button class="btn dspare" id="dSlow">🐢 천천히</button><button class="btn dspare" id="dSent">📖 문장 듣기</button><button class="btn dspare dhintb" id="dHint">💡 단어 힌트</button></div>
     <div class="dslots" id="dSlots" aria-hidden="true"></div>
     <form id="dForm" class="dform" autocomplete="off"><input id="dIn" class="field" autocapitalize="off" autocorrect="off" spellcheck="false" aria-label="들은 단어 쓰기" placeholder="여기에 써요"><button class="btn primary" type="submit">확인</button></form>
     <div class="dsent" id="dSentBox"></div>
@@ -3055,14 +3061,17 @@ function dictStart() {
   $$("#gStage .dchance").forEach(b => use(b, () => dictRun(false)));
   use($("#dSlow"), () => dictRun(true));
   use($("#dSent"), () => speak(G.cur.en.s));
+  use($("#dHint"), () => dictRun(false, true));
   $("#dIn").oninput = dictSlots;
   $("#dForm").onsubmit = e => { e.preventDefault(); dictCheck(); };
   dictNext();
 }
 /* Haru runs from left to right shouting the word */
-function dictRun(slow) {
+function dictRun(slow, hint) {
   const r = $("#dRunner"); if (!r || !G || !G.cur) return;
-  const w = G.cur.en.w, dur = slow ? 5200 : 3400;
+  const w = G.cur.en.w, dur = hint ? 4400 : slow ? 5200 : 3400;
+  const sg = $("#dSign"); if (sg) { sg.textContent = w; r.classList.toggle("sign", !!hint); }
+  if (hint) { G.cur.hinted = true; r.style.setProperty("--rd", dur + "ms"); r.classList.remove("go"); void r.offsetWidth; r.classList.add("go"); sfx("hint"); gT(() => r.classList.remove("sign"), dur); return; }
   r.style.setProperty("--rd", dur + "ms");
   r.classList.remove("go"); void r.offsetWidth; r.classList.add("go");
   const shout = () => { const sh = $("#dShout"); if (sh) { sh.classList.remove("on"); void sh.offsetWidth; sh.classList.add("on"); } slow ? speakSeq([w], { rate: .55 }) : speak(w); };
@@ -3091,7 +3100,7 @@ function dictCheck() {
     c.locked = true; $("#dIn").disabled = true;
     $("#dSlots").classList.add("good"); $("#dSentBox .blank").classList.add("filled");
     $("#dBubble").innerHTML = c.tries ? `Good, you got it! 👍` : `Perfect! First try! 🎉`;
-    gCredit(c.en, true, $("#dSlots"), c.tries ? 8 : 15);
+    gCredit(c.en, true, $("#dSlots"), c.tries || c.hinted ? 8 : 15);
     if (S.settings.tts) gT(() => speak(c.en.s), 300);
     gT(() => { $("#dSlots").classList.remove("good"); dictNext(); }, 2000);
   } else {
