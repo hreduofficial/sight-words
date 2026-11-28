@@ -886,6 +886,19 @@ body.homev .lvl{flex-wrap:wrap}
 /* v81 game cards: badge + Start pinned to the bottom */
 .gcard .gbest{margin-top:auto}
 .ggrid{align-items:stretch}
+
+/* v83 home headline on one line, bigger */
+@media (min-width:900px){
+  body.homev .hero h2{font-size:46px!important;line-height:1.1;white-space:nowrap;margin-bottom:10px}
+  body.homev .hero h2 br{display:none}
+  body.homev .hero h2 em::before{content:" "}
+  body.homev .hero p.muted{font-size:21px!important;font-weight:700;color:#3d4a53!important;max-width:none}
+  body.homev .hero .lab,body.homev .hero .row>.lab[style]{font-size:20px!important}
+  body.homev #rgSel{font-size:22px}
+  body.homev .setline{font-size:20px}
+  body.homev .opts .seg button{font-size:21px}
+  body.homev .opts .tog{font-size:20px}
+}
 </style>
 
 <canvas id="fx"></canvas>
