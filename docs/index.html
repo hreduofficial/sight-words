@@ -941,7 +941,7 @@ body.homev .lvl{flex-wrap:wrap}
     <button class="tab" role="tab" data-v="home" aria-selected="true">📚 학습</button>
     <button class="tab" role="tab" data-v="words" aria-selected="false" hidden>📂 단어 세트</button>
     <button class="tab" role="tab" data-v="games" aria-selected="false">🎮 게임</button>
-    <button class="tab" role="tab" data-v="stickers" aria-selected="false">🏅 스티커·배지</button>
+    <button class="tab" role="tab" data-v="stickers" aria-selected="false">🏅 스티커·뱃지</button>
   </nav>
 
   <!-- LOGIN (academy mode) -->
@@ -1063,7 +1063,7 @@ body.homev .lvl{flex-wrap:wrap}
   <!-- STICKERS -->
   <section id="v-stickers" hidden>
     <div class="panel">
-      <h2 style="font-size:26px">배지</h2>
+      <h2 style="font-size:26px">뱃지</h2>
       <div class="bgrid" id="badgeGrid"></div>
     </div>
     <div class="panel">
@@ -1893,7 +1893,7 @@ function maybeBooster() {
   S.boostDrops.n++; save();
   const el = document.createElement("button");
   el.className = "boostpop"; el.type = "button";
-  el.innerHTML = `<span class="be">${b.e}</span><span class="bt"><small>🎁 이벤트 배지 등장!</small><b>${b.t}</b><em>눌러서 영상 보고 받기</em></span>`;
+  el.innerHTML = `<span class="be">${b.e}</span><span class="bt"><small>🎁 이벤트 뱃지 등장!</small><b>${b.t}</b><em>눌러서 영상 보고 받기</em></span>`;
   document.body.appendChild(el); boostPop = el; sfx("hint");
   const gone = setTimeout(() => { el.classList.add("bye"); setTimeout(() => { el.remove(); if (boostPop === el) boostPop = null; }, 400); }, 6500);
   el.onclick = e => {
@@ -1901,7 +1901,7 @@ function maybeBooster() {
     S.boostPending = S.boostPending || []; S.boostPending.push(b.id); save();
     el.classList.add("got"); sfx("badge");
     setTimeout(() => { el.remove(); if (boostPop === el) boostPop = null; }, 600);
-    if (viewNow() === "play") toast(`🎬 ${b.e} ${b.t}: 게임이 끝나면 스티커·배지 탭에서 영상을 보고 받을 수 있어요`);
+    if (viewNow() === "play") toast(`🎬 ${b.e} ${b.t}: 게임이 끝나면 스티커·뱃지 탭에서 영상을 보고 받을 수 있어요`);
     else setTimeout(() => openBoostVideo(S.boostPending.length - 1), 450);
   };
 }
@@ -1930,7 +1930,7 @@ function openBoostVideo(i) {
     <div class="bv-screen"><div class="scene bv-scene"></div><div class="bv-sent"></div><span class="bv-num"></span><div class="bv-pausebadge" hidden>⏸ 일시정지</div></div>
     <div class="bv-bar"><i></i></div>
     <div class="bv-ctl"><button class="btn bv-pp" type="button">⏸ 일시정지</button></div>
-    <div class="bv-ask" hidden><div class="bv-askbox"><div class="bv-big">😢</div><b>지금 나가면<br>부스터 배지를 받지 못해요</b><small>영상을 끝까지 봐야 받을 수 있어요.</small><div class="bv-askbtns"><button class="btn primary bv-stay" type="button">▶ 계속 보기</button><button class="btn bv-leave" type="button">나가기</button></div></div></div>
+    <div class="bv-ask" hidden><div class="bv-askbox"><div class="bv-big">😢</div><b>지금 나가면<br>부스터 뱃지를 받지 못해요</b><small>영상을 끝까지 봐야 받을 수 있어요.</small><div class="bv-askbtns"><button class="btn primary bv-stay" type="button">▶ 계속 보기</button><button class="btn bv-leave" type="button">나가기</button></div></div></div>
     <div class="bv-done" hidden><div class="bv-big">${b.e}</div><b>영상 시청 완료!</b><button class="btn primary bv-get" type="button">🎁 ${b.t} 받기</button></div>
   </div>`;
   document.body.appendChild(ov);
@@ -2001,7 +2001,7 @@ function bvClaim() {
   if (pi >= 0) S.boostPending.splice(pi, 1);
   S.boosters = S.boosters || []; S.boosters.push(id); save();
   closeBoostVideo(); confetti(90); sfx("levelup");
-  toast(`${b.e} ${b.t} 획득! 스티커·배지 탭에서 사용할 수 있어요`);
+  toast(`${b.e} ${b.t} 획득! 스티커·뱃지 탭에서 사용할 수 있어요`);
   if (viewNow() === "stickers") renderStickers();
 }
 function closeBoostVideo(silent) {
@@ -2631,7 +2631,7 @@ $("#copyBtn").onclick = async () => {
 };
 let resetArm = 0;
 $("#resetProg").onclick = () => {
-  if (Date.now() - resetArm > 3000) { resetArm = Date.now(); toast("한 번 더 누르면 점수·스티커·배지가 모두 지워져요"); return; }
+  if (Date.now() - resetArm > 3000) { resetArm = Date.now(); toast("한 번 더 누르면 점수·스티커·뱃지가 모두 지워져요"); return; }
   Object.assign(S, { xp: 0, words: {}, badges: [], rounds: 0, bestStreak: 0, streak: 0 }); save(); renderTop(); toast("학습 기록을 초기화했어요");
 };
 
