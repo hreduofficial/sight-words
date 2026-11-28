@@ -864,6 +864,24 @@ body.homev .lvl{flex-wrap:wrap}
   body.focus .qwrap{grid-template-columns:minmax(0,1.3fr) minmax(280px,1fr)!important}
   body.focus .qwrap .stage{justify-self:end!important}
 }
+
+/* v80 home left panel: bigger, aligned */
+@media (min-width:900px){
+  body.homev .hero h2{font-size:36px;line-height:1.15;margin-bottom:8px}
+  body.homev .hero p.muted{font-size:17px;line-height:1.55;color:#4d5a63;word-break:keep-all;max-width:36em}
+  body.homev .hero .row{gap:12px;align-items:center}
+  body.homev .hero .lab,body.homev .hero .row>.lab[style]{display:inline-block;width:5.4em!important;min-width:5.4em!important;flex:none;font-size:18px!important;font-weight:700;color:#5b6770!important}
+  body.homev #rgSel{font-size:20px;padding:8px 14px;max-width:260px!important}
+  body.homev .setline{display:flex;align-items:center;gap:10px;flex-wrap:wrap;font-size:18px;margin:10px 0!important}
+  body.homev .setline .pill{font-size:15px;padding:4px 12px}
+  body.homev .opts{gap:10px!important;margin-top:4px}
+  body.homev .opts .seg button{font-size:19px;padding:7px 16px!important}
+  body.homev .opts .tog{font-size:18px;margin-right:14px}
+  body.homev .opts .tog input{width:18px;height:18px;vertical-align:-3px}
+  body.homev #optVol{width:220px!important}
+  body.homev #startBtn{font-size:26px;padding:14px}
+  body.homev .hero>div:first-child>.row:first-of-type{margin:14px 0 0!important}
+}
 </style>
 
 <canvas id="fx"></canvas>
