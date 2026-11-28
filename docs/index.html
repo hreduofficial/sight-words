@@ -1345,6 +1345,7 @@ const AUDIO = (function () {
     badge(t) { [784, 988, 1175, 1568].forEach((f, i) => { osc(sfxBus, "sine", f, t + i * .07, .5, .1, { r: .6 }); osc(sfxBus, "sine", f * 2, t + i * .07, .3, .03, { r: .3 }); }); noise(sfxBus, t, .6, .03, "highpass", 8000); },
     levelup(t) { const s = [523, 659, 784, 1047, 784, 1047, 1319]; s.forEach((f, i) => osc(sfxBus, "square", f, t + i * .08, i === s.length - 1 ? .5 : .1, .09, { r: i === s.length - 1 ? .6 : .12, lp: 4000 })); kickFx(t + .56); },
     end(t) { [392, 523, 659, 784, 1047].forEach((f, i) => osc(sfxBus, "square", f, t + i * .1, .15, .08, { r: .2, lp: 3500 })); osc(sfxBus, "triangle", 1047, t + .5, .7, .12, { r: .8, vib: 6 }); },
+    heart(t) { osc(sfxBus, "square", 880, t, .07, .07, { r: .03, lp: 2800 }); osc(sfxBus, "square", 587, t + .1, .16, .07, { r: .1, lp: 2400 }); },
     coin(t) { osc(sfxBus, "square", 988, t, .06, .05, { r: .04, lp: 3200 }); osc(sfxBus, "square", 1319, t + .07, .16, .05, { r: .12, lp: 3200 }); },
     blip(t, k = 0) { osc(sfxBus, "triangle", 620 + (k % 4) * 45, t, .035, .045, { r: .03, lp: 2600 }); },
     fanfare(t) {   // brass "ta-ta-ta-taaa!" + cymbal
@@ -3032,7 +3033,7 @@ function gCredit(en, ok, el, base = 10) {
   }
   save(); renderTop(); gHud();
 }
-function loseLife() { if (G.lives == null) return false; G.lives--; gHud(); const h = $("#gLives"); h.classList.remove("hit"); void h.offsetWidth; h.classList.add("hit"); return G.lives <= 0; }
+function loseLife() { if (G.lives == null) return false; G.lives--; sfx("heart"); gHud(); const h = $("#gLives"); h.classList.remove("hit"); void h.offsetWidth; h.classList.add("hit"); return G.lives <= 0; }
 
 function endGame(extra) {
   if (!G || G.done) return;
