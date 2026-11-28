@@ -3144,9 +3144,9 @@ function matchBoard() {
   if (G.board >= G.boards || set.length < 2 || G.lives <= 0) return endGame();
   G.board++; G.left = set.length; G.sel = null;
   const L = shuffle(set), R = shuffle(set);
-  gHud(`판 ${G.board}/${G.boards}`);
+  gHud(`${G.board}/${G.boards}`);
   $("#gStage").innerHTML = `<div class="fuse" id="fuse"><div class="fz-line"><i class="fz-burn" id="fzBurn"></i><span class="fz-spark" id="fzSpark">✨</span></div><span class="fz-bomb" id="fzBomb">🧨</span><b class="fz-num" id="fzNum">30</b></div>
-    <div class="mhint">판 ${G.board}/${G.boards} · 30초 안에 문장 카드와 단어를 짝지어요! 다 못 하면 펑! 💥</div><div class="match">
+    <div class="mhint">30초 안에 문장 카드와 단어를 짝지어요! 다 못 하면 펑! 💥</div><div class="match">
     <div class="mcol">${L.map(e => `<button class="mcard ms" data-w="${esc(e.w)}">${thumbHTML(e)}<span>${blankHTML(e)}</span></button>`).join("")}</div>
     <div class="mcol">${R.map(e => `<button class="mcard mw" data-w="${esc(e.w)}">${esc(e.w)}</button>`).join("")}</div></div>`;
   $$("#gStage .mcard").forEach(b => b.onclick = () => matchTap(b));
