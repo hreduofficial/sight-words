@@ -1022,6 +1022,15 @@ body.homev .lvl{flex-wrap:wrap}
 .stats .stat.coin-pill{background:#f0a500!important;color:#fff!important;opacity:1!important}.stats .stat.coin-pill *{color:#fff!important}
 .stats .stat.coin-pill.bump{animation:gpop .4s}
 @media (max-width:420px){.stats .stat.coin-pill .lvup-t{font-size:0!important}.stats .stat.coin-pill .lvup-t::after{content:'COIN';font-size:7.5px}}
+
+/* v103 sticker pages with many words (SW5-10 = 43) */
+#stkGrid.dense{grid-template-columns:repeat(11,minmax(0,1fr))!important;gap:4px!important}
+#stkGrid.dense .stk{padding:3px 2px!important;min-height:0}
+#stkGrid.dense .stk .e{font-size:18px!important;line-height:1.1}
+#stkGrid.dense .stk .t{font-size:11px!important}
+#stkGrid.dense .stk .d,#stkGrid.dense .stk .no{display:none}
+#stkGrid.dense .stk .price{font-size:8px;padding:0 3px;top:1px;right:1px}
+@media (max-width:640px){#stkGrid.dense{grid-template-columns:repeat(6,minmax(0,1fr))!important}}
 </style>
 
 <canvas id="fx"></canvas>
@@ -2938,6 +2947,7 @@ function renderBook(dir) {
     const p = S.words[norm(r.w)] || { box: 0 }; const em = graphemes(r.e || "📖")[0] || "📖";
     return `<button class="stk ${isM(p) ? "done" : p.right ? "" : "lock"}" data-say="${esc(norm(r.w))}" title="눌러서 듣기"><div class="e">${em}</div><div class="t${r.w.length >= 9 ? " l2" : r.w.length >= 7 ? " l1" : ""}">${esc(norm(r.w))}</div><div class="d">${[0, 1].map(i => `<i class="${i < (p.right || 0) ? "on" : ""}"></i>`).join("")}</div><span class="no">${r.n}</span>${isM(p) ? "" : priceTag(stkPrice(STK.lv))}</button>`;
   }).join("");
+  g.classList.toggle("dense", rows.length > 24);   // e.g. SW5-10 has 43 words: smaller cells so the page keeps its size
   if (dir) { g.classList.remove("turn-l", "turn-r"); void g.offsetWidth; g.classList.add(dir > 0 ? "turn-l" : "turn-r"); }
   $$("#stkGrid [data-say]").forEach(b => b.onclick = () => {
     const w = b.dataset.say; speak(w, .8);
