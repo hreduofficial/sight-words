@@ -955,6 +955,16 @@ body.homev .lvl{flex-wrap:wrap}
 /* v94 rescue scramble hint */
 #tUndo.used,#tUndo:disabled{opacity:.45;filter:grayscale(1);cursor:default}
 .tile.hintpop{animation:gpop .35s both}
+
+/* v95 bridge tsunami */
+.river .tsunami{position:absolute;top:0;bottom:0;right:0;width:46%;z-index:5;pointer-events:none;transform:translateX(110%);opacity:0}
+.river .tsunami i{position:absolute;inset:18% 0 0 0;background:linear-gradient(180deg,#e8f6ff 0 10%,#5fb0ff 30%,#1f6fd6);border-radius:60% 40% 0 0 / 90% 70% 0 0;box-shadow:inset 0 10px 0 rgba(255,255,255,.7)}
+.river .tsunami i::before{content:"🌊";position:absolute;left:-18px;top:-30px;font-size:58px}
+.river .tsunami.go{animation:tsuRoll 1.5s ease-in forwards}
+@keyframes tsuRoll{0%{transform:translateX(110%);opacity:1}55%{transform:translateX(-40%);opacity:1}100%{transform:translateX(-230%);opacity:0}}
+.river.quake{animation:shake .45s}
+.river .bclock{position:absolute;right:10px;top:8px;z-index:6;background:#fff;border-radius:999px;padding:3px 12px;font-family:var(--f-display);font-size:20px;color:#1f6fd6;box-shadow:0 3px 0 rgba(0,0,0,.12)}
+.river .bclock.hurry{color:#ff4d4d;animation:fzPulse .5s ease-in-out infinite alternate}
 </style>
 
 <canvas id="fx"></canvas>
@@ -3272,7 +3282,7 @@ function bridgeNext() {
   let order = shuffle(words.map((w, i) => i)); if (order.every((x, i) => x === i) && words.length > 1) order = order.reverse();
   $("#gStage").innerHTML = `<div class="bridge">
     ${thumbHTML(en)}
-    <div class="river"><div class="bank l"></div><div class="planks" id="bPlanks">${words.map(() => `<i></i>`).join("")}</div><div class="bank r">🏁</div><img src="${HARU.stand}" alt="하루" class="bharu" id="bHaru"><span class="bsplash" id="bSplash">💦</span><div class="water"></div></div>
+    <div class="river"><div class="bank l"></div><div class="planks" id="bPlanks">${words.map(() => `<i></i>`).join("")}</div><div class="bank r">🏁</div><img src="${HARU.stand}" alt="하루" class="bharu" id="bHaru"><span class="bsplash" id="bSplash">💦</span><div class="water"></div><div class="tsunami" id="bWave"><i></i></div><span class="bclock" id="bClock">🌊 15</span></div>
     <div class="bsent" id="bSent">${words.map(() => `<span class="slot"></span>`).join(" ")}</div>
     <div class="bchips" id="bChips">${order.map(i => `<button class="wchip" data-i="${i}">${esc(words[i])}</button>`).join("")}</div>
     <div class="row" style="justify-content:center"><button class="btn small" id="bSay">🔊 문장 듣기</button><button class="btn small" id="bHint">💡 다음 단어</button></div>
@@ -3281,6 +3291,38 @@ function bridgeNext() {
   $("#bHint").onclick = () => { const c = G.cur; const b = $$("#bChips .wchip").find(x => !x.disabled && words[+x.dataset.i] === words[c.k]); if (b) { b.classList.add("glow"); c.miss++; sfx("hint"); } };
   $("#bChips").onclick = e => { const b = e.target.closest(".wchip"); if (b && !b.disabled) bridgeTap(b); };
   bridgeHaru();
+  bridgeClock();
+}
+/* every 15 seconds a tsunami rolls in from the right and knocks Haru: costs a heart; the 3rd one ends the game */
+const TSU_MS = 15000;
+function bridgeClock() {
+  const c = G.cur, tok = {}; c.tok = tok; c.t0 = Date.now();
+  const tick = () => {
+    if (!G || G.dead || G.done || G.cur !== c || c.tok !== tok || c.k === c.words.length) return;
+    const left = Math.max(0, Math.ceil((TSU_MS - (Date.now() - c.t0)) / 1000)), el = $("#bClock");
+    if (el) { el.textContent = `🌊 ${left}`; el.classList.toggle("hurry", left <= 5); }
+    if (left <= 0) return bridgeTsunami();
+    gT(tick, 250);
+  };
+  tick();
+}
+function bridgeTsunami() {
+  const c = G.cur, w = $("#bWave"), h = $("#bHaru"), riv = $("#bHaru") && $("#bHaru").parentNode;
+  if (w) { w.classList.remove("go"); void w.offsetWidth; w.classList.add("go"); }
+  sfx("whoosh"); gT(() => sfx("boom"), 600);
+  $$("#bChips .wchip").forEach(x => x.style.pointerEvents = "none");
+  gT(() => {
+    if (riv) { riv.classList.remove("quake"); void riv.offsetWidth; riv.classList.add("quake"); }
+    const dead = loseLife();
+    if (dead) {
+      h.classList.remove("jump", "wobble"); void h.offsetWidth; h.classList.add("fall");
+      toast("🌊 쓰나미 3번! 하루가 다리에서 떨어졌어요");
+      return gT(endGame, 1500);
+    }
+    h.classList.remove("jump", "wobble"); void h.offsetWidth; h.classList.add("wobble");
+    toast(`🌊 쓰나미! 하루가 겨우 버텼어요 (남은 하트 ${G.lives})`);
+    gT(() => { $$("#bChips .wchip").forEach(x => x.style.pointerEvents = ""); if (G && G.cur === c) bridgeClock(); }, 1200);
+  }, 700);
 }
 function bridgeHaru() {
   const c = G.cur, n = c.words.length, h = $("#bHaru");
@@ -3295,6 +3337,7 @@ function bridgeTap(b) {
     c.k++; sfx("blip", c.k); bridgeHaru();
     const hj = $("#bHaru"); hj.classList.remove("jump", "wobble"); void hj.offsetWidth; hj.classList.add("jump");
     if (c.k === c.words.length) {
+      c.tok = null; { const el = $("#bClock"); if (el) el.textContent = "🌉 OK!"; }
       $("#bHaru").classList.add("hop"); $("#bHaru").src = HARU.wave;
       gCredit(c.en, c.miss <= 1, $("#bSent"), c.miss ? 12 : 20);
       gT(() => speak(c.en.s), 250);
