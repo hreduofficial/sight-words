@@ -951,6 +951,10 @@ body.homev .lvl{flex-wrap:wrap}
   #v-stickers .coach{display:none!important}
   #v-stickers .sgrid{grid-template-columns:repeat(7,minmax(0,1fr))!important}
 }
+
+/* v94 rescue scramble hint */
+#tUndo.used,#tUndo:disabled{opacity:.45;filter:grayscale(1);cursor:default}
+.tile.hintpop{animation:gpop .35s both}
 </style>
 
 <canvas id="fx"></canvas>
@@ -3001,10 +3005,10 @@ function rainStart() {
     </div>
     <div class="slots" id="tSlots"></div>
     <div class="tiles" id="tTiles"></div>
-    <div class="row" style="justify-content:center;gap:10px"><button class="btn small" id="tHear">🔊 문장 듣기</button><button class="btn small" id="tUndo">↩️ 한 글자 지우기</button></div>`;
+    <div class="row" style="justify-content:center;gap:10px"><button class="btn small" id="tHear">🔊 문장 듣기</button><button class="btn small" id="tUndo">🧩 Scramble Hint</button></div>`;
   $("#tTiles").onclick = e => { const b = e.target.closest(".tile"); if (b && !b.disabled) rescueTap(b); };
   $("#tHear").onclick = () => G.cur && speak(G.cur.en.s);
-  $("#tUndo").onclick = rescueUndo;
+  $("#tUndo").onclick = rescueHint;
   $("#tSlots").onclick = e => {   // tap a placed letter: it (and any letters after it) go back to the tiles
     const sp = e.target.closest("span.on"); if (!sp || !G.cur || G.cur.done) return;
     const j = [...$("#tSlots").children].indexOf(sp); while (G.cur.k > j) rescueUndo();
@@ -3029,6 +3033,7 @@ function rainNext() {
   $("#tSlots").innerHTML = letters.map(() => `<span></span>`).join("");
   $("#tTiles").innerHTML = scramble(en.w).map((c, i) => `<button class="tile" data-c="${esc(c)}" style="--r:${(i % 2 ? 1 : -1) * (3 + i % 3)}deg">${esc(c)}</button>`).join("");
   $("#water").style.height = "0%";
+  { const hb = $("#tUndo"); if (hb) { hb.disabled = false; hb.classList.remove("used"); } }
   gT(() => speak(en.s), 300);
   const t0 = performance.now(), dur = G.speed, c = G.cur;
   const rise = now => {
@@ -3054,6 +3059,21 @@ function rescueTap(b) {
     c.push += .06; c.miss = (c.miss || 0) + 1;   // a wrong letter lets the water rise a little faster
     $("#tSay").textContent = "Hurry! 💦";
   }
+}
+/* Scramble Hint: line the remaining tiles up almost in order (one pair stays swapped, never the exact answer) */
+function rescueHint() {
+  const c = G && G.cur, btn = $("#tUndo"); if (!c || c.done || c.hinted) return;
+  const rest = c.letters.slice(c.k).map(x => x.toLowerCase());
+  const tiles = $$("#tTiles .tile").filter(t => !t.disabled);
+  if (rest.length < 2) { sfx("denied"); return; }
+  const order = [], pool = tiles.slice();
+  rest.forEach(ch => { const i = pool.findIndex(t => t.dataset.c.toLowerCase() === ch); if (i >= 0) order.push(pool.splice(i, 1)[0]); });
+  let sw = -1; for (let i = 0; i < order.length - 1; i++) if (order[i].dataset.c.toLowerCase() !== order[i + 1].dataset.c.toLowerCase()) { sw = i; if (Math.random() < .5) break; }
+  if (sw < 0) { sfx("denied"); return; }
+  [order[sw], order[sw + 1]] = [order[sw + 1], order[sw]];
+  const box = $("#tTiles"); order.forEach(t => { box.appendChild(t); t.classList.remove("hintpop"); void t.offsetWidth; t.classList.add("hintpop"); });
+  c.hinted = true; if (btn) { btn.disabled = true; btn.classList.add("used"); }
+  sfx("hint"); $("#tSay").textContent = "Almost in order! 🧩";
 }
 function rescueUndo() {
   const c = G && G.cur; if (!c || c.done || !c.k) return;
