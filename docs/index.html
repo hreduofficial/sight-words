@@ -1017,6 +1017,11 @@ body.homev .lvl{flex-wrap:wrap}
 @keyframes araCheer{from{background-position:0 0}to{background-position:103.448% 0}}
 .drun:has(.dcheer.on) .dflag{opacity:0}
 @media (max-width:640px){.drun .dcheer{height:96px}}
+
+/* v101 hero coin pill in top stats */
+.stats .stat.coin-pill{background:#f0a500!important;color:#fff!important;opacity:1!important}.stats .stat.coin-pill *{color:#fff!important}
+.stats .stat.coin-pill.bump{animation:gpop .4s}
+@media (max-width:420px){.stats .stat.coin-pill .lvup-t{font-size:0!important}.stats .stat.coin-pill .lvup-t::after{content:'COIN';font-size:7.5px}}
 </style>
 
 <canvas id="fx"></canvas>
@@ -1034,7 +1039,7 @@ body.homev .lvl{flex-wrap:wrap}
       <button class="stat" id="switchBtn" hidden title="로그아웃하고 로그인 화면으로"><span class="ic">🚪</span>로그아웃</button>
     </div>
   </header>
-  <div class="lvl"><button type="button" id="lvName" class="lvname">Lv.1</button><div class="bar"><i id="lvBar"></i></div><span id="lvNext" style="font-variant-numeric:tabular-nums"></span><div class="stats"><span class="stat boost-on" id="sBoost" hidden title="오늘 리워드 2배"><span class="ic">🚀</span>x2</span><span class="stat lvup" title="레벨업 점수 (총 점수)"><span class="ic"><svg class="sic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="11" fill="#fff"/><path d="M7 13.5l5-5 5 5M7 18l5-5 5 5" fill="none" stroke="#e8338b" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span><small class="lvup-t">LEVEL UP</small><span id="sPts">0</span></span><span class="stat lvup" title="콤보 (연속 정답)"><span class="ic"><svg class="sic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="11" fill="#fff"/><path d="M13.5 3.5L6.5 13h5l-1.5 7.5 7.5-10h-5z" fill="#f6a623" stroke="#0e6d62" stroke-width="1.4" stroke-linejoin="round"/></svg></span><small class="lvup-t">COMBO</small><span id="sStreak">0</span></span><span class="stat lvup stk-pill" title="스티커 (2번 맞힌 단어)"><span class="ic"><svg class="sic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="11" fill="#fff"/><path d="M12 4.6l2.2 4.6 5 .6-3.7 3.4 1 5-4.5-2.5-4.5 2.5 1-5-3.7-3.4 5-.6z" fill="#ffc531" stroke="#7a3fc0" stroke-width="1.2" stroke-linejoin="round"/><path d="M15.2 21.2c.4-2.6 2.6-4.8 5.4-5.2-1 2.7-2.8 4.5-5.4 5.2z" fill="#d9c6f2" stroke="#7a3fc0" stroke-width="1" stroke-linejoin="round"/></svg></span><small class="lvup-t">STICKER</small><span id="sMaster">0</span></span></div></div>
+  <div class="lvl"><button type="button" id="lvName" class="lvname">Lv.1</button><div class="bar"><i id="lvBar"></i></div><span id="lvNext" style="font-variant-numeric:tabular-nums"></span><div class="stats"><span class="stat boost-on" id="sBoost" hidden title="오늘 리워드 2배"><span class="ic">🚀</span>x2</span><span class="stat lvup" title="레벨업 점수 (총 점수)"><span class="ic"><svg class="sic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="11" fill="#fff"/><path d="M7 13.5l5-5 5 5M7 18l5-5 5 5" fill="none" stroke="#e8338b" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span><small class="lvup-t">LEVEL UP</small><span id="sPts">0</span></span><span class="stat lvup" title="콤보 (연속 정답)"><span class="ic"><svg class="sic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="11" fill="#fff"/><path d="M13.5 3.5L6.5 13h5l-1.5 7.5 7.5-10h-5z" fill="#f6a623" stroke="#0e6d62" stroke-width="1.4" stroke-linejoin="round"/></svg></span><small class="lvup-t">COMBO</small><span id="sStreak">0</span></span><span class="stat lvup stk-pill" title="스티커 (2번 맞힌 단어)"><span class="ic"><svg class="sic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="11" fill="#fff"/><path d="M12 4.6l2.2 4.6 5 .6-3.7 3.4 1 5-4.5-2.5-4.5 2.5 1-5-3.7-3.4 5-.6z" fill="#ffc531" stroke="#7a3fc0" stroke-width="1.2" stroke-linejoin="round"/><path d="M15.2 21.2c.4-2.6 2.6-4.8 5.4-5.2-1 2.7-2.8 4.5-5.4 5.2z" fill="#d9c6f2" stroke="#7a3fc0" stroke-width="1" stroke-linejoin="round"/></svg></span><small class="lvup-t">STICKER</small><span id="sMaster">0</span></span><span class="stat lvup coin-pill" title="히어로 코인 (게임에서 맞히면 1개)"><span class="ic"><svg class="sic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="11" fill="#fff"/><circle cx="12" cy="12" r="8" fill="#ffd23f" stroke="#e09a00" stroke-width="1.4"/><path d="M12 7.2l1.4 2.9 3.2.4-2.3 2.2.6 3.1-2.9-1.5-2.9 1.5.6-3.1-2.3-2.2 3.2-.4z" fill="#e09a00"/></svg></span><small class="lvup-t">HERO COIN</small><span id="sCoin">0</span></span></div></div>
 
   <nav class="tabs" role="tablist">
     <button class="tab" role="tab" data-v="home" aria-selected="true">📚 학습</button>
@@ -2325,6 +2330,7 @@ function renderTop() {
   { const bo = $("#sBoost"); if (bo) bo.hidden = !boostOn(); }
   $("#sStreak").textContent = S.streak;
   $("#sMaster").textContent = masteredCount() + "/" + S.set.words.length;
+  { const sc = $("#sCoin"); if (sc) sc.textContent = S.coins || 0; }
   const n = levelOf(S.xp), lo = need(n), top = n >= LV_MAX, hi = top ? lo : need(n + 1);
   $("#lvName").textContent = levelName(n); $("#lvName").title = `${LEVELS[n].ko} · 눌러서 레벨 10단계 보기`;
   $("#lvBar").style.width = top ? "100%" : Math.min(100, (S.xp - lo) / (hi - lo) * 100) + "%";
@@ -3025,6 +3031,7 @@ function gHud(info) {
 // one answer: updates word progress, points, streak and badges the same way as the quiz
 /* Hero coin: +1 for every correct answer in a game */
 function coinPop() {
+  { const sc = $("#sCoin"); if (sc) { sc.textContent = S.coins || 0; const pl = sc.parentNode; pl.classList.remove("bump"); void pl.offsetWidth; pl.classList.add("bump"); } }
   const c = $("#gScore"); if (!c) return; c.textContent = S.coins || 0;
   const w = c.parentNode; w.classList.remove("coinhit"); void w.offsetWidth; w.classList.add("coinhit");
   const f = document.createElement("span"); f.className = "coinfly"; f.textContent = "+1 🪙"; w.appendChild(f); setTimeout(() => f.remove(), 900);
