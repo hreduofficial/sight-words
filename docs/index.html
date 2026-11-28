@@ -1214,10 +1214,10 @@ const AUDIO = (function () {
     if (ac) return true;
     try {
       ac = new (window.AudioContext || window.webkitAudioContext)();
-      master = ac.createGain(); master.gain.value = st.vol; master.connect(ac.destination);
+      master = ac.createGain(); master.gain.value = st.vol * 1.3; master.connect(ac.destination);
       const comp = ac.createDynamicsCompressor(); comp.threshold.value = -14; comp.ratio.value = 4; comp.connect(master);
-      musicBus = ac.createGain(); musicBus.gain.value = st.music ? .32 : 0; musicBus.connect(comp);
-      sfxBus = ac.createGain(); sfxBus.gain.value = st.sfx ? .9 : 0; sfxBus.connect(comp);
+      musicBus = ac.createGain(); musicBus.gain.value = st.music ? .44 : 0; musicBus.connect(comp);
+      sfxBus = ac.createGain(); sfxBus.gain.value = st.sfx ? 1.2 : 0; sfxBus.connect(comp);
       noiseBuf = ac.createBuffer(1, ac.sampleRate, ac.sampleRate);
       const d = noiseBuf.getChannelData(0); for (let i = 0; i < d.length; i++) d[i] = Math.random() * 2 - 1;
       return true;
@@ -1331,7 +1331,7 @@ const AUDIO = (function () {
     st.track = name; cur = TRACKS[name]; if (!cur) return;
     step = 0; nextT = ac.currentTime + .08;
     musicBus.gain.cancelScheduledValues(ac.currentTime);
-    musicBus.gain.setValueAtTime(0.0001, ac.currentTime); musicBus.gain.linearRampToValueAtTime((name === "quiz" || name === "play" || /^g_/.test(name)) ? .24 : .32, ac.currentTime + .6);
+    musicBus.gain.setValueAtTime(0.0001, ac.currentTime); musicBus.gain.linearRampToValueAtTime((name === "quiz" || name === "play" || /^g_/.test(name)) ? .34 : .44, ac.currentTime + .6);
     timer = setInterval(tick, 25); tick();
   }
   function stop() { if (timer) clearInterval(timer); timer = null; cur = null; st.track = null; }
@@ -1341,7 +1341,7 @@ const AUDIO = (function () {
   }
   function duck(on) {
     if (!ac || !cur) return;
-    const base = (st.track === "quiz" || st.track === "play" || /^g_/.test(st.track || "")) ? .24 : .32;
+    const base = (st.track === "quiz" || st.track === "play" || /^g_/.test(st.track || "")) ? .34 : .44;
     musicBus.gain.cancelScheduledValues(ac.currentTime);
     musicBus.gain.setTargetAtTime(on ? base * .25 : base, ac.currentTime, .12);
   }
@@ -1399,8 +1399,8 @@ const AUDIO = (function () {
     src.start(); return true;
   }
   function setMusic(on) { st.music = on; if (!on) { stop(); } else { if (st.want) play(st.want); } }
-  function setSfx(on) { st.sfx = on; if (ac) sfxBus.gain.value = on ? .9 : 0; }
-  function setVol(v) { st.vol = v; if (ac) master.gain.setTargetAtTime(v, ac.currentTime, .05); }
+  function setSfx(on) { st.sfx = on; if (ac) sfxBus.gain.value = on ? 1.2 : 0; }
+  function setVol(v) { st.vol = v; if (ac) master.gain.setTargetAtTime(v * 1.3, ac.currentTime, .05); }
   return { play, stop, unlock, sfx, duck, voice, stopVoice, decode, setMusic, setSfx, setVol, get state() { return st; } };
 })();
 
