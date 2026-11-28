@@ -904,6 +904,14 @@ body.homev .lvl{flex-wrap:wrap}
 .haru-hero .startrow{width:100%;justify-content:center;margin:4px 0 0;grid-column:1/-1}
 .haru-hero #startBtn{width:100%;max-width:380px}
 @media (min-width:900px){body.homev .haru-hero{grid-template-rows:auto 1fr auto}body.homev .haru-hero .startrow{grid-column:1;grid-row:3}body.homev .roadmap{grid-row:1/4!important}}
+
+/* v85 SW roadmap buttons taller and bigger on laptops */
+@media (min-width:900px){
+  body.homev .haru-hero{grid-template-columns:minmax(0,1fr) 270px!important}
+  body.homev .roadmap{gap:10px!important;align-self:center}
+  body.homev .roadmap button{min-height:72px;font-size:24px!important;padding:8px 6px!important;border-radius:16px;line-height:1.1;display:flex!important;flex-direction:column;align-items:center;justify-content:center}
+  body.homev .roadmap button small{font-size:14px!important;margin-top:3px}
+}
 </style>
 
 <canvas id="fx"></canvas>
